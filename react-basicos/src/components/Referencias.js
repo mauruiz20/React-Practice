@@ -6,17 +6,17 @@ export default function Referencias() {
     refMenuBtn = useRef();
 
   //console.log(refMenu, refMenuBtn);
-
   const handleToggleMenu = (e) => {
-    /* const $menu = document.getElementById("menu");
-
+    /*
+    const $menu = document.getElementById("menu");
     if (e.target.textContent === "Menú") {
       e.target.textContent = "Cerrar";
       $menu.style.display = "block";
     } else {
       e.target.textContent = "Menú";
       $menu.style.display = "none";
-    } */
+    }
+    */
 
     if (refMenuBtn.current.textContent === "Menú") {
       refMenuBtn.current.textContent = "Cerrar";
@@ -34,15 +34,16 @@ export default function Referencias() {
         Menú
       </button>
       <nav id="menu" ref={refMenu} style={{ display: "none" }}>
-        <a href="#">Sección 1</a>
+        <a href="#">Seccion 1</a>
         <br />
-        <a href="#">Sección 2</a>
+        <a href="#">Seccion 2</a>
         <br />
-        <a href="#">Sección 3</a>
+        <a href="#">Seccion 3</a>
         <br />
-        <a href="#">Sección 4</a>
+        <a href="#">Seccion 4</a>
         <br />
-        <a href="#">Sección 5</a>
+        <a href="#">Seccion 5</a>
+        <br />
       </nav>
     </>
   );
