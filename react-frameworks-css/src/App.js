@@ -1,23 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import MaterialUI from "./components/MaterialUI";
+//import Bootstrap from "./components/Bootstrap";
+//import Bulma from "./components/Bulma";
+import ReactBootstrap from "./components/ReactBootstrap";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Frameworks CSS con React</h1>
+      {/* <Bootstrap /> */}
+      {/* <Bulma /> */}
+      {/* <ReactBootstrap /> */}
+      <MaterialUI />
     </div>
   );
 }
