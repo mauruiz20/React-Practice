@@ -14,6 +14,14 @@ export const CrudForm = ({
 }) => {
   const [form, setForm] = useState(initialForm);
 
+  useEffect(() => {
+    if (dataToEdit) {
+      setForm(dataToEdit);
+    } else {
+      setForm(initialForm);
+    }
+  }, [dataToEdit]);
+
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -45,7 +53,7 @@ export const CrudForm = ({
 
   return (
     <div>
-      <h3>Agregar</h3>
+      <h3>{dataToEdit ? "Editar" : "Agregar"}</h3>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -67,3 +75,5 @@ export const CrudForm = ({
     </div>
   );
 };
+
+export default CrudForm;
