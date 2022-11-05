@@ -14,22 +14,22 @@ const CrudApi = () => {
   let api = helpHttp();
   let url = "http://localhost:5000/santos";
 
-  useEffect(() => {
-    setLoading(true);
-    helpHttp()
-      .get(url)
-      .then((res) => {
-        //console.log(res);
-        if (!res.err) {
-          setDb(res);
-          setError(null);
-        } else {
-          setDb(null);
-          setError(res);
-        }
-        setLoading(false);
-      });
-  }, [url]);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   helpHttp()
+  //     .get(url)
+  //     .then((res) => {
+  //       //console.log(res);
+  //       if (!res.err) {
+  //         setDb(res);
+  //         setError(null);
+  //       } else {
+  //         setDb(null);
+  //         setError(res);
+  //       }
+  //       setLoading(false);
+  //     });
+  // }, [url]);
 
   const createData = (data) => {
     data.id = Date.now();

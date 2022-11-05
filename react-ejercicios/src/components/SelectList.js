@@ -29,7 +29,7 @@ const SelectList = ({ title, url, handleChange }) => {
       break;
     case "localidades":
       options = data.localidades;
-      console.log(data.localidades);
+      //console.log(data.localidades);
       break;
     default:
       options = null;
@@ -45,7 +45,12 @@ const SelectList = ({ title, url, handleChange }) => {
         <option value="">-</option>
         {data &&
           options.map((el) => (
-            <option key={el.id} value={el.nombre}>
+            <option
+              key={el.id}
+              value={
+                title !== "localidades" ? el.nombre : el.localidad_censal.nombre
+              }
+            >
               {title !== "localidades" ? el.nombre : el.localidad_censal.nombre}
             </option>
           ))}
