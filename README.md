@@ -1,5 +1,5 @@
 # React-Practice
-<<<<<<< Updated upstream
+
 <p>Prácticas de programación Frontend utilizando la librería React de Javascript.</p>
 <h2>¿Por qué usarlo?</h2>
 <h3>Ventajas:</h3>
