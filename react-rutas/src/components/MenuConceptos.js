@@ -47,6 +47,15 @@ const MenuConceptos = () => {
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
         </li>
+        <li>
+          <span>Rutas Anidadas:</span>
+          <Link to="/react">React</Link>
+        </li>
+        <li>
+          <span>Rutas Privadas: </span>
+          <Link to="/login">Login</Link>
+          <Link to="/dashboard">Dashboard</Link>
+        </li>
       </ol>
     </nav>
   );
