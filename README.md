@@ -19,5 +19,3 @@ Estructura de componentes fácil de mantener:</b> la arquitectura basada en comp
   <li><b>Necesidad de un ecosistema de muchas herramientas:</b> React requiere una amplia gama de herramientas para funcionar correctamente y ser compatible con otras tecnologías.</li>
   <li><b>Problemas de SEO:</b> se sabe que las SPAs (Single Page Applications) creadas con React se enfrentan a problemas de indexación por parte de los rastreadores y bots de motores de búsqueda.</li>
 </ul>
-=======
->>>>>>> Stashed changes
