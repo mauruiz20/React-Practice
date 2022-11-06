@@ -97,10 +97,10 @@ const CrudApi = () => {
         <header>
           <h2>CRUD API con Rutas</h2>
           <nav>
-            <NavLink to="/" activeClassName="active">
+            <NavLink exact to="/" activeClassName="active">
               Santos
             </NavLink>
-            <NavLink to="/agregar" activeClassName="active">
+            <NavLink exact to="/agregar" activeClassName="active">
               Agregar
             </NavLink>
           </nav>

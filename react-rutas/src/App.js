@@ -1,6 +1,5 @@
 import ConceptosBasicos from "./components/ConceptosBasicos";
 import CrudApi from "./components/CrudApi";
-import SelectsAnidados from "./components/SelectsAnidados";
 
 function App() {
   return (
@@ -14,11 +13,10 @@ function App() {
         Documentación
       </a>
       <hr />
-      {/* <SelectsAnidados /> */}
       <hr />
       <CrudApi />
       <hr />
-      {/* <ConceptosBasicos /> */}
+      <ConceptosBasicos />
       <hr />
     </div>
   );
