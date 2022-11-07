@@ -1,0 +1,39 @@
+{
+  "santos": [
+    {
+      "id": 1,
+      "name": "Seiya",
+      "constellation": "Pegaso"
+    },
+    {
+      "id": 2,
+      "name": "Shiryu",
+      "constellation": "Dragón"
+    },
+    {
+      "id": 3,
+      "name": "Hyoga",
+      "constellation": "Cisne"
+    },
+    {
+      "id": 4,
+      "name": "Shun",
+      "constellation": "Andrómeda"
+    },
+    {
+      "id": 5,
+      "name": "Ikkia",
+      "constellation": "Fénix"
+    },
+    {
+      "name": "asd",
+      "constellation": "asdasd",
+      "id": 1667532295508
+    },
+    {
+      "name": "Faker",
+      "constellation": "T1",
+      "id": 1667784353914
+    }
+  ]
+}
