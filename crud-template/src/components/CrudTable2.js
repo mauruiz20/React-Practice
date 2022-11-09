@@ -26,19 +26,23 @@ function Row({ data }) {
         <IconButton color="primary" onClick={() => setOpen(!open)}>
           <VisibilityIcon />
         </IconButton>
-        <IconButton color="warning">
+
+        <IconButton sx={{ color: "#444" }}>
           <EditIcon />
         </IconButton>
+
         {!active && (
           <IconButton color="success" onClick={() => setActive(!active)}>
             <ArrowUpwardIcon />
           </IconButton>
         )}
+
         {active && (
           <IconButton color="error" onClick={() => setActive(!active)}>
             <ArrowDownwardIcon />
           </IconButton>
         )}
+
         <IconButton>
           <DeleteIcon />
         </IconButton>

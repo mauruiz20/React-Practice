@@ -6,8 +6,8 @@ const CrudForm = () => {
   return (
     <>
       <Container className="crud-form-container">
-        <Typography variant="h5" sx={{ textAlign: "center" }}>
-          Crud Form
+        <Typography variant="h4" sx={{ textAlign: "center" }}>
+          Gestión de Clientes
         </Typography>
         <form className="crud-form">
           <TextField
@@ -59,13 +59,17 @@ const CrudForm = () => {
             type="text"
             name="nacionality"
           />
-          <Button variant="contained" color="primary">
-            Enviar
-          </Button>
-          <Button variant="contained" color="secondary">
+        </form>
+        <hr className="crud-form-hr" />
+
+        <div className="crud-form-btn-container">
+          <Button className="crud-form-btn" variant="contained" color="error">
             Cancelar
           </Button>
-        </form>
+          <Button className="crud-form-btn" variant="contained" color="primary">
+            Enviar
+          </Button>
+        </div>
       </Container>
     </>
   );
