@@ -38,6 +38,27 @@ const CrudForm = () => {
             type="text"
             name="phone"
           />
+          <TextField
+            className="crud-form-input"
+            label="Nacimiento"
+            variant="outlined"
+            type="text"
+            name="date"
+          />
+          <TextField
+            className="crud-form-input"
+            label="Dirección"
+            variant="outlined"
+            type="text"
+            name="address"
+          />
+          <TextField
+            className="crud-form-input"
+            label="Nacionalidad"
+            variant="outlined"
+            type="text"
+            name="nacionality"
+          />
           <Button variant="contained" color="primary">
             Enviar
           </Button>

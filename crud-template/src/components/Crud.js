@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Paper } from "@mui/material";
 import CrudForm from "./CrudForm";
 import CrudTable2 from "./CrudTable2";
+import CrudPagination from "./CrudPagination";
+import CrudFormSearch from "./CrudFormSearch";
 
 const Crud = () => {
+  const [entries, setEntries] = useState(5);
+
   return (
     <Container
       maxWidth="xll"
@@ -16,7 +20,9 @@ const Crud = () => {
       <Paper elevation={6} sx={{ width: "100%", borderRadius: "1rem" }}>
         <CrudForm />
         <hr />
-        <CrudTable2 />
+        <CrudFormSearch />
+        <CrudTable2 rows={entries} />
+        <CrudPagination rows={entries} setRows={setEntries} />
       </Paper>
     </Container>
   );
