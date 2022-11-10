@@ -1,11 +1,11 @@
-import { Collapse, IconButton } from "@mui/material";
+import { Collapse, IconButton, Tooltip, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
+// import CheckIcon from "@mui/icons-material/Check";
+// import CloseIcon from "@mui/icons-material/Close";
 import datos from "../api/db.json";
 import React, { useState } from "react";
 
@@ -20,32 +20,86 @@ function Row({ data }) {
       <div className="mytable-cell">{data.email}</div>
       <div className="mytable-cell">{data.phone}</div>
       <div className="mytable-cell">
-        {active ? <CheckIcon color="success" /> : <CloseIcon color="error" />}
+        {active ? (
+          <Typography sx={{ color: "rgb(46, 125, 50)" }}>A</Typography>
+        ) : (
+          <Typography sx={{ color: "rgb(211, 47, 47)" }}>B</Typography>
+        )}
       </div>
       <div className="mytable-cell">
-        <IconButton color="primary" onClick={() => setOpen(!open)}>
-          <VisibilityIcon />
-        </IconButton>
+        <Tooltip
+          title="Expandir"
+          arrow
+          placement="top"
+          disableInteractive
+          enterDelay={2000}
+          enterNextDelay={2000}
+          leaveDelay={10}
+        >
+          <IconButton color="primary" onClick={() => setOpen(!open)}>
+            <VisibilityIcon />
+          </IconButton>
+        </Tooltip>
 
-        <IconButton sx={{ color: "#444" }}>
-          <EditIcon />
-        </IconButton>
+        <Tooltip
+          title="Editar"
+          arrow
+          placement="top"
+          disableInteractive
+          enterDelay={2000}
+          enterNextDelay={2000}
+          leaveDelay={10}
+        >
+          <IconButton sx={{ color: "#444" }}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
 
         {!active && (
-          <IconButton color="success" onClick={() => setActive(!active)}>
-            <ArrowUpwardIcon />
-          </IconButton>
+          <Tooltip
+            title="Dar de Alta"
+            arrow
+            placement="top"
+            disableInteractive
+            enterDelay={2000}
+            enterNextDelay={2000}
+            leaveDelay={10}
+          >
+            <IconButton color="success" onClick={() => setActive(!active)}>
+              <ArrowUpwardIcon />
+            </IconButton>
+          </Tooltip>
         )}
 
         {active && (
-          <IconButton color="error" onClick={() => setActive(!active)}>
-            <ArrowDownwardIcon />
-          </IconButton>
+          <Tooltip
+            title="Dar de Baja"
+            arrow
+            placement="top"
+            disableInteractive
+            enterDelay={2000}
+            enterNextDelay={2000}
+            leaveDelay={10}
+          >
+            <IconButton color="error" onClick={() => setActive(!active)}>
+              <ArrowDownwardIcon />
+            </IconButton>
+          </Tooltip>
         )}
 
-        <IconButton>
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip
+          title="Borrar"
+          arrow
+          placement="top"
+          disableInteractive
+          enterDelay={2000}
+          enterNextDelay={2000}
+          leaveDelay={10}
+        >
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       </div>
 
       <Collapse in={open} timeout="auto" unmountOnExit className="collapse">
@@ -68,7 +122,7 @@ function Row({ data }) {
   );
 }
 
-const CrudTable2 = ({ rows }) => {
+const CrudTable2 = ({ rows, inactives }) => {
   const [order, setOrder] = useState("surname asc");
 
   const data = () => {
@@ -93,6 +147,10 @@ const CrudTable2 = ({ rows }) => {
 
       default:
         break;
+    }
+
+    if (!inactives) {
+      array = array.filter((data) => data.active === true);
     }
 
     return array.map(

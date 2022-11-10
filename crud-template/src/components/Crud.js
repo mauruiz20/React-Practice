@@ -7,6 +7,7 @@ import CrudFormSearch from "./CrudFormSearch";
 
 const Crud = () => {
   const [entries, setEntries] = useState(5);
+  const [inactives, setInactives] = useState(true);
 
   return (
     <Container
@@ -20,8 +21,8 @@ const Crud = () => {
       <Paper elevation={6} sx={{ width: "100%", borderRadius: "1rem" }}>
         <CrudForm />
         <hr />
-        <CrudFormSearch />
-        <CrudTable2 rows={entries} />
+        <CrudFormSearch inactives={inactives} setInactives={setInactives} />
+        <CrudTable2 rows={entries} inactives={inactives} />
         <CrudPagination rows={entries} setRows={setEntries} />
       </Paper>
     </Container>
