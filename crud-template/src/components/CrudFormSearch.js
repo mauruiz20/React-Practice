@@ -4,6 +4,7 @@ import {
   FormControlLabel,
   TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -12,6 +13,16 @@ import React from "react";
 const CrudFormSearch = ({ inactives, setInactives }) => {
   return (
     <>
+      <Typography
+        variant="overline"
+        display="block"
+        sx={{ fontSize: "2rem", textAlign: "center" }}
+      >
+        Gestión clientes
+      </Typography>
+
+      <hr className="crud-form-hr" />
+
       <form className="crud-form-search">
         <div className="crud-form-search-container">
           <TextField
@@ -48,7 +59,13 @@ const CrudFormSearch = ({ inactives, setInactives }) => {
           </Tooltip>
         </div>
 
-        <Fab variant="extended" size="medium" color="primary">
+        <Fab
+          variant="extended"
+          size="medium"
+          color="primary"
+          type="submit"
+          form="crud-form"
+        >
           Agregar cliente
           <AddCircleIcon sx={{ ml: 1 }} />
         </Fab>

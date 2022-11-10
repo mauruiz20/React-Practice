@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Paper } from "@mui/material";
 import CrudForm from "./CrudForm";
-import CrudTable2 from "./CrudTable2";
+import CrudTable from "./CrudTable";
 import CrudPagination from "./CrudPagination";
 import CrudFormSearch from "./CrudFormSearch";
 
@@ -18,11 +18,12 @@ const Crud = () => {
         backgroundColor: "#D6E4E5",
       }}
     >
-      <Paper elevation={6} sx={{ width: "100%", borderRadius: "1rem" }}>
+      <Paper elevation={6} sx={{ width: "100%", borderRadius: "1rem", mb: 5 }}>
         <CrudForm />
-        <hr />
+      </Paper>
+      <Paper elevation={6} sx={{ width: "100%", borderRadius: "1rem" }}>
         <CrudFormSearch inactives={inactives} setInactives={setInactives} />
-        <CrudTable2 rows={entries} inactives={inactives} />
+        <CrudTable rows={entries} inactives={inactives} />
         <CrudPagination rows={entries} setRows={setEntries} />
       </Paper>
     </Container>
