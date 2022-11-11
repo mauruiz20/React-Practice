@@ -7,12 +7,25 @@ export default function CurdForm() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm({ mode: "onChange" });
+    resetField,
+  } = useForm({
+    mode: "onChange",
+  });
+
   const onSubmit = (data) => console.log(data);
 
+  const handleCancel = (e) => {
+    resetField("surname", { keepErrors: false });
+    resetField("name", { keepErrors: false });
+    resetField("email", { keepErrors: false });
+    resetField("phone", { keepErrors: false });
+    resetField("address", { keepErrors: false });
+    resetField("date", { keepErrors: false });
+    resetField("nacionality", { keepErrors: false });
+  };
+
   return (
-    <Container className="crud-form-container">
+    <Container className="crud-form">
       <Typography
         variant="overline"
         display="block"
@@ -21,11 +34,11 @@ export default function CurdForm() {
         Agregar Cliente
       </Typography>
 
-      <hr className="crud-form-hr" />
+      <hr className="crud-form__hr" />
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="crud-form"
+        className="crud-form__container"
         id="crud-form"
       >
         <TextField
@@ -33,7 +46,7 @@ export default function CurdForm() {
             required: true,
             pattern: /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/,
           })}
-          className="crud-form-input"
+          className="crud-form__input"
           label="Apellidos"
           placeholder="Apellidos"
           variant="outlined"
@@ -55,7 +68,7 @@ export default function CurdForm() {
             required: true,
             pattern: /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/,
           })}
-          className="crud-form-input"
+          className="crud-form__input"
           label="Nombres"
           placeholder="Nombres"
           variant="outlined"
@@ -77,7 +90,7 @@ export default function CurdForm() {
             required: true,
             pattern: /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/,
           })}
-          className="crud-form-input"
+          className="crud-form__input"
           label="Correo electrónico"
           placeholder="Correo electrónico"
           variant="outlined"
@@ -98,7 +111,7 @@ export default function CurdForm() {
           {...register("phone", {
             required: true,
           })}
-          className="crud-form-input"
+          className="crud-form__input"
           label="Teléfono"
           placeholder="Teléfono"
           variant="outlined"
@@ -115,7 +128,7 @@ export default function CurdForm() {
           {...register("address", {
             required: true,
           })}
-          className="crud-form-input"
+          className="crud-form__input"
           label="Dirección"
           placeholder="Dirección"
           variant="outlined"
@@ -132,7 +145,7 @@ export default function CurdForm() {
           {...register("date", {
             required: true,
           })}
-          className="crud-form-input-date"
+          className="crud-form__input-date"
           label="Nacimiento"
           type="date"
           size="small"
@@ -148,7 +161,7 @@ export default function CurdForm() {
           {...register("nacionality", {
             required: true,
           })}
-          className="crud-form-input"
+          className="crud-form__input"
           label="Nacionalidad"
           placeholder="Nacionalidad"
           variant="outlined"
@@ -161,22 +174,18 @@ export default function CurdForm() {
           }
         />
       </form>
-      <hr className="crud-form-hr" />
-      <div className="crud-form-btn-container">
+      <hr className="crud-form__hr" />
+      <div className="crud-form__btn-container">
         <Button
-          className="crud-form-btn"
+          className="crud-form__btn"
           variant="contained"
           color="error"
-          onClick={() => {
-            reset({
-              keepErrors: false,
-            });
-          }}
+          onClick={handleCancel}
         >
           Cancelar
         </Button>
         <Button
-          className="crud-form-btn"
+          className="crud-form__btn"
           variant="contained"
           color="primary"
           type="submit"

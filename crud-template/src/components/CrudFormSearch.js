@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  Container,
   Fab,
   FormControlLabel,
   TextField,
@@ -10,9 +11,16 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import React from "react";
 
-const CrudFormSearch = ({ inactives, setInactives }) => {
+const CrudFormSearch = ({ inactives, setInactives, search, setSearch }) => {
+  const initSearch = "";
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+  };
+
   return (
-    <>
+    <Container className="crud-form-search" maxWidth="xl">
       <Typography
         variant="overline"
         display="block"
@@ -21,12 +29,12 @@ const CrudFormSearch = ({ inactives, setInactives }) => {
         Gestión clientes
       </Typography>
 
-      <hr className="crud-form-hr" />
+      <hr className="crud-form-search__hr" />
 
-      <form className="crud-form-search">
-        <div className="crud-form-search-container">
+      <form className="crud-form-search__form" onSubmit={handleSubmit}>
+        <div className="crud-form-search__container">
           <TextField
-            className="crud-form-input"
+            className="crud-form-search__input"
             label="Búsqueda"
             placeholder="Búsqueda"
             variant="outlined"
@@ -52,6 +60,7 @@ const CrudFormSearch = ({ inactives, setInactives }) => {
             enterDelay={2000}
             enterNextDelay={2000}
             leaveDelay={10}
+            type="submit"
           >
             <Fab color="primary">
               <SearchIcon sx={{ fontSize: "35px" }} />
@@ -70,7 +79,7 @@ const CrudFormSearch = ({ inactives, setInactives }) => {
           <AddCircleIcon sx={{ ml: 1 }} />
         </Fab>
       </form>
-    </>
+    </Container>
   );
 };
 
