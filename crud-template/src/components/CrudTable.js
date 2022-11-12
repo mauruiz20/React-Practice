@@ -7,22 +7,16 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import DeleteIcon from "@mui/icons-material/Delete";
 // import CheckIcon from "@mui/icons-material/Check";
 // import CloseIcon from "@mui/icons-material/Close";
-import {
-  Collapse,
-  IconButton,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Collapse, IconButton, Tooltip, Typography } from "@mui/material";
 import Message from "./Message";
 
-function Row({ data }) {
+function Row({ data, setModal }) {
   const [open, setOpen] = useState(false);
-  const { setDataToEdit, updateData } = useContext(CrudContext);
-  const matches1024 = useMediaQuery("(min-width: 1025px)");
-  const matches768 = useMediaQuery("(min-width: 769px)");
+  const { setModalData, setDataToEdit, updateData, mediaQ1024, mediaQ768 } =
+    useContext(CrudContext);
 
   const formattedDate = moment(data.date).format("D/MM/YYYY");
 
@@ -31,20 +25,29 @@ function Row({ data }) {
     updateData(data);
   };
 
+  const handleDelete = () => {
+    setModalData(data);
+    setModal(true);
+  };
+
   return (
     <div className="mytable__body-row">
       <div className="mytable__body-cell">{data.surname}</div>
       <div className="mytable__body-cell">{data.name}</div>
-      {matches1024 && <div className="mytable__body-cell">{data.email}</div>}
-      {matches768 && <div className="mytable__body-cell">{data.phone}</div>}
-      <div className="mytable__body-cell">
+      {mediaQ1024 && <div className="mytable__body-cell">{data.email}</div>}
+      {mediaQ768 && <div className="mytable__body-cell">{data.phone}</div>}
+      <div className="mytable__body-cell--center">
         {data.active ? (
-          <Typography sx={{ color: "rgb(46, 125, 50)" }}>A</Typography>
+          <Typography sx={{ color: "rgb(46, 125, 50)", fontWeight: "bold" }}>
+            A
+          </Typography>
         ) : (
-          <Typography sx={{ color: "rgb(211, 47, 47)" }}>B</Typography>
+          <Typography sx={{ color: "rgb(211, 47, 47)", fontWeight: "bold" }}>
+            B
+          </Typography>
         )}
       </div>
-      <div className="mytable__body-cell mytable__actions">
+      <div className="mytable__body-cell--center mytable__actions">
         <Tooltip
           title="Expandir"
           arrow
@@ -112,7 +115,20 @@ function Row({ data }) {
           </Tooltip>
         )}
 
-        <CrudModal data={data} />
+        <Tooltip
+          title="Borrar"
+          arrow
+          placement="top"
+          disableInteractive
+          enterDelay={2000}
+          enterNextDelay={2000}
+          leaveDelay={10}
+          onClick={handleDelete}
+        >
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       </div>
 
       <Collapse
@@ -134,13 +150,13 @@ function Row({ data }) {
             <div className="mytable-collapse__title">Nacionalidad</div>
             <div className="mytable-collapse__data">{data.nacionality}</div>
           </div>
-          {!matches1024 && (
+          {!mediaQ1024 && (
             <div className="mytable-collapse__item">
               <div className="mytable-collapse__title">Correo Electrónico</div>
               <div className="mytable-collapse__data">{data.email}</div>
             </div>
           )}
-          {!matches768 && (
+          {!mediaQ768 && (
             <div className="mytable-collapse__item">
               <div className="mytable-collapse__title">Teléfono</div>
               <div className="mytable-collapse__data">{data.phone}</div>
@@ -153,10 +169,10 @@ function Row({ data }) {
 }
 
 const CrudTable = () => {
-  const { db, rows, inactives, page, search } = useContext(CrudContext);
+  const { db, rows, inactives, page, search, mediaQ1024, mediaQ768 } =
+    useContext(CrudContext);
   const [order, setOrder] = useState("surname asc");
-  const matches1024 = useMediaQuery("(min-width: 1025px)");
-  const matches768 = useMediaQuery("(min-width: 769px)");
+  const [modal, setModal] = useState(false);
   let str = search.search;
 
   const data = () => {
@@ -195,7 +211,9 @@ const CrudTable = () => {
     return array.map(
       (data, index) =>
         index < rows * page &&
-        index >= (page - 1) * rows && <Row key={data.id} data={data} />
+        index >= (page - 1) * rows && (
+          <Row key={data.id} data={data} setModal={setModal} />
+        )
     );
   };
 
@@ -206,76 +224,63 @@ const CrudTable = () => {
 
   return (
     <div className="mytable">
-      <Message msg={"Entrada agregada con éxito"} type="success" />
+      <Message />
+      <CrudModal open={modal} setOpen={setModal} />
+
       <div className="mytable__head">
         <div className="mytable__head-row">
           <div className="mytable__head-cell">
-            <div className="mytable__head-title">Apellidos</div>
-            {order === "surname asc" ? (
-              <IconButton
-                sx={orderStyles}
-                onClick={() => setOrder("surname desc")}
-                color="primary"
-                disableRipple={true}
-              >
-                <ArrowUpwardIcon fontSize="small" />
-              </IconButton>
-            ) : order === "surname desc" ? (
-              <IconButton
-                sx={orderStyles}
-                onClick={() => setOrder("surname asc")}
-                color="primary"
-                disableRipple={true}
-              >
+            Apellidos
+            <IconButton
+              size="small"
+              sx={orderStyles}
+              onClick={() => {
+                order === "surname asc"
+                  ? setOrder("surname desc")
+                  : setOrder("surname asc");
+              }}
+              color={
+                order === "surname asc" || order === "surname desc"
+                  ? "primary"
+                  : "default"
+              }
+              disableRipple={true}
+            >
+              {order === "surname desc" ? (
                 <ArrowDownwardIcon fontSize="small" />
-              </IconButton>
-            ) : (
-              <IconButton
-                sx={orderStyles}
-                onClick={() => setOrder("surname asc")}
-                disableRipple={true}
-              >
+              ) : (
                 <ArrowUpwardIcon fontSize="small" />
-              </IconButton>
-            )}
+              )}
+            </IconButton>
           </div>
           <div className="mytable__head-cell">
             Nombres
-            {order === "name asc" ? (
-              <IconButton
-                size="small"
-                sx={orderStyles}
-                onClick={() => setOrder("name desc")}
-                color="primary"
-                disableRipple={true}
-              >
-                <ArrowUpwardIcon fontSize="small" />
-              </IconButton>
-            ) : order === "name desc" ? (
-              <IconButton
-                size="small"
-                sx={orderStyles}
-                onClick={() => setOrder("name asc")}
-                color="primary"
-                disableRipple={true}
-              >
+            <IconButton
+              size="small"
+              sx={orderStyles}
+              onClick={() => {
+                order === "name asc"
+                  ? setOrder("name desc")
+                  : setOrder("name asc");
+              }}
+              color={
+                order === "name asc" || order === "name desc"
+                  ? "primary"
+                  : "default"
+              }
+              disableRipple={true}
+            >
+              {order === "name desc" ? (
                 <ArrowDownwardIcon fontSize="small" />
-              </IconButton>
-            ) : (
-              <IconButton
-                size="small"
-                sx={orderStyles}
-                onClick={() => setOrder("name asc")}
-                disableRipple={true}
-              >
+              ) : (
                 <ArrowUpwardIcon fontSize="small" />
-              </IconButton>
-            )}
+              )}
+            </IconButton>
           </div>
-          {matches1024 && (
+          {mediaQ1024 && (
             <div className="mytable__head-cell">Correo Electrónico</div>
           )}
-          {matches768 && <div className="mytable__head-cell">Teléfono</div>}
+          {mediaQ768 && <div className="mytable__head-cell">Teléfono</div>}
           <div className="mytable__head-cell">Estado</div>
           <div className="mytable__head-cell">Acciones</div>
         </div>

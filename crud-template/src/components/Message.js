@@ -6,8 +6,8 @@ import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 import CrudContext from "../context/CrudContext";
 
-const Message = ({ msg, type }) => {
-  const { msgAlert, setMsgAlert } = useContext(CrudContext);
+const Message = () => {
+  const { msgAlert, setMsgAlert, msgData } = useContext(CrudContext);
 
   return (
     <Box
@@ -15,15 +15,15 @@ const Message = ({ msg, type }) => {
         width: "30%",
         minWidth: "18rem",
         margin: "auto",
-        position: "absolute",
-        top: 0,
+        position: "fixed",
+        top: "25px",
         right: "50%",
         transform: "translate(50%)",
       }}
     >
       <Collapse in={msgAlert}>
         <Alert
-          severity={type}
+          severity={msgData.type}
           action={
             <IconButton
               aria-label="close"
@@ -37,7 +37,7 @@ const Message = ({ msg, type }) => {
             </IconButton>
           }
         >
-          {msg}
+          {msgData.msg}
         </Alert>
       </Collapse>
     </Box>

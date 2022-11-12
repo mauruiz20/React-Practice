@@ -1,32 +1,22 @@
-import React, { useContext, useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useContext } from "react";
+
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Button, IconButton, Tooltip } from "@mui/material";
+import { Button } from "@mui/material";
 import CrudContext from "../context/CrudContext";
 
-const CrudModal = ({ data }) => {
-  const [open, setOpen] = useState(false);
-  const { deleteData } = useContext(CrudContext);
-  const handleOpen = () => setOpen(true);
+const CrudModal = ({ open, setOpen }) => {
+  const { modalData: data, deleteData } = useContext(CrudContext);
+
   const handleClose = () => setOpen(false);
+
+  const handleDelete = () => {
+    setOpen(false);
+    deleteData(data);
+  };
 
   return (
     <>
-      <Tooltip
-        title="Borrar"
-        arrow
-        placement="top"
-        disableInteractive
-        enterDelay={2000}
-        enterNextDelay={2000}
-        leaveDelay={10}
-        onClick={handleOpen}
-      >
-        <IconButton>
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}
@@ -64,7 +54,7 @@ const CrudModal = ({ data }) => {
               className="crud-modal__btn"
               variant="contained"
               color="primary"
-              onClick={() => deleteData(data)}
+              onClick={handleDelete}
             >
               Confirmar
             </Button>

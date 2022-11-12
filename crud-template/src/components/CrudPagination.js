@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import CrudContext from "../context/CrudContext";
-import { Pagination, useMediaQuery } from "@mui/material";
+import { Pagination } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const CrudPagination = () => {
-  const { db, rows, setRows, page, setPage } = useContext(CrudContext);
-  const matches768 = useMediaQuery("(min-width: 769px)");
+  const { db, rows, setRows, page, setPage, mediaQ768 } =
+    useContext(CrudContext);
 
   const totalRows = db.length;
 
@@ -45,14 +45,16 @@ const CrudPagination = () => {
         </div>
       </div>
 
-      <Pagination
-        className="pagination__nav"
-        count={parseInt(Math.ceil(totalRows / rows))}
-        color="primary"
-        size={!matches768 ? "medium" : "large"}
-        page={page}
-        onChange={handlePage}
-      />
+      {totalRows > rows && (
+        <Pagination
+          className="pagination__nav"
+          count={parseInt(Math.ceil(totalRows / rows))}
+          color="primary"
+          size={!mediaQ768 ? "medium" : "large"}
+          page={page}
+          onChange={handlePage}
+        />
+      )}
     </div>
   );
 };

@@ -51,9 +51,10 @@ const CrudForm = () => {
     } else {
       updateData(data);
     }
+    handleCancel();
   };
 
-  const handleCancel = (e) => {
+  const handleCancel = () => {
     setValue("id", null);
     resetField("surname", { keepErrors: false });
     resetField("name", { keepErrors: false });
