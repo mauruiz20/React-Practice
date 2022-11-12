@@ -63,11 +63,11 @@ body {
 /* ============== CRUD Form ============== */
 
 .crud-form {
-  padding: 1rem;
+  padding: 1rem 2rem;
 }
 
 .crud-form__container {
-  margin: 2rem 10rem 1rem 10rem;
+  margin: 2rem 0 0.5rem 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem 5rem;
@@ -75,15 +75,18 @@ body {
 }
 
 .crud-form__input {
-  width: 25rem;
+  width: 70%;
+  max-width: 25rem;
 }
 
 .crud-form__input-date {
-  justify-self: start;
+  width: 40%;
+  max-width: 12rem;
+  justify-self: center;
 }
 
 .crud-form__hr {
-  margin: 0 4rem;
+  margin: 0 1rem;
 }
 
 .crud-form__btn-container {
@@ -91,6 +94,7 @@ body {
   margin: 2rem 0;
   padding: 0 6rem;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
@@ -101,11 +105,15 @@ body {
 
 /* ============== CRUD Form Search ============== */
 
+.crud-form-search {
+  padding: 1rem 2rem 0 2rem;
+}
+
 .crud-form-search__form {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 4rem 1rem 4rem;
+  margin: 1rem 1rem;
 }
 
 .crud-form-search__container {
@@ -118,14 +126,15 @@ body {
 }
 
 .crud-form-search__hr {
-  margin: 0 3rem;
+  margin: 0 1rem;
 }
 
 /* ============== MyTable ============== */
 
 .mytable {
   background: #ffffff;
-  margin: 1rem 0 0 0;
+  padding: 3.2rem 0 0 0;
+  position: relative;
 }
 
 .mytable__head {
@@ -144,7 +153,6 @@ body {
   grid-template-columns:
     minmax(8rem, 1fr) minmax(8rem, 1fr) minmax(17rem, 1fr)
     minmax(9rem, 0.5fr) 5rem minmax(11rem, 1fr);
-  text-align: center;
 }
 
 .mytable__head-cell,
@@ -190,8 +198,9 @@ body {
 }
 
 .mytable-collapse__item {
-  min-width: 10rem;
+  min-width: 15rem;
   flex-grow: 1;
+  flex-basis: 10rem;
 }
 
 .mytable-collapse__title {
@@ -212,6 +221,16 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.pagination__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination__msg {
+  min-width: 175px;
 }
 
 .pagination__rows {
@@ -252,35 +271,36 @@ body {
   margin: 2rem 0;
 }
 
-/*
+/* ============== Tamaño por defecto pantallas (1280-1024) ============== */
 
-Escritorios muy anchos
-@media (min-width: 1200px) { }
-
-Tablets en horizonal y escritorios normales
-@media (min-width: 1024px) { }
-
-Tablets en horizonal y escritorios normales
-@media (min-width: 768px) and (max-width: 1199px) { ... }
- 
-Móviles en horizontal o tablets en vertical
-@media (max-width: 767px) { ... }
- 
-Móviles en vertical
-@media (max-width: 480px) { ... }
-
-*/
-
-/* Tamaño por defecto pantallas (1280-1024) */
 @media all and (min-width: 1024px) and (max-width: 1280px) {
 }
 
-/* Tamaño tablet horizontal (1024-768) */ /* Quitar correo electronico */
+/* ============== Tamaño tablet horizontal (1024-768) ============== */
+
 @media all and (max-width: 1024px) {
+  /* ============== CRUD Form ============== */
+
+  .crud-form {
+    padding: 1rem;
+  }
+
+  .crud-form__container {
+    gap: 1rem 1rem;
+  }
+
+  .crud-form__input {
+    width: 90%;
+  }
+
+  .crud-form__input-date {
+    width: 50%;
+  }
+
   /* ============== CRUD Form Search ============== */
 
-  .crud-form-search__form {
-    padding: 1.5rem 0 1rem 0;
+  .crud-form-search {
+    padding: 1rem 1rem 0 1rem;
   }
 
   .crud-form-search__input {
@@ -288,7 +308,7 @@ Móviles en vertical
   }
 
   .crud-form-search__hr {
-    margin: 0;
+    margin: 0 1rem;
   }
 
   /* ============== MyTable ============== */
@@ -303,8 +323,19 @@ Móviles en vertical
   }
 }
 
-/* Tamaño tablet (768-480) */
+/* ============== Tamaño tablet (768-480) ============== */
+
 @media all and (max-width: 768px) {
+  /* ============== CRUD Form ============== */
+
+  .crud-form__input-date {
+    width: 70%;
+  }
+
+  .crud-form__btn-container {
+    padding: 0 1rem;
+  }
+
   /* ============== CRUD Form Search ============== */
 
   .crud-form-search__form {
@@ -328,10 +359,31 @@ Móviles en vertical
   .mytable__actions {
     display: flex;
   }
+
+  /* ============== CRUD Pagination ============== */
+
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
-/* Tamaño teléfonos (480-menos ) */
+/* ============== Tamaño teléfonos (480-menos ) ============== */
+
 @media all and (max-width: 480px) {
+  /* ============== CRUD Form ============== */
+
+  .crud-form__container {
+    gap: 0.5rem 0.5rem;
+  }
+
+  .crud-from__input {
+    width: 100%;
+  }
+
+  .crud-form__input-date {
+    width: 90%;
+  }
 }
 
 /*  Orientación: Vertical */
@@ -357,3 +409,5 @@ Móviles en vertical
 /* iPad - Orientación: Horizontal  */
 @media screen and (min-device-width: 481px) and (orientation: landscape) {
 }
+
+/* Rotura 480px */

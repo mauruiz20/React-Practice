@@ -1,26 +1,33 @@
+import React, { useContext } from "react";
+import CrudContext from "../context/CrudContext";
+import { useForm } from "react-hook-form";
+import SearchIcon from "@mui/icons-material/Search";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {
   Checkbox,
-  Container,
   Fab,
   FormControlLabel,
   TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import React from "react";
 
-const CrudFormSearch = ({ inactives, setInactives, search, setSearch }) => {
-  const initSearch = "";
+const CrudFormSearch = () => {
+  const { inactives, setInactives, setSearch, setPage } =
+    useContext(CrudContext);
+  const { register, handleSubmit } = useForm({});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(e.target);
+  const onSubmit = (data) => {
+    setSearch(data);
+  };
+
+  const handleCheck = (e) => {
+    setInactives(!inactives);
+    setPage(1);
   };
 
   return (
-    <Container className="crud-form-search" maxWidth="xl">
+    <div className="crud-form-search">
       <Typography
         variant="overline"
         display="block"
@@ -31,7 +38,10 @@ const CrudFormSearch = ({ inactives, setInactives, search, setSearch }) => {
 
       <hr className="crud-form-search__hr" />
 
-      <form className="crud-form-search__form" onSubmit={handleSubmit}>
+      <form
+        className="crud-form-search__form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="crud-form-search__container">
           <TextField
             className="crud-form-search__input"
@@ -39,15 +49,15 @@ const CrudFormSearch = ({ inactives, setInactives, search, setSearch }) => {
             placeholder="Búsqueda"
             variant="outlined"
             type="search"
-            name="search"
             size="small"
+            {...register("search")}
           />
           <FormControlLabel
             control={
               <Checkbox
                 checked={inactives}
                 sx={{ margin: "0 0 0 1rem" }}
-                onChange={() => setInactives(!inactives)}
+                onChange={handleCheck}
               />
             }
             label="Incluir bajas"
@@ -79,7 +89,7 @@ const CrudFormSearch = ({ inactives, setInactives, search, setSearch }) => {
           <AddCircleIcon sx={{ ml: 1 }} />
         </Fab>
       </form>
-    </Container>
+    </div>
   );
 };
 

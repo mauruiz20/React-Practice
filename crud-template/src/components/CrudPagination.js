@@ -1,14 +1,16 @@
+import React, { useContext } from "react";
+import CrudContext from "../context/CrudContext";
 import { Pagination, useMediaQuery } from "@mui/material";
-import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import datos from "../api/db.json";
-import React from "react";
 
-const CrudPagination = ({ rows, setRows, page, setPage }) => {
+const CrudPagination = () => {
+  const { db, rows, setRows, page, setPage } = useContext(CrudContext);
   const matches768 = useMediaQuery("(min-width: 769px)");
+
+  const totalRows = db.length;
 
   const handleChange = (e) => {
     setRows(e.target.value);
@@ -21,7 +23,7 @@ const CrudPagination = ({ rows, setRows, page, setPage }) => {
 
   return (
     <div className="pagination">
-      <Box sx={{ minWidth: 100 }}>
+      <div className="pagination__container">
         <FormControl className="pagination__rows" size="small">
           <InputLabel id="rows-select">Entradas</InputLabel>
           <Select
@@ -36,10 +38,16 @@ const CrudPagination = ({ rows, setRows, page, setPage }) => {
             <MenuItem value={50}>50</MenuItem>
           </Select>
         </FormControl>
-      </Box>
+        <div className="pagination__msg">
+          {`Mostrando ${page * rows - rows + 1} - ${
+            page * rows < totalRows ? page * rows : totalRows
+          } de ${totalRows}`}
+        </div>
+      </div>
+
       <Pagination
         className="pagination__nav"
-        count={parseInt(datos.clientes.length / rows)}
+        count={parseInt(Math.ceil(totalRows / rows))}
         color="primary"
         size={!matches768 ? "medium" : "large"}
         page={page}

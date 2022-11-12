@@ -1,11 +1,13 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button, IconButton, Tooltip } from "@mui/material";
+import CrudContext from "../context/CrudContext";
 
-export default function CrudModal({ surname, name }) {
-  const [open, setOpen] = React.useState(false);
+const CrudModal = ({ data }) => {
+  const [open, setOpen] = useState(false);
+  const { deleteData } = useContext(CrudContext);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -44,7 +46,7 @@ export default function CrudModal({ surname, name }) {
           <Typography id="modal-modal-description" sx={{ textAlign: "center" }}>
             ¿Estás seguro que quieres borrar al usuario{" "}
             <b>
-              {surname} {name}
+              {data.surname} {data.name}
             </b>
             ?
           </Typography>
@@ -62,7 +64,7 @@ export default function CrudModal({ surname, name }) {
               className="crud-modal__btn"
               variant="contained"
               color="primary"
-              onClick={handleClose}
+              onClick={() => deleteData(data)}
             >
               Confirmar
             </Button>
@@ -71,4 +73,6 @@ export default function CrudModal({ surname, name }) {
       </Modal>
     </>
   );
-}
+};
+
+export default CrudModal;
