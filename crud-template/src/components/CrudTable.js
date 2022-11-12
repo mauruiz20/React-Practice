@@ -10,13 +10,24 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import DeleteIcon from "@mui/icons-material/Delete";
 // import CheckIcon from "@mui/icons-material/Check";
 // import CloseIcon from "@mui/icons-material/Close";
-import { Collapse, IconButton, Tooltip, Typography } from "@mui/material";
-import Message from "./Message";
+import {
+  CircularProgress,
+  Collapse,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 function Row({ data, setModal }) {
   const [open, setOpen] = useState(false);
-  const { setModalData, setDataToEdit, updateData, mediaQ1024, mediaQ768 } =
-    useContext(CrudContext);
+  const {
+    setModalData,
+    setDataToEdit,
+    updateData,
+    mediaQ1024,
+    mediaQ768,
+    mediaQ560,
+  } = useContext(CrudContext);
 
   const formattedDate = moment(data.date).format("D/MM/YYYY");
 
@@ -36,17 +47,19 @@ function Row({ data, setModal }) {
       <div className="mytable__body-cell">{data.name}</div>
       {mediaQ1024 && <div className="mytable__body-cell">{data.email}</div>}
       {mediaQ768 && <div className="mytable__body-cell">{data.phone}</div>}
-      <div className="mytable__body-cell--center">
-        {data.active ? (
-          <Typography sx={{ color: "rgb(46, 125, 50)", fontWeight: "bold" }}>
-            A
-          </Typography>
-        ) : (
-          <Typography sx={{ color: "rgb(211, 47, 47)", fontWeight: "bold" }}>
-            B
-          </Typography>
-        )}
-      </div>
+      {mediaQ560 && (
+        <div className="mytable__body-cell--center">
+          {data.active ? (
+            <Typography sx={{ color: "rgb(46, 125, 50)", fontWeight: "bold" }}>
+              A
+            </Typography>
+          ) : (
+            <Typography sx={{ color: "rgb(211, 47, 47)", fontWeight: "bold" }}>
+              B
+            </Typography>
+          )}
+        </div>
+      )}
       <div className="mytable__body-cell--center mytable__actions">
         <Tooltip
           title="Expandir"
@@ -162,6 +175,26 @@ function Row({ data, setModal }) {
               <div className="mytable-collapse__data">{data.phone}</div>
             </div>
           )}
+          {!mediaQ560 && (
+            <div className="mytable-collapse__item">
+              <div className="mytable-collapse__title">Estado</div>
+              <div className="mytable-collapse__data">
+                {data.active ? (
+                  <Typography
+                    sx={{ color: "rgb(46, 125, 50)", fontWeight: "bold" }}
+                  >
+                    Dado de alta
+                  </Typography>
+                ) : (
+                  <Typography
+                    sx={{ color: "rgb(211, 47, 47)", fontWeight: "bold" }}
+                  >
+                    Dado de baja
+                  </Typography>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </Collapse>
     </div>
@@ -169,8 +202,17 @@ function Row({ data, setModal }) {
 }
 
 const CrudTable = () => {
-  const { db, rows, inactives, page, search, mediaQ1024, mediaQ768 } =
-    useContext(CrudContext);
+  const {
+    db,
+    loading,
+    rows,
+    inactives,
+    page,
+    search,
+    mediaQ1024,
+    mediaQ768,
+    mediaQ560,
+  } = useContext(CrudContext);
   const [order, setOrder] = useState("surname asc");
   const [modal, setModal] = useState(false);
   let str = search.search;
@@ -219,13 +261,17 @@ const CrudTable = () => {
 
   const orderStyles = {
     position: "absolute",
-    transform: "translate(3.5rem)",
+    transform: !mediaQ560 ? "translate(2.75rem)" : "translate(3.5rem)",
   };
 
   return (
     <div className="mytable">
-      <Message />
       <CrudModal open={modal} setOpen={setModal} />
+      {loading && (
+        <CircularProgress
+          sx={{ position: "absolute", top: "-11rem", left: "1rem" }}
+        />
+      )}
 
       <div className="mytable__head">
         <div className="mytable__head-row">
@@ -235,9 +281,16 @@ const CrudTable = () => {
               size="small"
               sx={orderStyles}
               onClick={() => {
+                let alt = window.pageYOffset;
                 order === "surname asc"
                   ? setOrder("surname desc")
                   : setOrder("surname asc");
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: alt,
+                    behavior: "auto",
+                  });
+                }, 100);
               }}
               color={
                 order === "surname asc" || order === "surname desc"
@@ -259,9 +312,16 @@ const CrudTable = () => {
               size="small"
               sx={orderStyles}
               onClick={() => {
+                let alt = window.pageYOffset;
                 order === "name asc"
                   ? setOrder("name desc")
                   : setOrder("name asc");
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: alt,
+                    behavior: "auto",
+                  });
+                }, 100);
               }}
               color={
                 order === "name asc" || order === "name desc"
@@ -281,7 +341,9 @@ const CrudTable = () => {
             <div className="mytable__head-cell">Correo Electrónico</div>
           )}
           {mediaQ768 && <div className="mytable__head-cell">Teléfono</div>}
-          <div className="mytable__head-cell">Estado</div>
+          {mediaQ560 && (
+            <div className="mytable__head-cell mytable__state">Estado</div>
+          )}
           <div className="mytable__head-cell">Acciones</div>
         </div>
       </div>

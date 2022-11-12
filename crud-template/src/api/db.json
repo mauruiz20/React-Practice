@@ -1,17 +1,6 @@
 {
   "clientes": [
     {
-      "id": 1,
-      "surname": "James",
-      "name": "Charity",
-      "email": "james-charity6548@hotmail.com",
-      "phone": 3811724814,
-      "date": "2008-02-17",
-      "address": "120-9842 Tellus, St.",
-      "nacionality": "Namibia",
-      "active": false
-    },
-    {
       "id": 2,
       "surname": "England",
       "name": "Jessica",
@@ -20,7 +9,7 @@
       "date": "1991-03-02",
       "address": "6808 A Rd.",
       "nacionality": "Cook Islands",
-      "active": false
+      "active": true
     },
     {
       "id": 3,
@@ -45,17 +34,6 @@
       "active": true
     },
     {
-      "id": 5,
-      "surname": "Avery",
-      "name": "Zephr",
-      "email": "avery_zephr@hotmail.com",
-      "phone": 3816716926,
-      "date": "1990-07-11",
-      "address": "965-9394 Dui, Rd.",
-      "nacionality": "Yemen",
-      "active": true
-    },
-    {
       "id": 6,
       "surname": "Ross",
       "name": "Darryl",
@@ -74,19 +52,7 @@
       "phone": 3863892645,
       "date": "2000-02-28",
       "address": "334-8697 Velit. Avenue",
-      "nacionality": "Kiribati",
-      "active": false
-    },
-    {
-      "id": 8,
-      "surname": "Bryan",
-      "name": "Ulric",
-      "email": "bryan-ulric@google.com",
-      "phone": 3863980478,
-      "date": "1993-07-04",
-      "address": "7097 Adipiscing Av.",
-      "nacionality": "Kyrgyzstan",
-      "active": true
+      "nacionality": "Kiribati"
     },
     {
       "id": 9,
@@ -108,7 +74,7 @@
       "date": "2014-09-27",
       "address": "P.O. Box 983, 6501 Risus Ave",
       "nacionality": "Ethiopia",
-      "active": false
+      "active": true
     },
     {
       "id": 11,
@@ -251,7 +217,7 @@
       "date": "1992-04-27",
       "address": "765-4184 Montes, St.",
       "nacionality": "Malawi",
-      "active": true
+      "active": false
     },
     {
       "id": 24,
@@ -262,7 +228,7 @@
       "date": "1994-01-11",
       "address": "2478 In Av.",
       "nacionality": "Singapore",
-      "active": false
+      "active": true
     },
     {
       "id": 25,
@@ -273,7 +239,7 @@
       "date": "2013-06-10",
       "address": "Ap #428-9029 Adipiscing Av.",
       "nacionality": "Grenada",
-      "active": true
+      "active": false
     },
     {
       "id": 26,
@@ -309,17 +275,6 @@
       "active": true
     },
     {
-      "id": 29,
-      "surname": "Ayers",
-      "name": "Brandon",
-      "email": "brandon-ayers8700@google.com",
-      "phone": 3865751857,
-      "date": "1990-08-21",
-      "address": "Ap #517-5347 Nascetur Rd.",
-      "nacionality": "Indonesia",
-      "active": true
-    },
-    {
       "id": 30,
       "surname": "Whitaker",
       "name": "Kai",
@@ -350,7 +305,7 @@
       "date": "2011-10-22",
       "address": "P.O. Box 686, 3206 Eleifend. Rd.",
       "nacionality": "Israel",
-      "active": true
+      "active": false
     },
     {
       "id": 33,
@@ -415,8 +370,7 @@
       "phone": 3819443086,
       "date": "2013-10-28",
       "address": "6035 Elementum Road",
-      "nacionality": "Saint Helena, Ascension and Tristan da Cunha",
-      "active": true
+      "nacionality": "Saint Helena, Ascension and Tristan da Cunha"
     },
     {
       "id": 39,
@@ -427,7 +381,7 @@
       "date": "2004-09-30",
       "address": "P.O. Box 331, 232 Sem Street",
       "nacionality": "Jersey",
-      "active": false
+      "active": true
     },
     {
       "id": 40,
@@ -438,17 +392,6 @@
       "date": "1996-06-05",
       "address": "Ap #893-9187 Orci Av.",
       "nacionality": "Norway",
-      "active": false
-    },
-    {
-      "id": 41,
-      "surname": "Gill",
-      "name": "Chava",
-      "email": "chava_gill@hotmail.com",
-      "phone": 3811285814,
-      "date": "2007-01-12",
-      "address": "880-8368 Sem. Ave",
-      "nacionality": "Croatia",
       "active": false
     },
     {
@@ -525,19 +468,7 @@
       "phone": 3865068176,
       "date": "1995-03-07",
       "address": "P.O. Box 167, 1444 Posuere Rd.",
-      "nacionality": "Maldives",
-      "active": true
-    },
-    {
-      "id": 49,
-      "surname": "Anderson",
-      "name": "Donovan",
-      "email": "donovan-anderson1750@hotmail.com",
-      "phone": 3863417189,
-      "date": "1989-01-15",
-      "address": "9655 Tristique Road",
-      "nacionality": "Heard Island and Mcdonald Islands",
-      "active": true
+      "nacionality": "Maldives"
     },
     {
       "id": 50,
@@ -636,7 +567,7 @@
       "date": "1989-07-05",
       "address": "522-8186 Eget Street",
       "nacionality": "Czech Republic",
-      "active": false
+      "active": true
     },
     {
       "id": 59,
@@ -647,7 +578,7 @@
       "date": "1989-02-18",
       "address": "900-8413 In Avenue",
       "nacionality": "Gambia",
-      "active": true
+      "active": false
     },
     {
       "id": 60,
@@ -713,7 +644,7 @@
       "date": "1992-06-07",
       "address": "918-8464 Blandit St.",
       "nacionality": "Guinea-Bissau",
-      "active": false
+      "active": true
     },
     {
       "id": 66,
@@ -757,7 +688,7 @@
       "date": "1991-11-05",
       "address": "472-904 Fames Avenue",
       "nacionality": "Latvia",
-      "active": false
+      "active": true
     },
     {
       "id": 70,
@@ -793,17 +724,6 @@
       "active": false
     },
     {
-      "id": 73,
-      "surname": "Castaneda",
-      "name": "Kimberly",
-      "email": "castaneda_kimberly@google.com",
-      "phone": 3865323336,
-      "date": "2011-06-04",
-      "address": "P.O. Box 352, 7364 Ipsum. St.",
-      "nacionality": "Greece",
-      "active": true
-    },
-    {
       "id": 74,
       "surname": "Blair",
       "name": "Nehru",
@@ -824,6 +744,36 @@
       "address": "4362 Nec, Rd.",
       "nacionality": "Anguilla",
       "active": false
+    },
+    {
+      "id": 1668260253352,
+      "surname": "Ruiz",
+      "name": "Francisco Mauricio",
+      "email": "maumarruiz@hotmail.com",
+      "phone": "+543863542848",
+      "date": "2001-04-24",
+      "address": "Buenos Aires 597",
+      "nacionality": "Argentino"
+    },
+    {
+      "id": 1668262826597,
+      "surname": "Ruiz",
+      "name": "Francisco Mauricio",
+      "email": "maumarruiz@hotmail.com",
+      "phone": "+543863542848",
+      "date": "2022-11-24",
+      "address": "Buenos Aires 597",
+      "nacionality": "Argentino"
+    },
+    {
+      "id": 1668267035325,
+      "surname": "Ruiz",
+      "name": "Francisco Mauricio",
+      "email": "maumarruiz@hotmail.com",
+      "phone": "+543863542848",
+      "date": "2022-11-29",
+      "address": "Buenos Aires 597",
+      "nacionality": "Argentino"
     }
   ]
 }

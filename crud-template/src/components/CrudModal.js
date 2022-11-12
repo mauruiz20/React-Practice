@@ -12,7 +12,7 @@ const CrudModal = ({ open, setOpen }) => {
 
   const handleDelete = () => {
     setOpen(false);
-    deleteData(data);
+    deleteData(data.id);
   };
 
   return (

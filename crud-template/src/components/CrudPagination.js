@@ -19,6 +19,9 @@ const CrudPagination = () => {
 
   const handlePage = (e, value) => {
     setPage(value);
+    setTimeout(() => {
+      window.scrollTo({ top: document.documentElement.scrollHeight });
+    }, 100);
   };
 
   return (
