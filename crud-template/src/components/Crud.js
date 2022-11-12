@@ -1,30 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Paper } from "@mui/material";
 import CrudForm from "./CrudForm";
 import CrudTable from "./CrudTable";
 import CrudPagination from "./CrudPagination";
 import CrudFormSearch from "./CrudFormSearch";
-import { CrudProvider } from "../context/CrudContext";
-import { SnackbarProvider } from "notistack";
+import CrudContext from "../context/CrudContext";
 
 const Crud = () => {
+  const { db, mediaQ768 } = useContext(CrudContext);
   return (
     <>
-      <SnackbarProvider maxSnack={3}>
-        <CrudProvider>
-          <Paper
-            elevation={6}
-            sx={{ width: "100%", borderRadius: "1rem", mb: 5 }}
-          >
-            <CrudForm />
-          </Paper>
-          <Paper elevation={6} sx={{ width: "100%", borderRadius: "1rem" }}>
-            <CrudFormSearch />
-            <CrudTable />
-            <CrudPagination />
-          </Paper>
-        </CrudProvider>
-      </SnackbarProvider>
+      <Paper
+        elevation={6}
+        sx={{
+          width: "100%",
+          borderRadius: mediaQ768 ? "1rem" : "0.5rem",
+          mb: mediaQ768 ? 5 : 1,
+        }}
+      >
+        <CrudForm />
+      </Paper>
+      {db && (
+        <Paper elevation={6} sx={{ width: "100%", borderRadius: "1rem" }}>
+          <CrudFormSearch />
+          <CrudTable />
+          <CrudPagination />
+        </Paper>
+      )}
     </>
   );
 };

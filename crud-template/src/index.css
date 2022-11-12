@@ -268,15 +268,16 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 35rem;
+  min-width: 10rem;
   background: var(--white);
   border-radius: 1rem;
   padding: 1.5rem;
 }
 
 .crud-modal__btn-container {
-  grid-column: 1 / 3;
   margin-top: 1rem;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
@@ -336,13 +337,17 @@ body {
   }
 
   .mytable__body-cell {
-    padding: 0 0.4rem;
+    padding: 0 0.8rem;
   }
 }
 
 /* ============== Tamaño tablet (768-640) ============== */
 
 @media screen and (max-width: 768px) {
+  body {
+    padding: 0;
+  }
+
   /* ============== CRUD Form ============== */
 
   .crud-form__input-date {
@@ -375,6 +380,13 @@ body {
 
   .mytable__actions {
     display: flex;
+  }
+
+  /* ============== CRUD Modal ============== */
+
+  .crud-modal {
+    width: 90%;
+    min-width: 10rem;
   }
 
   /* ============== CRUD Pagination ============== */
@@ -428,47 +440,56 @@ body {
 @media screen and (max-width: 480px) {
   /* ============== CRUD Form ============== */
 
-  .crud-form__container {
-    gap: 0.5rem 0.5rem;
+  .crud-form {
+    padding: 0.25rem 0;
   }
 
-  .crud-from__input {
+  .crud-form__container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+  }
+
+  .crud-form__input {
     width: 100%;
+    max-width: none;
   }
 
   .crud-form__input-date {
-    width: 90%;
+    width: 75%;
+    max-width: none;
   }
 
-  /* ============== MyTable ============== */
+  .crud-form__hr {
+    margin: 0;
+  }
 
-  .mytable__body-cell {
-    padding: 0 0.2rem;
+  .crud-form__btn-container {
+    margin: 1rem 0;
+  }
+
+  /* ============== CRUD Form Search ============== */
+
+  .crud-form-search__form {
+    margin: 1rem 0.5rem;
+  }
+
+  .crud-form-search {
+    padding: 0.25rem 0;
+  }
+
+  .crud-form-search__input {
+    min-width: 12rem;
+    width: 50%;
+  }
+
+  .crud-form-search__hr {
+    margin: 0;
+  }
+
+  /* ============== CRUD Pagination ============== */
+
+  .pagination {
+    padding: 1rem 0.5rem;
   }
 }
-
-/*  Orientación: Vertical */
-@media screen and (orientation: portrait) {
-}
-
-/* Orientación: Horizontal  */
-@media screen and (orientation: landscape) {
-}
-
-/* iPhone - Orientación: Vertical */
-@media screen and (max-device-width: 480px) and (orientation: portrait) {
-}
-
-/* iPhone - Orientación: Horizontal  */
-@media screen and (max-device-width: 480px) and (orientation: landscape) {
-}
-
-/* iPad - Orientación: Vertical */
-@media screen and (min-device-width: 481px) and (orientation: portrait) {
-}
-
-/* iPad - Orientación: Horizontal  */
-@media screen and (min-device-width: 481px) and (orientation: landscape) {
-}
-
-/* Rotura 480px */

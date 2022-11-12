@@ -71,7 +71,7 @@ const CrudForm = () => {
       <Typography
         variant="overline"
         display="block"
-        sx={{ fontSize: "2rem", textAlign: "center" }}
+        sx={{ fontSize: "2rem", textAlign: "center", lineHeight: "4rem" }}
       >
         {dataToEdit ? "Editar Cliente" : "Agregar Cliente"}
       </Typography>

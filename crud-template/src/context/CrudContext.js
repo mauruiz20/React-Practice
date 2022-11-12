@@ -1,7 +1,6 @@
 import { IconButton, useMediaQuery } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { createContext, useEffect, useState } from "react";
-import initialDb from "../api/db.json";
 import { helpHttp } from "../helpers/helpHttp";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -9,7 +8,7 @@ const CrudContext = createContext();
 
 const CrudProvider = ({ children }) => {
   /* Table updates states */
-  const [db, setDb] = useState(initialDb.clientes);
+  const [db, setDb] = useState(null);
   const [dataToEdit, setDataToEdit] = useState(null);
   const [rows, setRows] = useState(25);
   const [inactives, setInactives] = useState(true);
@@ -144,6 +143,7 @@ const CrudProvider = ({ children }) => {
       variant,
       disableWindowBlurListener: true,
       action,
+      autoHideDuration: 2000,
     });
   };
 

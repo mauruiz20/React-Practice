@@ -31,7 +31,7 @@ const CrudFormSearch = () => {
       <Typography
         variant="overline"
         display="block"
-        sx={{ fontSize: "2rem", textAlign: "center" }}
+        sx={{ fontSize: "2rem", textAlign: "center", lineHeight: "4rem" }}
       >
         Gestión clientes
       </Typography>
