@@ -1,6 +1,6 @@
-import { SnackbarProvider } from "notistack";
-import Crud from "./components/Crud";
-import { CrudProvider } from "./context/CrudContext";
+import { SnackbarProvider } from 'notistack';
+import Crud from './components/Crud';
+import { CrudProvider } from './context/CrudContext';
 
 function App() {
   return (

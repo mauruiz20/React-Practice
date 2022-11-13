@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
-import CrudContext from "../context/CrudContext";
-import { useForm } from "react-hook-form";
-import SearchIcon from "@mui/icons-material/Search";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import React, { useContext } from 'react';
+import CrudContext from '../context/CrudContext';
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import SearchIcon from '@mui/icons-material/Search';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {
   Checkbox,
   Fab,
@@ -10,84 +11,80 @@ import {
   TextField,
   Tooltip,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
 const CrudFormSearch = () => {
   const { inactives, setInactives, setSearch, setPage } =
     useContext(CrudContext);
   const { register, handleSubmit } = useForm({});
 
-  const onSubmit = (data) => {
+  const onSubmit = data => {
     setSearch(data);
   };
 
-  const handleCheck = (e) => {
+  const handleCheck = e => {
     setInactives(!inactives);
     setPage(1);
   };
 
   return (
-    <div className="crud-form-search">
+    <div className='crud-form-search'>
       <Typography
-        variant="overline"
-        display="block"
-        sx={{ fontSize: "2rem", textAlign: "center", lineHeight: "4rem" }}
+        variant='overline'
+        display='block'
+        sx={{ fontSize: '2rem', textAlign: 'center', lineHeight: '4rem' }}
       >
         Gestión clientes
       </Typography>
 
-      <hr className="crud-form-search__hr" />
+      <hr className='crud-form-search__hr' />
 
       <form
-        className="crud-form-search__form"
+        className='crud-form-search__form'
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="crud-form-search__container">
+        <div className='crud-form-search__container'>
           <TextField
-            className="crud-form-search__input"
-            label="Búsqueda"
-            placeholder="Búsqueda"
-            variant="outlined"
-            type="search"
-            size="small"
-            {...register("search")}
+            className='crud-form-search__input'
+            label='Búsqueda'
+            placeholder='Búsqueda'
+            variant='outlined'
+            type='search'
+            size='small'
+            {...register('search')}
           />
           <FormControlLabel
             control={
               <Checkbox
                 checked={inactives}
-                sx={{ margin: "0 0 0 1rem" }}
+                sx={{ margin: '0 0 0 1rem' }}
                 onChange={handleCheck}
               />
             }
-            label="Incluir bajas"
-            sx={{ userSelect: "none" }}
+            label='Incluir bajas'
+            sx={{ userSelect: 'none' }}
           />
           <Tooltip
-            title="Buscar"
+            title='Buscar'
             arrow
             disableInteractive
             enterDelay={2000}
             enterNextDelay={2000}
             leaveDelay={10}
-            type="submit"
+            type='submit'
           >
-            <Fab color="primary">
-              <SearchIcon sx={{ fontSize: "35px" }} />
+            <Fab color='primary'>
+              <SearchIcon sx={{ fontSize: '35px' }} />
             </Fab>
           </Tooltip>
         </div>
 
-        <Fab
-          variant="extended"
-          size="medium"
-          color="primary"
-          type="submit"
-          form="crud-form"
-        >
-          Agregar cliente
-          <AddCircleIcon sx={{ ml: 1 }} />
-        </Fab>
+        <Link to='/crear-modificar'>
+          <Fab variant='extended' size='medium' color='primary'>
+            Agregar cliente
+            <AddCircleIcon sx={{ ml: 1 }} />
+          </Fab>
+        </Link>
       </form>
     </div>
   );

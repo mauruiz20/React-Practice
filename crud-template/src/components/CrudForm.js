@@ -1,8 +1,8 @@
-import React, { useEffect, useContext } from "react";
-import CrudContext from "../context/CrudContext";
-
-import { useForm } from "react-hook-form";
-import { Button, TextField, Typography } from "@mui/material";
+import React, { useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CrudContext from '../context/CrudContext';
+import { useForm } from 'react-hook-form';
+import { Button, TextField, Typography } from '@mui/material';
 
 const CrudForm = () => {
   const { createData, updateData, dataToEdit, setDataToEdit } =
@@ -17,228 +17,236 @@ const CrudForm = () => {
     getValues,
     watch,
   } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       id: null,
-      surname: "",
-      name: "",
-      email: "",
-      phone: "",
-      date: "",
-      address: "",
-      nacionality: "",
+      surname: '',
+      name: '',
+      email: '',
+      phone: '',
+      date: '',
+      address: '',
+      nacionality: '',
     },
   });
 
   useEffect(() => {
     if (dataToEdit) {
-      setValue("id", dataToEdit.id);
-      setValue("surname", dataToEdit.surname, { shouldValidate: true });
-      setValue("name", dataToEdit.name, { shouldValidate: true });
-      setValue("email", dataToEdit.email, { shouldValidate: true });
-      setValue("phone", dataToEdit.phone, { shouldValidate: true });
-      setValue("address", dataToEdit.address, { shouldValidate: true });
-      setValue("date", dataToEdit.date, {
+      setValue('id', dataToEdit.id);
+      setValue('surname', dataToEdit.surname, { shouldValidate: true });
+      setValue('name', dataToEdit.name, { shouldValidate: true });
+      setValue('email', dataToEdit.email, { shouldValidate: true });
+      setValue('phone', dataToEdit.phone, { shouldValidate: true });
+      setValue('address', dataToEdit.address, { shouldValidate: true });
+      setValue('date', dataToEdit.date, {
         shouldValidate: true,
       });
-      setValue("nacionality", dataToEdit.nacionality, { shouldValidate: true });
+      setValue('nacionality', dataToEdit.nacionality, { shouldValidate: true });
     }
   }, [dataToEdit, setValue]);
 
-  const onSubmit = (data) => {
+  const navigate = useNavigate();
+
+  const onSubmit = data => {
     if (getValues().id === null) {
       createData(data);
+      handleReset();
     } else {
       updateData(data);
     }
-    handleCancel();
   };
 
-  const handleCancel = () => {
-    setValue("id", null);
-    resetField("surname", { keepErrors: false });
-    resetField("name", { keepErrors: false });
-    resetField("email", { keepErrors: false });
-    resetField("phone", { keepErrors: false });
-    resetField("address", { keepErrors: false });
-    resetField("date", { keepErrors: false });
-    resetField("nacionality", { keepErrors: false });
+  const handleReturn = () => {
+    handleReset();
+    navigate('/');
+  };
+
+  const handleReset = () => {
+    setValue('id', null);
+    resetField('surname', { keepErrors: false });
+    resetField('name', { keepErrors: false });
+    resetField('email', { keepErrors: false });
+    resetField('phone', { keepErrors: false });
+    resetField('address', { keepErrors: false });
+    resetField('date', { keepErrors: false });
+    resetField('nacionality', { keepErrors: false });
     setDataToEdit(null);
   };
 
   return (
-    <div className="crud-form">
+    <div className='crud-form'>
       <Typography
-        variant="overline"
-        display="block"
-        sx={{ fontSize: "2rem", textAlign: "center", lineHeight: "4rem" }}
+        variant='overline'
+        display='block'
+        sx={{ fontSize: '2rem', textAlign: 'center', lineHeight: '4rem' }}
       >
-        {dataToEdit ? "Editar Cliente" : "Agregar Cliente"}
+        {dataToEdit ? 'Editar Cliente' : 'Agregar Cliente'}
       </Typography>
 
-      <hr className="crud-form__hr" />
+      <hr className='crud-form__hr' />
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="crud-form__container"
-        id="crud-form"
+        className='crud-form__container'
+        id='crud-form'
       >
         <TextField
-          {...register("surname", {
+          {...register('surname', {
             required: true,
             pattern: /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/,
           })}
-          className="crud-form__input"
-          id="mau"
-          label="Apellidos"
-          placeholder="Apellidos"
-          variant="outlined"
-          type="text"
-          name="surname"
-          size="small"
-          InputLabelProps={{ shrink: !!watch("surname") }}
+          className='crud-form__input'
+          id='mau'
+          label='Apellidos'
+          placeholder='Apellidos'
+          variant='outlined'
+          type='text'
+          name='surname'
+          size='small'
+          InputLabelProps={{ shrink: !!watch('surname') }}
           error={errors.surname ? true : false}
           helperText={
-            errors.surname?.type === "required"
-              ? "Campo obligatorio"
-              : errors.surname?.type === "pattern"
-              ? "Solo se acepta letras y espacios en blanco"
-              : " "
+            errors.surname?.type === 'required'
+              ? 'Campo obligatorio'
+              : errors.surname?.type === 'pattern'
+              ? 'Solo se acepta letras y espacios en blanco'
+              : ' '
           }
         />
 
         <TextField
-          {...register("name", {
+          {...register('name', {
             required: true,
             pattern: /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/,
           })}
-          className="crud-form__input"
-          label="Nombres"
-          placeholder="Nombres"
-          variant="outlined"
-          type="text"
-          name="name"
-          size="small"
-          InputLabelProps={{ shrink: !!watch("name") }}
+          className='crud-form__input'
+          label='Nombres'
+          placeholder='Nombres'
+          variant='outlined'
+          type='text'
+          name='name'
+          size='small'
+          InputLabelProps={{ shrink: !!watch('name') }}
           error={errors.name ? true : false}
           helperText={
-            errors.name?.type === "required"
-              ? "Campo obligatorio"
-              : errors.name?.type === "pattern"
-              ? "Solo se acepta letras y espacios en blanco"
-              : " "
+            errors.name?.type === 'required'
+              ? 'Campo obligatorio'
+              : errors.name?.type === 'pattern'
+              ? 'Solo se acepta letras y espacios en blanco'
+              : ' '
           }
         />
 
         <TextField
-          {...register("email", {
+          {...register('email', {
             required: true,
             pattern: /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/,
           })}
-          className="crud-form__input"
-          label="Correo electrónico"
-          placeholder="Correo electrónico"
-          variant="outlined"
-          type="email"
-          name="email"
-          size="small"
-          InputLabelProps={{ shrink: !!watch("email") }}
+          className='crud-form__input'
+          label='Correo electrónico'
+          placeholder='Correo electrónico'
+          variant='outlined'
+          type='email'
+          name='email'
+          size='small'
+          InputLabelProps={{ shrink: !!watch('email') }}
           error={errors.email ? true : false}
           helperText={
-            errors.email?.type === "required"
-              ? "Campo obligatorio"
-              : errors.email?.type === "pattern"
-              ? "Correo incorrecto"
-              : " "
+            errors.email?.type === 'required'
+              ? 'Campo obligatorio'
+              : errors.email?.type === 'pattern'
+              ? 'Correo incorrecto'
+              : ' '
           }
         />
 
         <TextField
-          {...register("phone", {
+          {...register('phone', {
             required: true,
           })}
-          className="crud-form__input"
-          label="Teléfono"
-          placeholder="Teléfono"
-          variant="outlined"
-          type="text"
-          name="phone"
-          size="small"
-          InputLabelProps={{ shrink: !!watch("phone") }}
+          className='crud-form__input'
+          label='Teléfono'
+          placeholder='Teléfono'
+          variant='outlined'
+          type='text'
+          name='phone'
+          size='small'
+          InputLabelProps={{ shrink: !!watch('phone') }}
           error={errors.phone ? true : false}
           helperText={
-            errors.phone?.type === "required" ? "Campo obligatorio" : " "
+            errors.phone?.type === 'required' ? 'Campo obligatorio' : ' '
           }
         />
 
         <TextField
-          {...register("address", {
+          {...register('address', {
             required: true,
           })}
-          className="crud-form__input"
-          label="Dirección"
-          placeholder="Dirección"
-          variant="outlined"
-          type="text"
-          name="address"
-          size="small"
-          InputLabelProps={{ shrink: !!watch("address") }}
+          className='crud-form__input'
+          label='Dirección'
+          placeholder='Dirección'
+          variant='outlined'
+          type='text'
+          name='address'
+          size='small'
+          InputLabelProps={{ shrink: !!watch('address') }}
           error={errors.address ? true : false}
           helperText={
-            errors.address?.type === "required" ? "Campo obligatorio" : " "
+            errors.address?.type === 'required' ? 'Campo obligatorio' : ' '
           }
         />
 
         <TextField
-          {...register("date", {
+          {...register('date', {
             required: true,
           })}
-          className="crud-form__input-date"
-          label="Nacimiento"
-          type="date"
-          size="small"
+          className='crud-form__input-date'
+          label='Nacimiento'
+          type='date'
+          size='small'
           InputLabelProps={{
             shrink: true,
           }}
           error={errors.date ? true : false}
           helperText={
-            errors.date?.type === "required" ? "Campo obligatorio" : " "
+            errors.date?.type === 'required' ? 'Campo obligatorio' : ' '
           }
         />
         <TextField
-          {...register("nacionality", {
+          {...register('nacionality', {
             required: true,
           })}
-          className="crud-form__input"
-          label="Nacionalidad"
-          placeholder="Nacionalidad"
-          variant="outlined"
-          type="text"
-          name="nacionality"
-          size="small"
-          InputLabelProps={{ shrink: !!watch("nacionality") }}
+          className='crud-form__input'
+          label='Nacionalidad'
+          placeholder='Nacionalidad'
+          variant='outlined'
+          type='text'
+          name='nacionality'
+          size='small'
+          InputLabelProps={{ shrink: !!watch('nacionality') }}
           error={errors.nacionality ? true : false}
           helperText={
-            errors.nacionality?.type === "required" ? "Campo obligatorio" : " "
+            errors.nacionality?.type === 'required' ? 'Campo obligatorio' : ' '
           }
         />
       </form>
-      <hr className="crud-form__hr" />
-      <div className="crud-form__btn-container">
+      <hr className='crud-form__hr' />
+      <div className='crud-form__btn-container'>
         <Button
-          className="crud-form__btn"
-          variant="contained"
-          color="error"
-          onClick={handleCancel}
+          className='crud-form__btn'
+          variant='contained'
+          color='warning'
+          onClick={handleReturn}
         >
-          Cancelar
+          Volver
         </Button>
+
         <Button
-          className="crud-form__btn"
-          variant="contained"
-          color="primary"
-          type="submit"
-          form="crud-form"
+          className='crud-form__btn'
+          variant='contained'
+          color='primary'
+          type='submit'
+          form='crud-form'
         >
           Enviar
         </Button>
