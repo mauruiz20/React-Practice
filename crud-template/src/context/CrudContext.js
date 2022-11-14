@@ -1,8 +1,8 @@
-import { IconButton, useMediaQuery } from "@mui/material";
-import { useSnackbar } from "notistack";
-import { createContext, useEffect, useState } from "react";
-import { helpHttp } from "../helpers/helpHttp";
-import CloseIcon from "@mui/icons-material/Close";
+import { IconButton, useMediaQuery } from '@mui/material';
+import { useSnackbar } from 'notistack';
+import { createContext, useEffect, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
 
 const CrudContext = createContext();
 
@@ -13,7 +13,7 @@ const CrudProvider = ({ children }) => {
   const [rows, setRows] = useState(25);
   const [inactives, setInactives] = useState(true);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState({ search: "" });
+  const [search, setSearch] = useState({ search: '' });
 
   /* Messages updates states */
   const [modalData, setModalData] = useState({});
@@ -23,84 +23,82 @@ const CrudProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  /* Media Querys states */
-  const mediaQ1024 = useMediaQuery("(min-width: 1025px)");
-  const mediaQ768 = useMediaQuery("(min-width: 769px)");
-  const mediaQ560 = useMediaQuery("(min-width: 561px)");
+  useEffect(() => {
+    let errId;
+    if (error) {
+      errId = showMsgAlert(error, 'error', true, true);
+    } else {
+      closeSnackbar(errId);
+    }
+  }, [error, closeSnackbar]);
 
-  let api = helpHttp();
-  let url = "http://localhost:5000/clientes";
+  /* Media Querys states */
+  const mediaQ1024 = useMediaQuery('(min-width: 1025px)');
+  const mediaQ768 = useMediaQuery('(min-width: 769px)');
+  const mediaQ560 = useMediaQuery('(min-width: 561px)');
+
+  let url = 'http://localhost:5000/clientes';
 
   /* Initial API GET request */
   useEffect(() => {
     setLoading(true);
-    helpHttp()
+    axios
       .get(url)
-      .then((res) => {
-        if (!res.err) {
-          setDb(res);
-          setError(null);
-        } else {
-          setDb(null);
-          setError(res);
-        }
-        setLoading(false);
-      });
+      .then(response => {
+        setDb(response.data);
+        setError(null);
+      })
+      .catch(error => {
+        setDb(null);
+        setError(error.message);
+      })
+      .finally(() => setLoading(false));
   }, [url]);
 
   /* API POST request */
-  const createData = (data) => {
-    data.id = Date.now();
-    let options = {
-      body: data,
-      headers: { "content-type": "application/json" },
-    };
-    api.post(url, options).then((res) => {
-      if (!res.err) {
-        setDb([...db, res]);
-        showMsgAlert("Entrada agregada con éxito", "success");
-      } else {
-        setError(res);
-      }
-    });
+  const createData = data => {
+    axios
+      .post(url, data)
+      .then(response => {
+        setDb([...db, response.data]);
+        showMsgAlert('Entrada agregada con éxito', 'success');
+      })
+      .catch(error => {
+        setError(error.message);
+      });
   };
 
   /* API PUT request */
-  const updateData = (data) => {
+  const updateData = data => {
     let endpoint = `${url}/${data.id}`;
 
-    let options = {
-      body: data,
-      headers: { "content-type": "application/json" },
-    };
-
-    api.put(endpoint, options).then((res) => {
-      if (!res.err) {
-        let newData = db.map((el) => (el.id === data.id ? data : el));
+    axios
+      .put(endpoint, data)
+      .then(() => {
+        let newData = db.map(el => (el.id === data.id ? data : el));
         setDb(newData);
-        showMsgAlert("Entrada modificada con éxito", "success");
-      } else {
-        setError(res);
-      }
-    });
+        showMsgAlert('Entrada modificada con éxito', 'success');
+      })
+      .catch(error => {
+        setError(error.message);
+      });
   };
 
   /* API DELETE request */
-  const deleteData = (id) => {
+  const deleteData = id => {
     let endpoint = `${url}/${id}`;
-    let options = {
-      headers: { "content-type": "application/json" },
-    };
-    api.del(endpoint, options).then((res) => {
-      if (!res.err) {
-        let newData = db.filter((el) => el.id !== id);
+
+    axios
+      .delete(endpoint)
+      .then(() => {
+        let newData = db.filter(el => el.id !== id);
         setDb(newData);
         setModalData({});
-        showMsgAlert("Entrada borrada con éxito", "warning");
-      } else {
-        setError(res);
-      }
-    });
+        showMsgAlert('Entrada borrada con éxito', 'warning');
+      })
+      .catch(error => {
+        setError(error.message);
+      });
   };
 
   /* Snackbar functions */
@@ -109,41 +107,48 @@ const CrudProvider = ({ children }) => {
 
   const handleOnline = () => {
     closeSnackbar(offlineId);
-    enqueueSnackbar("Conexión recuperada!", {
-      variant: "success",
+    enqueueSnackbar('Conexión recuperada!', {
+      variant: 'success',
       preventDuplicate: true,
     });
   };
 
   const handleOffline = () =>
-    (offlineId = enqueueSnackbar("Sin conexión!", {
-      variant: "error",
-      persist: "true",
+    (offlineId = enqueueSnackbar('Sin conexión!', {
+      variant: 'error',
+      persist: 'true',
       preventDuplicate: true,
     }));
 
-  window.addEventListener("offline", handleOffline);
+  window.addEventListener('offline', handleOffline);
 
-  window.addEventListener("online", handleOnline);
+  window.addEventListener('online', handleOnline);
 
-  const action = (snackbarId) => (
+  const action = snackbarId => (
     <>
       <IconButton
         onClick={() => {
           closeSnackbar(snackbarId);
         }}
       >
-        <CloseIcon htmlColor="#fff" />
+        <CloseIcon htmlColor='#fff' />
       </IconButton>
     </>
   );
 
-  const showMsgAlert = (msg, variant) => {
+  const showMsgAlert = (
+    msg,
+    variant,
+    persist = false,
+    preventDuplicate = false
+  ) => {
     enqueueSnackbar(msg, {
       variant,
       disableWindowBlurListener: true,
       action,
       autoHideDuration: 2000,
+      persist: persist,
+      preventDuplicate: preventDuplicate,
     });
   };
 

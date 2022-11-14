@@ -1,215 +1,15 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import CrudContext from '../context/CrudContext';
 import CrudModal from './CrudModal';
-import EditIcon from '@mui/icons-material/Edit';
-import moment from 'moment';
+
+import { Box, IconButton } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import DeleteIcon from '@mui/icons-material/Delete';
-// import CheckIcon from "@mui/icons-material/Check";
-// import CloseIcon from "@mui/icons-material/Close";
-import {
-  CircularProgress,
-  Collapse,
-  IconButton,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-
-function Row({ data, setModal }) {
-  const [open, setOpen] = useState(false);
-  const {
-    setModalData,
-    setDataToEdit,
-    updateData,
-    mediaQ1024,
-    mediaQ768,
-    mediaQ560,
-  } = useContext(CrudContext);
-
-  const formattedDate = moment(data.date).format('D/MM/YYYY');
-
-  const handleActive = value => {
-    data.active = value;
-    updateData(data);
-  };
-
-  const handleDelete = () => {
-    setModalData(data);
-    setModal(true);
-  };
-
-  const navigate = useNavigate();
-
-  const handleEdit = () => {
-    setDataToEdit(data);
-    navigate('/crear-modificar');
-  };
-
-  return (
-    <div className='mytable__body-row'>
-      <div className='mytable__body-cell'>{data.surname}</div>
-      <div className='mytable__body-cell'>{data.name}</div>
-      {mediaQ1024 && <div className='mytable__body-cell'>{data.email}</div>}
-      {mediaQ768 && <div className='mytable__body-cell'>{data.phone}</div>}
-      {mediaQ560 && (
-        <div className='mytable__body-cell--center'>
-          {data.active ? (
-            <Typography sx={{ color: 'rgb(46, 125, 50)', fontWeight: 'bold' }}>
-              A
-            </Typography>
-          ) : (
-            <Typography sx={{ color: 'rgb(211, 47, 47)', fontWeight: 'bold' }}>
-              B
-            </Typography>
-          )}
-        </div>
-      )}
-      <div className='mytable__body-cell--center mytable__actions'>
-        <Tooltip
-          title='Expandir'
-          arrow
-          placement='top'
-          disableInteractive
-          enterDelay={2000}
-          enterNextDelay={2000}
-          leaveDelay={10}
-          size='small'
-        >
-          <IconButton color='primary' onClick={() => setOpen(!open)}>
-            {open ? <VisibilityOffIcon /> : <VisibilityIcon />}
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip
-          title='Editar'
-          arrow
-          placement='top'
-          disableInteractive
-          enterDelay={2000}
-          enterNextDelay={2000}
-          leaveDelay={10}
-          size='small'
-        >
-          <IconButton sx={{ color: '#444' }} onClick={handleEdit}>
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
-
-        {!data.active && (
-          <Tooltip
-            title='Dar de Alta'
-            arrow
-            placement='top'
-            disableInteractive
-            enterDelay={2000}
-            enterNextDelay={2000}
-            leaveDelay={10}
-            size='small'
-          >
-            <IconButton color='success' onClick={() => handleActive(true)}>
-              <ArrowUpwardIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-
-        {data.active && (
-          <Tooltip
-            title='Dar de Baja'
-            arrow
-            placement='top'
-            disableInteractive
-            enterDelay={2000}
-            enterNextDelay={2000}
-            leaveDelay={10}
-            size='small'
-          >
-            <IconButton color='error' onClick={() => handleActive(false)}>
-              <ArrowDownwardIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-
-        <Tooltip
-          title='Borrar'
-          arrow
-          placement='top'
-          disableInteractive
-          enterDelay={2000}
-          enterNextDelay={2000}
-          leaveDelay={10}
-          onClick={handleDelete}
-        >
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      </div>
-
-      <Collapse
-        in={open}
-        timeout='auto'
-        unmountOnExit
-        className='mytable-collapse'
-      >
-        <div className='mytable-collapse__container'>
-          <div className='mytable-collapse__item'>
-            <div className='mytable-collapse__title'>Nacimiento</div>
-            <div className='mytable-collapse__data'>{formattedDate}</div>
-          </div>
-          <div className='mytable-collapse__item'>
-            <div className='mytable-collapse__title'>Dirección</div>
-            <div className='mytable-collapse__data'>{data.address}</div>
-          </div>
-          <div className='mytable-collapse__item'>
-            <div className='mytable-collapse__title'>Nacionalidad</div>
-            <div className='mytable-collapse__data'>{data.nacionality}</div>
-          </div>
-          {!mediaQ1024 && (
-            <div className='mytable-collapse__item'>
-              <div className='mytable-collapse__title'>Correo Electrónico</div>
-              <div className='mytable-collapse__data'>{data.email}</div>
-            </div>
-          )}
-          {!mediaQ768 && (
-            <div className='mytable-collapse__item'>
-              <div className='mytable-collapse__title'>Teléfono</div>
-              <div className='mytable-collapse__data'>{data.phone}</div>
-            </div>
-          )}
-          {!mediaQ560 && (
-            <div className='mytable-collapse__item'>
-              <div className='mytable-collapse__title'>Estado</div>
-              <div className='mytable-collapse__data'>
-                {data.active ? (
-                  <Typography
-                    sx={{ color: 'rgb(46, 125, 50)', fontWeight: 'bold' }}
-                  >
-                    Dado de alta
-                  </Typography>
-                ) : (
-                  <Typography
-                    sx={{ color: 'rgb(211, 47, 47)', fontWeight: 'bold' }}
-                  >
-                    Dado de baja
-                  </Typography>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </Collapse>
-    </div>
-  );
-}
+import CrudTableRow from './CrudTableRow';
 
 const CrudTable = () => {
   const {
     db,
-    loading,
     rows,
     inactives,
     page,
@@ -220,6 +20,9 @@ const CrudTable = () => {
   } = useContext(CrudContext);
   const [order, setOrder] = useState('surname asc');
   const [modal, setModal] = useState(false);
+
+  /* Client side rendering (prototype) */
+
   let str = search.search;
 
   const data = () => {
@@ -227,19 +30,27 @@ const CrudTable = () => {
 
     switch (order) {
       case 'surname asc':
-        array = db.sort((a, b) => (a.surname > b.surname ? 1 : -1));
+        array = db.sort((a, b) =>
+          a.surname.toLowerCase() < b.surname.toLowerCase() ? -1 : 1
+        );
         break;
 
       case 'surname desc':
-        array = db.sort((a, b) => (a.surname < b.surname ? 1 : -1));
+        array = db.sort((a, b) =>
+          a.surname.toLowerCase() > b.surname.toLowerCase() ? -1 : 1
+        );
         break;
 
       case 'name asc':
-        array = db.sort((a, b) => (a.name > b.name ? 1 : -1));
+        array = db.sort((a, b) =>
+          a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
+        );
         break;
 
       case 'name desc':
-        array = db.sort((a, b) => (a.name < b.name ? 1 : -1));
+        array = db.sort((a, b) =>
+          a.name.toLowerCase() > b.name.toLowerCase() ? -1 : 1
+        );
         break;
 
       default:
@@ -259,7 +70,7 @@ const CrudTable = () => {
       (data, index) =>
         index < rows * page &&
         index >= (page - 1) * rows && (
-          <Row key={data.id} data={data} setModal={setModal} />
+          <CrudTableRow key={data.id} data={data} setModal={setModal} />
         )
     );
   };
@@ -270,17 +81,19 @@ const CrudTable = () => {
   };
 
   return (
-    <div className='mytable'>
+    <Box className='mytable'>
       <CrudModal open={modal} setOpen={setModal} />
-      {loading && (
-        <CircularProgress
-          sx={{ position: 'absolute', top: '-11rem', left: '1rem' }}
-        />
-      )}
 
-      <div className='mytable__head'>
-        <div className='mytable__head-row'>
-          <div className='mytable__head-cell'>
+      <Box className='mytable__head'>
+        <Box
+          className='mytable__head-row'
+          sx={{
+            bgcolor: 'background.paper',
+            backgroundImage:
+              'linear-gradient(rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11));',
+          }}
+        >
+          <Box className='mytable__head-cell'>
             Apellidos
             <IconButton
               size='small'
@@ -310,8 +123,8 @@ const CrudTable = () => {
                 <ArrowUpwardIcon fontSize='small' />
               )}
             </IconButton>
-          </div>
-          <div className='mytable__head-cell'>
+          </Box>
+          <Box className='mytable__head-cell'>
             Nombres
             <IconButton
               size='small'
@@ -341,19 +154,19 @@ const CrudTable = () => {
                 <ArrowUpwardIcon fontSize='small' />
               )}
             </IconButton>
-          </div>
+          </Box>
           {mediaQ1024 && (
-            <div className='mytable__head-cell'>Correo Electrónico</div>
+            <Box className='mytable__head-cell'>Correo Electrónico</Box>
           )}
-          {mediaQ768 && <div className='mytable__head-cell'>Teléfono</div>}
+          {mediaQ768 && <Box className='mytable__head-cell'>Teléfono</Box>}
           {mediaQ560 && (
-            <div className='mytable__head-cell mytable__state'>Estado</div>
+            <Box className='mytable__head-cell mytable__state'>Estado</Box>
           )}
-          <div className='mytable__head-cell'>Acciones</div>
-        </div>
-      </div>
-      <div className='mytable__body'>{data()}</div>
-    </div>
+          <Box className='mytable__head-cell'>Acciones</Box>
+        </Box>
+      </Box>
+      <Box className='mytable__body'>{data()}</Box>
+    </Box>
   );
 };
 

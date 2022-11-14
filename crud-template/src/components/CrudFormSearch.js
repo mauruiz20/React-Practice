@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import CrudContext from '../context/CrudContext';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -18,9 +18,12 @@ const CrudFormSearch = () => {
     useContext(CrudContext);
   const { register, handleSubmit } = useForm({});
 
-  const onSubmit = data => {
-    setSearch(data);
-  };
+  const onSubmit = useCallback(
+    data => {
+      setSearch(data);
+    },
+    [setSearch]
+  );
 
   const handleCheck = e => {
     setInactives(!inactives);
@@ -47,10 +50,10 @@ const CrudFormSearch = () => {
           <TextField
             className='crud-form-search__input'
             label='Búsqueda'
-            placeholder='Búsqueda'
             variant='outlined'
             type='search'
             size='small'
+            autoComplete='off'
             {...register('search')}
           />
           <FormControlLabel

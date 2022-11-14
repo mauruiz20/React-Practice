@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react';
 
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import { Button } from "@mui/material";
-import CrudContext from "../context/CrudContext";
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import { Button } from '@mui/material';
+import CrudContext from '../context/CrudContext';
 
 const CrudModal = ({ open, setOpen }) => {
   const { modalData: data, deleteData } = useContext(CrudContext);
@@ -20,40 +20,40 @@ const CrudModal = ({ open, setOpen }) => {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
       >
-        <div className="crud-modal">
+        <div className='crud-modal'>
           <Typography
-            id="modal-modal-title"
-            variant="h5"
-            component="h2"
-            textAlign="center"
+            id='modal-modal-title'
+            variant='h5'
+            component='h2'
+            textAlign='center'
           >
             Confirmación de borrado
           </Typography>
-          <hr className="crud-modal__hr" />
-          <Typography id="modal-modal-description" sx={{ textAlign: "center" }}>
-            ¿Estás seguro que quieres borrar al usuario{" "}
+          <hr className='crud-modal__hr' />
+          <Typography id='modal-modal-description' sx={{ textAlign: 'center' }}>
+            ¿Estás seguro que quieres borrar al usuario{' '}
             <b>
               {data.surname} {data.name}
             </b>
             ?
           </Typography>
-          <hr className="crud-modal__hr" />
-          <div className="crud-modal__btn-container">
+          <hr className='crud-modal__hr' />
+          <div className='crud-modal__btn-container'>
             <Button
-              className="crud-modal__btn"
-              variant="contained"
-              color="error"
+              className='crud-modal__btn'
+              variant='contained'
+              color='neutral'
               onClick={handleClose}
             >
               Cancelar
             </Button>
             <Button
-              className="crud-modal__btn"
-              variant="contained"
-              color="primary"
+              className='crud-modal__btn'
+              variant='contained'
+              color='warning'
               onClick={handleDelete}
             >
               Confirmar
