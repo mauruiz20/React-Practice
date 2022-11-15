@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useContext } from 'react';
 import CrudContext from '../context/CrudContext';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -13,9 +13,8 @@ import {
   Typography,
 } from '@mui/material';
 
-const CrudFormSearch = () => {
-  const { inactives, setInactives, setSearch, setPage } =
-    useContext(CrudContext);
+const CrudFormSearch = ({ setSearch }) => {
+  const { inactives, setInactives, setPage } = useContext(CrudContext);
   const { register, handleSubmit } = useForm({});
 
   const onSubmit = useCallback(

@@ -3,21 +3,13 @@ import CrudContext from '../context/CrudContext';
 import CrudModal from './CrudModal';
 
 import { Box, IconButton } from '@mui/material';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import CrudTableRow from './CrudTableRow';
+import StyleContext from '../context/StyleContext';
 
-const CrudTable = () => {
-  const {
-    db,
-    rows,
-    inactives,
-    page,
-    search,
-    mediaQ1024,
-    mediaQ768,
-    mediaQ560,
-  } = useContext(CrudContext);
+const CrudTable = ({ search }) => {
+  const { db, rows, inactives, page } = useContext(CrudContext);
+  const { mediaQ1024, mediaQ768, mediaQ560 } = useContext(StyleContext);
   const [order, setOrder] = useState('surname asc');
   const [modal, setModal] = useState(false);
 
@@ -80,6 +72,12 @@ const CrudTable = () => {
     transform: !mediaQ560 ? 'translate(2.75rem)' : 'translate(3.5rem)',
   };
 
+  const cellStyle = {
+    borderRight: '1px',
+    borderRightStyle: 'solid',
+    borderRightColor: 'table.border',
+  };
+
   return (
     <Box className='mytable'>
       <CrudModal open={modal} setOpen={setModal} />
@@ -88,12 +86,10 @@ const CrudTable = () => {
         <Box
           className='mytable__head-row'
           sx={{
-            bgcolor: 'background.paper',
-            backgroundImage:
-              'linear-gradient(rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11));',
+            bgcolor: 'table.rowOdd',
           }}
         >
-          <Box className='mytable__head-cell'>
+          <Box className='mytable__head-cell' sx={cellStyle}>
             Apellidos
             <IconButton
               size='small'
@@ -117,14 +113,19 @@ const CrudTable = () => {
               }
               disableRipple={true}
             >
-              {order === 'surname desc' ? (
-                <ArrowDownwardIcon fontSize='small' />
-              ) : (
-                <ArrowUpwardIcon fontSize='small' />
-              )}
+              <ArrowUpwardIcon
+                fontSize='small'
+                sx={{
+                  transform:
+                    order === 'surname desc'
+                      ? 'rotate(180deg)'
+                      : 'rotate(0deg)',
+                  transition: 'transform 0.25s ease-out',
+                }}
+              />
             </IconButton>
           </Box>
-          <Box className='mytable__head-cell'>
+          <Box className='mytable__head-cell' sx={cellStyle}>
             Nombres
             <IconButton
               size='small'
@@ -148,19 +149,30 @@ const CrudTable = () => {
               }
               disableRipple={true}
             >
-              {order === 'name desc' ? (
-                <ArrowDownwardIcon fontSize='small' />
-              ) : (
-                <ArrowUpwardIcon fontSize='small' />
-              )}
+              <ArrowUpwardIcon
+                fontSize='small'
+                sx={{
+                  transform:
+                    order === 'name desc' ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.25s ease-out',
+                }}
+              />
             </IconButton>
           </Box>
           {mediaQ1024 && (
-            <Box className='mytable__head-cell'>Correo Electrónico</Box>
+            <Box className='mytable__head-cell' sx={cellStyle}>
+              Correo Electrónico
+            </Box>
           )}
-          {mediaQ768 && <Box className='mytable__head-cell'>Teléfono</Box>}
+          {mediaQ768 && (
+            <Box className='mytable__head-cell' sx={cellStyle}>
+              Teléfono
+            </Box>
+          )}
           {mediaQ560 && (
-            <Box className='mytable__head-cell mytable__state'>Estado</Box>
+            <Box className='mytable__head-cell mytable__state' sx={cellStyle}>
+              Estado
+            </Box>
           )}
           <Box className='mytable__head-cell'>Acciones</Box>
         </Box>

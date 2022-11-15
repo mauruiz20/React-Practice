@@ -1,4 +1,4 @@
-import { IconButton, useMediaQuery } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { createContext, useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,7 +13,6 @@ const CrudProvider = ({ children }) => {
   const [rows, setRows] = useState(25);
   const [inactives, setInactives] = useState(true);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState({ search: '' });
 
   /* Messages updates states */
   const [modalData, setModalData] = useState({});
@@ -31,11 +30,6 @@ const CrudProvider = ({ children }) => {
       closeSnackbar(errId);
     }
   }, [error, closeSnackbar]);
-
-  /* Media Querys states */
-  const mediaQ1024 = useMediaQuery('(min-width: 1025px)');
-  const mediaQ768 = useMediaQuery('(min-width: 769px)');
-  const mediaQ560 = useMediaQuery('(min-width: 561px)');
 
   let url = 'http://localhost:5000/clientes';
 
@@ -164,13 +158,8 @@ const CrudProvider = ({ children }) => {
     setInactives,
     page,
     setPage,
-    search,
-    setSearch,
     modalData,
     setModalData,
-    mediaQ1024,
-    mediaQ768,
-    mediaQ560,
     createData,
     updateData,
     deleteData,

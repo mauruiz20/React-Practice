@@ -85,17 +85,6 @@
       "date": "1992-07-08",
       "address": "234-4180 Erat St.",
       "nacionality": "Korea, North",
-      "active": true
-    },
-    {
-      "id": 12,
-      "surname": "Barrera",
-      "name": "Kaseem",
-      "email": "b.kaseem@google.com",
-      "phone": 3863455077,
-      "date": "2000-10-27",
-      "address": "Ap #249-4019 Adipiscing Road",
-      "nacionality": "French Southern Territories",
       "active": false
     },
     {
@@ -106,8 +95,7 @@
       "phone": 3865625897,
       "date": "1992-04-15",
       "address": "P.O. Box 608, 9683 Praesent Rd.",
-      "nacionality": "Kuwait",
-      "active": true
+      "nacionality": "Kuwait"
     },
     {
       "id": 14,
@@ -294,7 +282,7 @@
       "date": "2002-06-14",
       "address": "563-6979 Venenatis St.",
       "nacionality": "Guinea-Bissau",
-      "active": true
+      "active": false
     },
     {
       "id": 32,
@@ -459,7 +447,7 @@
       "date": "1996-06-29",
       "address": "Ap #275-7651 Et Ave",
       "nacionality": "Lithuania",
-      "active": false
+      "active": true
     },
     {
       "id": 48,
@@ -556,7 +544,7 @@
       "date": "1996-11-03",
       "address": "185-3362 Magna. Avenue",
       "nacionality": "Northern Mariana Islands",
-      "active": false
+      "active": true
     },
     {
       "id": 58,
@@ -765,16 +753,6 @@
       "nacionality": "asd"
     },
     {
-      "id": 1668360961068,
-      "surname": "Ruiz",
-      "name": "Francisco Mauricio",
-      "email": "maumarruiz@hotmail.com",
-      "phone": "+543863542848",
-      "date": "2022-11-10",
-      "address": "Buenos Aires 597",
-      "nacionality": "asd"
-    },
-    {
       "id": 1668360961069,
       "surname": "sadawdawdsad",
       "name": "dawdawdasdw",
@@ -792,7 +770,8 @@
       "phone": "dasdawdawd",
       "date": "2022-11-14",
       "address": "dasdawsd",
-      "nacionality": "dasdawda"
+      "nacionality": "dasdawda",
+      "active": true
     },
     {
       "id": 1668360961071,
@@ -812,7 +791,18 @@
       "phone": "1234a",
       "date": "2022-11-14",
       "address": "123123eads",
-      "nacionality": "asddawdadwd"
+      "nacionality": "asddawdadwd",
+      "active": false
+    },
+    {
+      "id": 1668360961073,
+      "surname": "Ruiz",
+      "name": "Francisco Mauricio",
+      "email": "maumarruiz@hotmail.com",
+      "phone": "+543863542848",
+      "date": "2022-11-15",
+      "address": "Buenos Aires 597",
+      "nacionality": "asdawd"
     }
   ]
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,8 +6,11 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import NightlightRoundIcon from '@mui/icons-material/NightlightRound';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import StyleContext from '../context/StyleContext';
 
-export default function BasicAppBar({ darkMode, setDarkMode }) {
+export default function BasicAppBar() {
+  const { darkMode, setDarkMode } = useContext(StyleContext);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static' sx={{ backgroundColor: 'primary.main' }}>
@@ -17,9 +20,9 @@ export default function BasicAppBar({ darkMode, setDarkMode }) {
           </Typography>
           <IconButton sx={{}} onClick={() => setDarkMode(!darkMode)}>
             {!darkMode ? (
-              <NightlightRoundIcon color='#fff' />
+              <NightlightRoundIcon sx={{ color: '#fff' }} />
             ) : (
-              <WbSunnyIcon color='#fff' />
+              <WbSunnyIcon sx={{ color: '#fff' }} />
             )}
           </IconButton>
         </Toolbar>

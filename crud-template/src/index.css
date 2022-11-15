@@ -189,16 +189,16 @@ body.dark-theme {
 .mytable__body-cell,
 .mytable__body-cell--center {
   padding: 0.2rem 0;
-  border-right: 1px solid #ddd;
-  border-left: 1px solid #ddd;
+  /* border-right: 1px solid #dde2eb; */
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   text-align: left;
+  word-break: break-all;
 }
 
 .mytable__body-row {
-  border-bottom: 2px solid #ddd;
+  /* border-bottom: 1px solid #dde2eb; */
   cursor: pointer;
 }
 
@@ -244,12 +244,12 @@ body.dark-theme {
 .mytable-collapse__title {
   font-weight: bold;
   padding: 0.35rem 0;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid #dde2eb;
 }
 
 .mytable-collapse__data {
   padding: 0.35rem 0;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 1px solid #dde2eb;
 }
 
 /* ============== CRUD Pagination ============== */
@@ -442,11 +442,13 @@ body.dark-theme {
     min-width: 10rem;
     flex-grow: 1;
     flex-basis: 9rem;
+    border-bottom: 1px solid #dde2eb;
   }
 
   .mytable-collapse__data {
     flex-grow: 2;
     flex-basis: 10rem;
+    word-break: break-all;
   }
 }
 

@@ -6,8 +6,8 @@ import moment from 'moment';
 import { Box, Collapse, IconButton, Tooltip, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import StyleContext from '../context/StyleContext';
 
 // import VisibilityIcon from '@mui/icons-material/Visibility';
 // import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -16,15 +16,8 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 const CrudTableRow = ({ data, setModal }) => {
   const [open, setOpen] = useState(false);
-  const {
-    setModalData,
-    setDataToEdit,
-
-    updateData,
-    mediaQ1024,
-    mediaQ768,
-    mediaQ560,
-  } = useContext(CrudContext);
+  const { setModalData, setDataToEdit, updateData } = useContext(CrudContext);
+  const { mediaQ1024, mediaQ768, mediaQ560 } = useContext(StyleContext);
 
   const formattedDate = moment(data.date).format('D/MM/YYYY');
 
@@ -60,6 +53,12 @@ const CrudTableRow = ({ data, setModal }) => {
     setOpen(!open);
   };
 
+  const cellStyle = {
+    borderRight: '1px',
+    borderRightStyle: 'solid',
+    borderRightColor: 'table.border',
+  };
+
   return (
     <Box
       id={data.id}
@@ -67,18 +66,37 @@ const CrudTableRow = ({ data, setModal }) => {
       onClick={handleAccordion}
       sx={[
         {
+          backgroundColor: 'table.rowOdd',
+          borderBottomWidth: '1px',
+          borderBottomStyle: 'solid',
+          borderBottomColor: 'table.border',
+          '&:nth-of-type(even)': {
+            backgroundColor: 'table.rowEven',
+          },
           '&:hover': {
-            backgroundColor: 'background.main',
+            backgroundColor: 'table.rowHover',
           },
         },
       ]}
     >
-      <Box className='mytable__body-cell'>{data.surname}</Box>
-      <Box className='mytable__body-cell'>{data.name}</Box>
-      {mediaQ1024 && <Box className='mytable__body-cell'>{data.email}</Box>}
-      {mediaQ768 && <Box className='mytable__body-cell'>{data.phone}</Box>}
+      <Box className='mytable__body-cell' sx={cellStyle}>
+        {data.surname}
+      </Box>
+      <Box className='mytable__body-cell' sx={cellStyle}>
+        {data.name}
+      </Box>
+      {mediaQ1024 && (
+        <Box className='mytable__body-cell' sx={cellStyle}>
+          {data.email}
+        </Box>
+      )}
+      {mediaQ768 && (
+        <Box className='mytable__body-cell' sx={cellStyle}>
+          {data.phone}
+        </Box>
+      )}
       {mediaQ560 && (
-        <Box className='mytable__body-cell--center'>
+        <Box className='mytable__body-cell--center' sx={cellStyle}>
           <Typography
             sx={{
               color: data.active ? 'success.light' : 'error.light',
@@ -115,7 +133,10 @@ const CrudTableRow = ({ data, setModal }) => {
           leaveDelay={10}
           size='small'
         >
-          <IconButton sx={{ color: 'blue.main' }} onClick={e => handleEdit(e)}>
+          <IconButton
+            sx={{ color: 'secondary.main' }}
+            onClick={e => handleEdit(e)}
+          >
             <EditIcon />
           </IconButton>
         </Tooltip>
@@ -134,7 +155,13 @@ const CrudTableRow = ({ data, setModal }) => {
             sx={{ color: !data.active ? 'success.light' : 'error.light' }}
             onClick={e => handleActive(e, !data.active)}
           >
-            {!data.active ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+            <ArrowUpwardIcon
+              fontSize='small'
+              sx={{
+                transform: data.active ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.25s ease-out',
+              }}
+            />
           </IconButton>
         </Tooltip>
 

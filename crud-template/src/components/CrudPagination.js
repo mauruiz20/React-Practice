@@ -1,18 +1,19 @@
-import React, { useContext } from "react";
-import CrudContext from "../context/CrudContext";
-import { Pagination } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import React, { useContext } from 'react';
+import CrudContext from '../context/CrudContext';
+import StyleContext from '../context/StyleContext';
+import { Pagination } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const CrudPagination = () => {
-  const { db, rows, setRows, page, setPage, mediaQ768 } =
-    useContext(CrudContext);
+  const { db, rows, setRows, page, setPage } = useContext(CrudContext);
+  const { mediaQ768 } = useContext(StyleContext);
 
   const totalRows = db.length;
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setRows(e.target.value);
     setPage(1);
   };
@@ -25,14 +26,14 @@ const CrudPagination = () => {
   };
 
   return (
-    <div className="pagination">
-      <div className="pagination__container">
-        <FormControl className="pagination__rows" size="small">
-          <InputLabel id="rows-select">Entradas</InputLabel>
+    <div className='pagination'>
+      <div className='pagination__container'>
+        <FormControl className='pagination__rows' size='small'>
+          <InputLabel id='rows-select'>Entradas</InputLabel>
           <Select
-            labelId="rows-select"
+            labelId='rows-select'
             value={rows}
-            label="Entradas"
+            label='Entradas'
             onChange={handleChange}
           >
             <MenuItem value={5}>5</MenuItem>
@@ -41,7 +42,7 @@ const CrudPagination = () => {
             <MenuItem value={50}>50</MenuItem>
           </Select>
         </FormControl>
-        <div className="pagination__msg">
+        <div className='pagination__msg'>
           {`Mostrando ${page * rows - rows + 1} - ${
             page * rows < totalRows ? page * rows : totalRows
           } de ${totalRows}`}
@@ -50,10 +51,10 @@ const CrudPagination = () => {
 
       {totalRows > rows && (
         <Pagination
-          className="pagination__nav"
+          className='pagination__nav'
           count={parseInt(Math.ceil(totalRows / rows))}
-          color="primary"
-          size={!mediaQ768 ? "medium" : "large"}
+          color='primary'
+          size={!mediaQ768 ? 'medium' : 'large'}
           page={page}
           onChange={handlePage}
         />
