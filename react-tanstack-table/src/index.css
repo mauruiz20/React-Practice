@@ -2,6 +2,7 @@ body {
   background-color: #34343c;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  color: #fff;
 }
 
 .container {
@@ -18,7 +19,7 @@ table {
 
 thead tr {
   background-color: #222628 !important;
-  border: 1px solid red !important;
+  user-select: none;
 }
 
 tr:last-child td {
@@ -40,12 +41,10 @@ td:last-child {
 
 tr:nth-child(odd) {
   background: #34343c;
-  color: #fff;
 }
 
 tr:nth-child(even) {
   background: #222628;
-  color: #fff;
 }
 
 tr:hover {
@@ -56,4 +55,14 @@ input {
   border: 1px solid #d1cccc;
   border-radius: 0.2rem;
   height: 1.5rem;
+}
+
+button {
+  background: #fafafa;
+  color: #000;
+}
+
+input:nth-child(odd) {
+  background: #34343c;
+  color: #fff;
 }
