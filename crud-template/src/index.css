@@ -166,7 +166,7 @@ body.dark-theme {
   display: grid;
   grid-template-columns:
     minmax(8rem, 1fr) minmax(8rem, 1fr) minmax(17rem, 1.5fr)
-    minmax(9rem, 0.5fr) 5rem minmax(11rem, 1fr);
+    minmax(9rem, 0.5fr) 5rem minmax(5rem, 0.9fr);
 }
 
 .mytable__head {

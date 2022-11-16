@@ -55,11 +55,14 @@ const CrudFormSearch = ({ setSearch }) => {
             autoComplete='off'
             {...register('search')}
           />
+
           <FormControlLabel
             control={
               <Checkbox
                 checked={inactives}
-                sx={{ margin: '0 0 0 1rem' }}
+                sx={{
+                  margin: '0 0 0 1rem',
+                }}
                 onChange={handleCheck}
               />
             }

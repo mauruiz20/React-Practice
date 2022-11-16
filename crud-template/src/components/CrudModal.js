@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import CrudContext from '../context/CrudContext';
 
 const CrudModal = ({ open, setOpen }) => {
@@ -23,17 +23,25 @@ const CrudModal = ({ open, setOpen }) => {
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
-        <div className='crud-modal'>
+        <Box
+          className='crud-modal'
+          sx={{ backgroundColor: 'background.paper' }}
+        >
           <Typography
             id='modal-modal-title'
             variant='h5'
             component='h2'
             textAlign='center'
+            color='text.primary'
           >
             Confirmación de borrado
           </Typography>
           <hr className='crud-modal__hr' />
-          <Typography id='modal-modal-description' sx={{ textAlign: 'center' }}>
+          <Typography
+            id='modal-modal-description'
+            sx={{ textAlign: 'center' }}
+            color='text.primary'
+          >
             ¿Estás seguro que quieres borrar al usuario{' '}
             <b>
               {data.surname} {data.name}
@@ -41,7 +49,7 @@ const CrudModal = ({ open, setOpen }) => {
             ?
           </Typography>
           <hr className='crud-modal__hr' />
-          <div className='crud-modal__btn-container'>
+          <Box className='crud-modal__btn-container'>
             <Button
               className='crud-modal__btn'
               variant='contained'
@@ -58,8 +66,8 @@ const CrudModal = ({ open, setOpen }) => {
             >
               Confirmar
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Modal>
     </>
   );

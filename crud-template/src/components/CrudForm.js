@@ -136,7 +136,7 @@ const CrudForm = () => {
             type='text'
             name='surname'
             size='small'
-            color='blue'
+            color='info'
             autoComplete='off'
             InputLabelProps={{ shrink: true }}
             error={errors.surname ? true : false}
@@ -165,7 +165,7 @@ const CrudForm = () => {
             type='text'
             name='name'
             size='small'
-            color='blue'
+            color='info'
             autoComplete='off'
             InputLabelProps={{ shrink: true }}
             error={errors.name ? true : false}
@@ -194,7 +194,7 @@ const CrudForm = () => {
             type='email'
             name='email'
             size='small'
-            color='blue'
+            color='info'
             autoComplete='off'
             InputLabelProps={{ shrink: true }}
             error={errors.email ? true : false}
@@ -219,7 +219,7 @@ const CrudForm = () => {
             type='text'
             name='phone'
             size='small'
-            color='blue'
+            color='info'
             autoComplete='off'
             InputLabelProps={{ shrink: true }}
             error={errors.phone ? true : false}
@@ -244,7 +244,7 @@ const CrudForm = () => {
             type='text'
             name='address'
             size='small'
-            color='blue'
+            color='info'
             autoComplete='off'
             InputLabelProps={{ shrink: true }}
             error={errors.address ? true : false}
@@ -267,7 +267,7 @@ const CrudForm = () => {
             className='crud-form__input-date'
             type='date'
             size='small'
-            color='blue'
+            color='info'
             autoComplete='off'
             InputLabelProps={{ shrink: true }}
             error={errors.date ? true : false}
@@ -295,7 +295,7 @@ const CrudForm = () => {
             type='text'
             name='nacionality'
             size='small'
-            color='blue'
+            color='info'
             autoComplete='off'
             InputLabelProps={{ shrink: true }}
             error={errors.nacionality ? true : false}

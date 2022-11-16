@@ -86,7 +86,9 @@ const CrudTable = ({ search }) => {
         <Box
           className='mytable__head-row'
           sx={{
-            bgcolor: 'table.rowOdd',
+            bgcolor: 'background.paper',
+            backgroundImage:
+              'linear-gradient(rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11))',
           }}
         >
           <Box className='mytable__head-cell' sx={cellStyle}>
@@ -108,7 +110,7 @@ const CrudTable = ({ search }) => {
               }}
               color={
                 order === 'surname asc' || order === 'surname desc'
-                  ? 'primary'
+                  ? 'tertiary'
                   : 'default'
               }
               disableRipple={true}
@@ -144,7 +146,7 @@ const CrudTable = ({ search }) => {
               }}
               color={
                 order === 'name asc' || order === 'name desc'
-                  ? 'primary'
+                  ? 'tertiary'
                   : 'default'
               }
               disableRipple={true}
