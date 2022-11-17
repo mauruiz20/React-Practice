@@ -9,7 +9,12 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem 5rem;
+  padding: 2rem 1rem;
+}
+
+.mytable__actions {
+  display: flex;
+  justify-content: space-around;
 }
 
 table {
@@ -24,6 +29,12 @@ thead tr {
 
 tr:last-child td {
   border-bottom: 0;
+}
+
+.tcell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 th,

@@ -1,16 +1,42 @@
 import React from 'react';
-import { useTable, useSortBy, useExpanded, usePagination } from 'react-table';
+import {
+  useTable,
+  useGlobalFilter,
+  useSortBy,
+  useExpanded,
+  usePagination,
+  useFlexLayout,
+} from 'react-table';
 import useRows from '../hooks/useRows';
 import useColumns from '../hooks/useColumns';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { Stack } from '@mui/system';
+import { MenuItem, Pagination, Select } from '@mui/material';
 
 const Table = () => {
+  const handleChage = (evt, newPage) => {
+    if (newPage === pageIndex + 2) {
+      nextPage();
+    } else if (newPage === pageIndex) {
+      previousPage();
+    } else {
+      gotoPage(newPage - 1);
+    }
+  };
+
   const columns = useColumns();
   const data = useRows();
   const tableInstance = useTable(
-    { columns, data, initialState: { pageIndex: 0, pageSize: 10 } },
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['id'] },
+    },
+    useGlobalFilter,
     useSortBy,
     useExpanded,
-    usePagination
+    usePagination,
+    useFlexLayout
   );
 
   const {
@@ -19,10 +45,7 @@ const Table = () => {
     headerGroups,
     prepareRow,
     page,
-    canPreviousPage,
-    canNextPage,
     pageOptions,
-    pageCount,
     gotoPage,
     nextPage,
     previousPage,
@@ -38,14 +61,24 @@ const Table = () => {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
-                  </span>
+                  <div className='tcell'>
+                    <div>{column.render('Header')}</div>
+                    {column.canSort ? (
+                      <ArrowUpwardIcon
+                        sx={{
+                          transform: column.isSortedDesc
+                            ? 'rotate(180deg)'
+                            : 'rotate(0deg)',
+                          transition: 'transform 0.2s ease',
+                          color: column.isSorted ? 'info.main' : '#fff',
+                          padding: '0 0.5rem',
+                        }}
+                        fontSize='small'
+                      />
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 </th>
               ))}
             </tr>
@@ -67,38 +100,28 @@ const Table = () => {
           })}
         </tbody>
       </table>
-      <div className='pagination'>
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>{' '}
-        <span>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-        <select
-          value={pageSize}
-          onChange={e => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[5, 10, 25, 50].map(pageSize => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Stack spacing={2} backgroundColor='#fff'>
+        <Pagination
+          count={pageOptions.length}
+          shape='rounded'
+          color='primary'
+          onChange={handleChage}
+        />
+      </Stack>
+      <Select
+        sx={{ bgcolor: '#fff', width: '100px' }}
+        label='Entradas'
+        value={pageSize}
+        onChange={e => {
+          setPageSize(Number(e.target.value));
+        }}
+      >
+        {[5, 10, 25, 50].map(pageSize => (
+          <MenuItem key={pageSize} value={pageSize}>
+            {pageSize}
+          </MenuItem>
+        ))}
+      </Select>
     </>
   );
 };
