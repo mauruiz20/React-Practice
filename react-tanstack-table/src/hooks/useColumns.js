@@ -78,6 +78,7 @@ export default function useColumns() {
     () => [
       {
         accessor: 'id',
+        disableGlobalFilter: true,
       },
       {
         Header: 'Apellidos',

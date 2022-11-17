@@ -17,9 +17,36 @@ body {
   justify-content: space-around;
 }
 
+/* ============== CRUD Pagination ============== */
+
+.pagination {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination__msg {
+  min-width: 175px;
+}
+
+.pagination__rows {
+  margin: 1rem !important;
+  min-width: 100px !important;
+}
+
+.pagination__nav ul {
+  justify-content: center !important;
+}
+
 table {
-  border-spacing: 0;
-  border: 1px solid #68686e;
+  width: 100%;
 }
 
 thead tr {
@@ -76,4 +103,17 @@ button {
 input:nth-child(odd) {
   background: #34343c;
   color: #fff;
+}
+
+.resizer {
+  display: inline-block;
+
+  width: 10px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateX(50%);
+  z-index: 1;
+  touch-action: none;
 }

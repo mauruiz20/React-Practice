@@ -3,22 +3,22 @@ import { useMemo } from 'react';
 export default function useRows() {
   const rows = useMemo(
     () => [
-      {
-        id: 1,
-        surname: 'Hinton Osborn',
-        name: 'Velma Melodie',
-        email: 'hintonosborn@hotmail.com',
-        phone: '(892) 145-5412',
-        status: 'A',
-      },
-      {
-        id: 2,
-        surname: 'Warren Frazier',
-        name: 'Hanna Melodie',
-        email: 'warrenfrazier4681@hotmail.com',
-        phone: '(354) 330-6638',
-        status: 'B',
-      },
+      // {
+      //   id: 1,
+      //   surname: 'Hinton Osborn',
+      //   name: 'Velma Melodie',
+      //   email: 'hintonosborn@hotmail.com',
+      //   phone: '(892) 145-5412',
+      //   status: 'A',
+      // },
+      // {
+      //   id: 2,
+      //   surname: 'Warren Frazier',
+      //   name: 'Hanna Melodie',
+      //   email: 'warrenfrazier4681@hotmail.com',
+      //   phone: '(354) 330-6638',
+      //   status: 'B',
+      // },
       {
         id: 3,
         surname: 'Cohen Thomas',
