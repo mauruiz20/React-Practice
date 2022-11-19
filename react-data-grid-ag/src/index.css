@@ -1,0 +1,52 @@
+/* ============== General styles ============== */
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* ============== CRUD Pagination ============== */
+
+.pagination {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination__msg {
+  min-width: 175px;
+}
+
+.pagination__rows {
+  margin: 1rem !important;
+  min-width: 100px !important;
+}
+
+.pagination__nav ul {
+  justify-content: center !important;
+}
