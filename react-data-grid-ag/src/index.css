@@ -23,10 +23,35 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+/* ============== CRUD Form Search ============== */
+
+.crud-form-search {
+  padding: 1rem;
+}
+
+.crud-form-search__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ============== MyTable ============== */
+
+.mytable__body-cell {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.MuiCheckbox-root {
+  padding: 0 0.5rem !important;
+}
+
 /* ============== CRUD Pagination ============== */
 
 .pagination {
-  padding: 1rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

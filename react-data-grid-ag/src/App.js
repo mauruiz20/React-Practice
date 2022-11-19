@@ -1,9 +1,12 @@
 import Table from './components/Table';
+import { StyleProvider } from './context/StyleContext';
 
 function App() {
   return (
     <>
-      <Table />
+      <StyleProvider>
+        <Table />
+      </StyleProvider>
     </>
   );
 }
