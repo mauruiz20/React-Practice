@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Typography from '@mui/material/Typography';
 import {
@@ -8,8 +8,11 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
+import CrudContext from '../context/CrudContext';
 
-const CrudModal = ({ dataToDelete: data, open, setOpen, deleteData }) => {
+const CrudModal = ({ open, setOpen }) => {
+  const { dataToDelete: data, deleteData } = useContext(CrudContext);
+
   const handleClose = () => setOpen(false);
 
   const handleDelete = () => {

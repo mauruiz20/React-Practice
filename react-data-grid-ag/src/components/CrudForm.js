@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -13,16 +12,12 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useForm } from 'react-hook-form';
+import CrudContext from '../context/CrudContext';
 
-const CrudForm = ({
-  openForm,
-  setOpenForm,
-  createData,
-  updateData,
-  dataToEdit,
-  setDataToEdit,
-}) => {
+const CrudForm = ({ openForm, setOpenForm }) => {
   const [addMultiple, setAddMultiple] = useState(false);
+  const { createData, updateData, dataToEdit, setDataToEdit } =
+    useContext(CrudContext);
 
   const {
     register,
@@ -42,6 +37,7 @@ const CrudForm = ({
       date: '',
       address: '',
       nacionality: '',
+      state: 'A',
     },
   });
 

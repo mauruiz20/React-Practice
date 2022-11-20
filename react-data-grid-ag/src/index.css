@@ -75,3 +75,16 @@ body {
 .pagination__nav ul {
   justify-content: center !important;
 }
+
+.ag-theme-alpine,
+.ag-theme-alpine-dark {
+  --ag-range-selection-border-style: none !important;
+}
+
+@media screen and (max-width: 560px) {
+  .crud-form-search__tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}

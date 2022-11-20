@@ -1,12 +1,12 @@
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import db from '../api/clients.json';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -33,30 +33,31 @@ import {
   MenuList,
   Chip,
   Fab,
+  Button,
 } from '@mui/material';
 import { Stack } from '@mui/system';
-import ThemeSwitch from './ThemeSwitch';
 import StyleContext from '../context/StyleContext';
 import CrudForm from './CrudForm';
 import CrudModal from './CrudModal';
+import CrudContext from '../context/CrudContext';
 
 const State = props => {
   return (
-    <Chip
-      label={props.data.state}
-      color={props.data.state === 'A' ? 'success' : 'error'}
-      size='small'
-    />
+    <div>
+      <Chip
+        label={props.data.state}
+        color={props.data.state === 'A' ? 'success' : 'error'}
+        size='small'
+        sx={{ minWidth: '25px' }}
+      />
+    </div>
   );
 };
 
-const Btn = ({
-  data,
-  setDataToEdit,
-  setOpenForm,
-  setOpenModal,
-  setDataToDelete,
-}) => {
+const Btn = ({ data, setOpenForm, setOpenModal, gridRef }) => {
+  const { setDataToEdit, setDataToDelete, updateData } =
+    useContext(CrudContext);
+
   const handleEdit = () => {
     setDataToEdit(data);
     setOpenForm(true);
@@ -68,8 +69,13 @@ const Btn = ({
   };
 
   const handleState = () => {
-    console.log(data.state);
+    data.state = data.state === 'A' ? 'B' : 'A';
+    updateData(data);
+    gridRef.current.api.refreshCells();
+    // setReload(!reload);
   };
+
+  // const [reload, setReload] = useState(false);
 
   return (
     <Box className='mytable__body-cell'>
@@ -134,13 +140,71 @@ const Btn = ({
 
 const Table = () => {
   const gridRef = useRef();
-  const [rowData, setRowData] = useState(db);
-  const [dataToEdit, setDataToEdit] = useState(null);
-  const [dataToDelete, setDataToDelete] = useState(null);
   const [openForm, setOpenForm] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const { darkMode } = useContext(StyleContext);
+  const {
+    db: rowData,
+    dataToDelete,
+    showInactives,
+    setShowInactives,
+  } = useContext(CrudContext);
+
+  const totalRows = rowData && rowData.length;
+
+  const { darkMode, mediaQ1024, mediaQ768, mediaQ560 } =
+    useContext(StyleContext);
+
+  const initialVisibleColumns = [
+    { field: 'name', Header: 'Nombres', visible: true },
+    { field: 'surname', Header: 'Apellidos', visible: true },
+    { field: 'email', Header: 'Correo Electrónico', visible: true },
+    { field: 'phone', Header: 'Teléfono', visible: true },
+    { field: 'date', Header: 'Fecha de Nacimiento', visible: true },
+    { field: 'address', Header: 'Dirección', visible: true },
+    { field: 'nacionality', Header: 'Nacionalidad', visible: true },
+    { field: 'state', Header: 'Estado', visible: true },
+    { field: 'actions', Header: 'Acciones', visible: true },
+  ];
+
+  useEffect(() => {
+    if (!mediaQ1024) {
+      handleColumnHide(false, {
+        field: 'email',
+        Header: 'Correo Electrónico',
+        visible: false,
+      });
+    }
+    if (!mediaQ768) {
+      handleColumnHide(false, {
+        field: 'date',
+        Header: 'Fecha de Nacimiento',
+        visible: false,
+      });
+      handleColumnHide(false, {
+        field: 'address',
+        Header: 'Dirección',
+        visible: false,
+      });
+      handleColumnHide(false, {
+        field: 'state',
+        Header: 'Estado',
+        visible: false,
+      });
+    }
+    if (!mediaQ560) {
+      handleColumnHide(false, {
+        field: 'phone',
+        Header: 'Teléfono',
+        visible: false,
+      });
+      handleColumnHide(false, {
+        field: 'nacionality',
+        Header: 'Nacionalidad',
+        visible: false,
+      });
+    }
+  }, [mediaQ1024, mediaQ768, mediaQ560]);
 
   // Each Column Definition results in one Column.
   const [columnDefs, setColumnDefs] = useState([
@@ -153,8 +217,8 @@ const Table = () => {
       flex: 1.5,
       hide: 'false',
     },
-    { field: 'phone', headerName: 'Teléfono' },
-    { field: 'date', headerName: 'Fecha de Nacimiento' },
+    { field: 'phone', headerName: 'Teléfono', flex: 0.8 },
+    { field: 'date', headerName: 'Fecha de Nacimiento', flex: 0.8 },
     { field: 'address', headerName: 'Dirección' },
     { field: 'nacionality', headerName: 'Nacionalidad' },
     {
@@ -167,12 +231,12 @@ const Table = () => {
       field: 'actions',
       headerName: 'Acciones',
       sortable: false,
+      flex: 1.2,
       cellRenderer: Btn,
       cellRendererParams: {
         setOpenForm: setOpenForm,
         setOpenModal: setOpenModal,
-        setDataToEdit: setDataToEdit,
-        setDataToDelete: setDataToDelete,
+        gridRef: gridRef,
       },
     },
   ]);
@@ -189,19 +253,7 @@ const Table = () => {
 
   /* Hideable Columns */
 
-  const [visibleColumns, setVisibleColumns] = useState([
-    { field: 'name', Header: 'Nombres', visible: true },
-    { field: 'surname', Header: 'Apellidos', visible: true },
-    { field: 'email', Header: 'Correo Electrónico', visible: true },
-    { field: 'phone', Header: 'Teléfono', visible: true },
-    { field: 'date', Header: 'Fecha de Nacimiento', visible: true },
-    { field: 'address', Header: 'Dirección', visible: true },
-    { field: 'nacionality', Header: 'Nacionalidad', visible: true },
-    { field: 'state', Header: 'Estado', visible: true },
-    { field: 'actions', Header: 'Acciones', visible: true },
-  ]);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -210,19 +262,38 @@ const Table = () => {
     setAnchorEl(null);
   };
 
-  const handleColumnHide = (evt, column) => {
+  const [visibleColumns, setVisibleColumns] = useState(initialVisibleColumns);
+
+  const handleColumnHide = (checked, column) => {
     let newColumn = {
       field: column.field,
       Header: column.Header,
-      visible: evt.target.checked,
+      visible: checked,
     };
     let newVisibleColumns = visibleColumns.map(column =>
       column.field === newColumn.field ? newColumn : column
     );
     setVisibleColumns(newVisibleColumns);
-    gridRef.current.columnApi.setColumnVisible(
-      column.field,
-      evt.target.checked
+    if (gridRef.current.columnApi) {
+      gridRef.current.columnApi.setColumnVisible(column.field, checked);
+    }
+  };
+
+  const handleResetColumns = () => {
+    setVisibleColumns(initialVisibleColumns);
+    gridRef.current.columnApi.setColumnsVisible(
+      [
+        'name',
+        'surname',
+        'email',
+        'phone',
+        'date',
+        'address',
+        'nacionality',
+        'state',
+        'actions',
+      ],
+      true
     );
   };
 
@@ -244,8 +315,7 @@ const Table = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
-  const [pageSize, setPageSize] = useState(10);
-  const [totalRows, setTotalRows] = useState(db.length);
+  const [pageSize, setPageSize] = useState(25);
 
   const onPaginationChanged = useCallback(() => {
     if (gridRef.current.api) {
@@ -281,20 +351,6 @@ const Table = () => {
     );
   }, []);
 
-  /* Form */
-
-  const createData = data => {
-    console.log(data);
-  };
-
-  const updateData = data => {
-    console.log(data);
-  };
-
-  const deleteData = id => {
-    console.log(id);
-  };
-
   return (
     <>
       {/* <div className='test-button-group'>
@@ -313,93 +369,111 @@ const Table = () => {
           Gestión clientes
         </Typography>
         <Box className='crud-form-search__container'>
-          <TextField
-            className='crud-form-search__input'
-            label='Búsqueda'
-            variant='outlined'
-            type='search'
-            size='small'
-            autoComplete='off'
-            id='filter-text-box'
-            onInput={onFilterTextBoxChanged}
-          />
+          <Box className='crud-form-search__tools'>
+            <TextField
+              className='crud-form-search__input'
+              label='Búsqueda'
+              variant='outlined'
+              type='search'
+              size='small'
+              autoComplete='off'
+              id='filter-text-box'
+              onInput={onFilterTextBoxChanged}
+            />
 
-          <IconButton
-            aria-label='view-columns'
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup='true'
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-          >
-            <ViewColumnIcon />
-          </IconButton>
-          <Menu
-            id='basic-menu'
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-            sx={{ width: '50%' }}
-          >
-            <Typography variant='h6' sx={{ textAlign: 'center' }}>
-              Columnas visibles
-            </Typography>
-            <MenuList dense>
-              {visibleColumns.map(column => (
-                <MenuItem key={column.field}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          type='checkbox'
-                          checked={column.visible}
-                          onChange={evt => handleColumnHide(evt, column)}
-                          size='small'
-                        />
-                      }
-                      label={column.Header}
-                    />
-                  </FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={showInactives}
+                  sx={{
+                    margin: '0 0 0 1rem',
+                  }}
+                  onChange={evt => setShowInactives(evt.target.checked)}
+                />
+              }
+              label='Incluir bajas'
+              sx={{ userSelect: 'none', color: 'text.primary' }}
+            />
+
+            <Fab
+              color='primary'
+              size='small'
+              aria-label='view-columns'
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              <ViewColumnIcon />
+            </Fab>
+
+            <Menu
+              id='basic-menu'
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+              sx={{ width: '50%' }}
+            >
+              <Typography variant='h6' sx={{ textAlign: 'center' }}>
+                Columnas visibles
+              </Typography>
+              <MenuList dense>
+                {visibleColumns.map(column => (
+                  <MenuItem key={column.field}>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            type='checkbox'
+                            checked={column.visible}
+                            onChange={evt =>
+                              handleColumnHide(evt.target.checked, column)
+                            }
+                            size='small'
+                          />
+                        }
+                        label={column.Header}
+                      />
+                    </FormGroup>
+                  </MenuItem>
+                ))}
+                <MenuItem>
+                  <Button
+                    variant='contained'
+                    size='small'
+                    sx={{ width: '100%' }}
+                    onClick={handleResetColumns}
+                  >
+                    Reiniciar
+                  </Button>
                 </MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-
-          <ThemeSwitch />
+              </MenuList>
+            </Menu>
+          </Box>
 
           <Fab
             variant='extended'
             size='medium'
             color='primary'
             onClick={() => setOpenForm(true)}
+            sx={{ minWidth: '205px' }}
           >
             Agregar cliente
             <AddCircleIcon sx={{ ml: 1 }} />
           </Fab>
-          <CrudForm
-            createData={createData}
-            updateData={updateData}
-            dataToEdit={dataToEdit}
-            setDataToEdit={setDataToEdit}
-            openForm={openForm}
-            setOpenForm={setOpenForm}
-          />
+          <CrudForm openForm={openForm} setOpenForm={setOpenForm} />
           {dataToDelete && (
-            <CrudModal
-              open={openModal}
-              setOpen={setOpenModal}
-              dataToDelete={dataToDelete}
-              deleteData={deleteData}
-            />
+            <CrudModal open={openModal} setOpen={setOpenModal} />
           )}
         </Box>
       </Box>
 
       <Box
         className={darkMode ? 'ag-theme-alpine-dark' : 'ag-theme-alpine'}
-        style={{ width: '100%', height: 'calc(100vh - 13.6rem)' }}
+        style={{ width: '100%', height: 'calc(100vh - 17rem)' }}
       >
         <AgGridReact
           ref={gridRef} // Ref for accessing Grid's API
@@ -409,7 +483,7 @@ const Table = () => {
           animateRows={true} // Optional - set to 'true' to have rows animate when sorted
           rowSelection='multiple' // Options - allows click selection of rows
           pagination={true}
-          paginationPageSize={10}
+          paginationPageSize={25}
           paginationNumberFormatter={paginationNumberFormatter}
           suppressPaginationPanel={true}
           suppressScrollOnNewData={true}
@@ -435,6 +509,7 @@ const Table = () => {
               <MenuItem value={50}>50</MenuItem>
             </Select>
           </FormControl>
+
           <Box className='paganation__msg' color='text.primary'>
             {`Mostrando ${currentPage * pageSize - pageSize + 1} a ${
               pageSize * currentPage > totalRows
