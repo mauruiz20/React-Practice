@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-
+import CrudContext from '../context/CrudContext';
 import Typography from '@mui/material/Typography';
 import {
   Button,
@@ -8,12 +8,15 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-import CrudContext from '../context/CrudContext';
 
-const CrudModal = ({ open, setOpen }) => {
+const DialogDelete = ({ open, setOpen }) => {
   const { dataToDelete: data, deleteData } = useContext(CrudContext);
 
+  /* Close dialog */
+
   const handleClose = () => setOpen(false);
+
+  /* Confirm delete */
 
   const handleDelete = () => {
     setOpen(false);
@@ -29,28 +32,23 @@ const CrudModal = ({ open, setOpen }) => {
         fullWidth={true}
       >
         <DialogTitle
+          className='dialog-delete__title'
           variant='overline'
           color='text.primary'
-          sx={{
-            textAlign: 'center',
-            fontSize: '1.2rem',
-            lineHeight: '1.2rem',
-            paddingTop: '1.5rem',
-          }}
         >
           Confirmación de borrado
         </DialogTitle>
-        <DialogContent dividers>
-          <Typography sx={{ textAlign: 'center', padding: '2rem 0' }}>
+
+        <DialogContent className='dialog-delete__content' dividers>
+          <Typography>
             ¿Estás seguro que quieres borrar al usuario{' '}
             <b>{`${data.surname}, ${data.name}`}</b>?
           </Typography>
         </DialogContent>
-        <DialogActions
-          sx={{ justifyContent: 'space-between', padding: '1.25rem' }}
-        >
+
+        <DialogActions className='dialog-delete__actions'>
           <Button
-            className='crud-modal__btn'
+            className='dialog-delete__btn'
             variant='contained'
             color='neutral'
             onClick={handleClose}
@@ -58,7 +56,7 @@ const CrudModal = ({ open, setOpen }) => {
             Cancelar
           </Button>
           <Button
-            className='crud-modal__btn'
+            className='dialog-delete__btn'
             variant='contained'
             color='warning'
             onClick={handleDelete}
@@ -71,4 +69,4 @@ const CrudModal = ({ open, setOpen }) => {
   );
 };
 
-export default CrudModal;
+export default DialogDelete;

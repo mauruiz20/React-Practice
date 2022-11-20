@@ -1,4 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import CrudContext from '../context/CrudContext';
+import { Box } from '@mui/system';
 import {
   Button,
   Dialog,
@@ -10,14 +13,13 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { Box } from '@mui/system';
-import { useForm } from 'react-hook-form';
-import CrudContext from '../context/CrudContext';
 
 const CrudForm = ({ openForm, setOpenForm }) => {
-  const [addMultiple, setAddMultiple] = useState(false);
   const { createData, updateData, dataToEdit, setDataToEdit } =
     useContext(CrudContext);
+  const [addMultiple, setAddMultiple] = useState(false);
+
+  /* React Hook Form */
 
   const {
     register,
@@ -41,6 +43,8 @@ const CrudForm = ({ openForm, setOpenForm }) => {
     },
   });
 
+  /* Fields control */
+
   const messages = {
     required: 'Campo obligatorio',
     onlyAlphabetic: 'Solo se acepta letras y espacios en blanco',
@@ -51,6 +55,8 @@ const CrudForm = ({ openForm, setOpenForm }) => {
     onlyAlphabetic: /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$/,
     email: /^(\w+[/./-]?){1,}@[a-z]+[/.]\w{2,}$/,
   };
+
+  /* Edit mode => fill fields with data */
 
   useEffect(() => {
     if (dataToEdit) {
@@ -65,15 +71,21 @@ const CrudForm = ({ openForm, setOpenForm }) => {
     }
   }, [dataToEdit, setValue]);
 
+  /* Submit form */
+
   const onSubmit = data => {
     if (getValues().id === null) {
+      // ID == null => create data
       createData(data);
       handleReset();
       setOpenForm(addMultiple);
     } else {
+      // ID != null => update data
       updateData(data);
     }
   };
+
+  /* Reset form */
 
   const handleReset = () => {
     setValue('id', null);
@@ -87,9 +99,7 @@ const CrudForm = ({ openForm, setOpenForm }) => {
     setDataToEdit(null);
   };
 
-  const handleAddMultiple = evt => {
-    setAddMultiple(evt.target.checked);
-  };
+  /* Close form */
 
   const handleClose = () => {
     setOpenForm(false);
@@ -103,32 +113,28 @@ const CrudForm = ({ openForm, setOpenForm }) => {
         open={openForm}
         onClose={handleClose}
         aria-labelledby='form-dialog-title'
+        fullWidth={true}
+        maxWidth={'sm'}
       >
         <DialogTitle
           id='form-dialog-title'
           variant='overline'
           display='block'
           color='text.primary'
-          sx={{
-            width: '600px',
-            fontSize: '1.4rem',
-            lineHeight: '1.4rem',
-            paddingTop: '1.5rem',
-            textAlign: 'center',
-          }}
+          className='crud-form__dialog-title'
         >
           {dataToEdit ? 'Editar Cliente' : 'Agregar Cliente'}
         </DialogTitle>
-        <DialogContent>
+
+        <DialogContent dividers>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className='crud-form__container'
             id='crud-form'
           >
-            <Box className='crud-form__item'>
+            <Box>
               <InputLabel
                 htmlFor='surname'
-                className='crud-form__label'
                 error={errors.surname ? true : false}
               >
                 Apellidos:
@@ -141,7 +147,6 @@ const CrudForm = ({ openForm, setOpenForm }) => {
                     message: messages.onlyAlphabetic,
                   },
                 })}
-                className='crud-form__input'
                 variant='standard'
                 type='text'
                 autoFocus
@@ -156,12 +161,8 @@ const CrudForm = ({ openForm, setOpenForm }) => {
               />
             </Box>
 
-            <Box className='crud-form__item'>
-              <InputLabel
-                htmlFor='name'
-                className='crud-form__label'
-                error={errors.name ? true : false}
-              >
+            <Box>
+              <InputLabel htmlFor='name' error={errors.name ? true : false}>
                 Nombres:
               </InputLabel>
               <TextField
@@ -172,7 +173,6 @@ const CrudForm = ({ openForm, setOpenForm }) => {
                     message: messages.onlyAlphabetic,
                   },
                 })}
-                className='crud-form__input'
                 variant='standard'
                 type='text'
                 fullWidth
@@ -186,12 +186,8 @@ const CrudForm = ({ openForm, setOpenForm }) => {
               />
             </Box>
 
-            <Box className='crud-form__item'>
-              <InputLabel
-                htmlFor='email'
-                className='crud-form__label'
-                error={errors.email ? true : false}
-              >
+            <Box>
+              <InputLabel htmlFor='email' error={errors.email ? true : false}>
                 Correo electrónico:
               </InputLabel>
               <TextField
@@ -202,7 +198,6 @@ const CrudForm = ({ openForm, setOpenForm }) => {
                     message: messages.email,
                   },
                 })}
-                className='crud-form__input'
                 variant='standard'
                 type='email'
                 fullWidth
@@ -216,19 +211,14 @@ const CrudForm = ({ openForm, setOpenForm }) => {
               />
             </Box>
 
-            <Box className='crud-form__item'>
-              <InputLabel
-                htmlFor='phone'
-                className='crud-form__label'
-                error={errors.phone ? true : false}
-              >
+            <Box>
+              <InputLabel htmlFor='phone' error={errors.phone ? true : false}>
                 Teléfono:
               </InputLabel>
               <TextField
                 {...register('phone', {
                   required: true,
                 })}
-                className='crud-form__input'
                 variant='standard'
                 type='text'
                 fullWidth
@@ -242,10 +232,9 @@ const CrudForm = ({ openForm, setOpenForm }) => {
               />
             </Box>
 
-            <Box className='crud-form__item'>
+            <Box>
               <InputLabel
                 htmlFor='address'
-                className='crud-form__label'
                 error={errors.address ? true : false}
               >
                 Dirección:
@@ -254,7 +243,6 @@ const CrudForm = ({ openForm, setOpenForm }) => {
                 {...register('address', {
                   required: messages.required,
                 })}
-                className='crud-form__input'
                 variant='standard'
                 type='text'
                 fullWidth
@@ -268,19 +256,14 @@ const CrudForm = ({ openForm, setOpenForm }) => {
               />
             </Box>
 
-            <Box className='crud-form__item'>
-              <InputLabel
-                htmlFor='date'
-                className='crud-form__label'
-                error={errors.date ? true : false}
-              >
+            <Box>
+              <InputLabel htmlFor='date' error={errors.date ? true : false}>
                 Fecha de nacimiento:
               </InputLabel>
               <TextField
                 {...register('date', {
                   required: messages.required,
                 })}
-                className='crud-form__input-date'
                 type='date'
                 variant='standard'
                 fullWidth
@@ -292,10 +275,10 @@ const CrudForm = ({ openForm, setOpenForm }) => {
                 helperText={errors.date ? errors.date.message : ' '}
               />
             </Box>
-            <Box className='crud-form__item'>
+
+            <Box>
               <InputLabel
                 htmlFor='nacionality'
-                className='crud-form__label'
                 error={errors.nacionality ? true : false}
               >
                 Nacionalidad
@@ -308,7 +291,6 @@ const CrudForm = ({ openForm, setOpenForm }) => {
                     message: messages.onlyAlphabetic,
                   },
                 })}
-                className='crud-form__input'
                 variant='standard'
                 type='text'
                 fullWidth
@@ -325,10 +307,14 @@ const CrudForm = ({ openForm, setOpenForm }) => {
             </Box>
           </form>
         </DialogContent>
-        <DialogActions
-          sx={{ justifyContent: 'space-between', padding: '1.25rem' }}
-        >
-          <Button onClick={handleClose} variant='contained' color='neutral'>
+
+        <DialogActions className='crud-form__dialog-actions'>
+          <Button
+            className='crud-form__btn'
+            onClick={handleClose}
+            variant='contained'
+            color='neutral'
+          >
             Cancelar
           </Button>
 
@@ -337,19 +323,21 @@ const CrudForm = ({ openForm, setOpenForm }) => {
               <Tooltip title='Agregar múltiples clientes' placement='left'>
                 <Switch
                   checked={addMultiple}
-                  onChange={handleAddMultiple}
+                  onChange={evt => setAddMultiple(evt.target.checked)}
                   value='addMultiple'
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />
               </Tooltip>
             )}
+
             <Button
+              className='crud-form__btn'
               type='submit'
               form='crud-form'
               variant='contained'
               color='primary'
             >
-              {dataToEdit ? 'Editar Cliente' : 'Agregar Cliente'}
+              {dataToEdit ? 'Editar' : 'Agregar'}
             </Button>
           </Box>
         </DialogActions>

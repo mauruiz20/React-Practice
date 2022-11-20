@@ -6,137 +6,34 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { AgGridReact } from 'ag-grid-react';
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CrudContext from '../context/CrudContext';
+import StyleContext from '../context/StyleContext';
 
+import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {
   Box,
   Checkbox,
   FormControl,
   FormControlLabel,
-  FormGroup,
-  IconButton,
   InputLabel,
-  Menu,
   MenuItem,
   Pagination,
   Select,
   Typography,
-  Tooltip,
   TextField,
-  MenuList,
-  Chip,
   Fab,
-  Button,
+  Stack,
 } from '@mui/material';
-import { Stack } from '@mui/system';
-import StyleContext from '../context/StyleContext';
 import CrudForm from './CrudForm';
-import CrudModal from './CrudModal';
-import CrudContext from '../context/CrudContext';
-
-const State = props => {
-  return (
-    <div>
-      <Chip
-        label={props.data.state}
-        color={props.data.state === 'A' ? 'success' : 'error'}
-        size='small'
-        sx={{ minWidth: '25px' }}
-      />
-    </div>
-  );
-};
-
-const Btn = ({ data, setOpenForm, setOpenModal, gridRef }) => {
-  const { setDataToEdit, setDataToDelete, updateData } =
-    useContext(CrudContext);
-
-  const handleEdit = () => {
-    setDataToEdit(data);
-    setOpenForm(true);
-  };
-
-  const handleDelete = () => {
-    setDataToDelete(data);
-    setOpenModal(true);
-  };
-
-  const handleState = () => {
-    data.state = data.state === 'A' ? 'B' : 'A';
-    updateData(data);
-    gridRef.current.api.refreshCells();
-    // setReload(!reload);
-  };
-
-  // const [reload, setReload] = useState(false);
-
-  return (
-    <Box className='mytable__body-cell'>
-      <Tooltip
-        title='Editar'
-        arrow
-        placement='top'
-        disableInteractive
-        enterDelay={2000}
-        enterNextDelay={2000}
-        leaveDelay={10}
-        size='small'
-      >
-        <IconButton sx={{ color: 'primary.main' }} onClick={e => handleEdit(e)}>
-          <EditIcon />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip
-        title={data.state === 'A' ? 'Dar de baja' : 'Dara de alta'}
-        arrow
-        placement='top'
-        disableInteractive
-        enterDelay={2000}
-        enterNextDelay={2000}
-        leaveDelay={10}
-        size='small'
-      >
-        <IconButton
-          sx={{
-            color: data.state === 'A' ? 'error.light' : 'success.light',
-          }}
-          onClick={e => handleState(e)}
-        >
-          <ArrowUpwardIcon
-            fontSize='small'
-            sx={{
-              transform: data.state === 'A' ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 0.25s ease-out',
-            }}
-          />
-        </IconButton>
-      </Tooltip>
-
-      <Tooltip
-        title='Borrar'
-        arrow
-        placement='top'
-        disableInteractive
-        enterDelay={2000}
-        enterNextDelay={2000}
-        leaveDelay={10}
-        onClick={e => handleDelete(e)}
-      >
-        <IconButton>
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
-    </Box>
-  );
-};
+import DialogDelete from './DialogDelete';
+import ColumnHidding from './ColumnHidding';
+import ActionsColumn from './ActionsColumn';
+import StateColumn from './StateColumn';
+import StateNameColumn from './StateNameColumn';
 
 const Table = () => {
   const gridRef = useRef();
@@ -150,10 +47,10 @@ const Table = () => {
     setShowInactives,
   } = useContext(CrudContext);
 
-  const totalRows = rowData && rowData.length;
-
   const { darkMode, mediaQ1024, mediaQ768, mediaQ560 } =
     useContext(StyleContext);
+
+  /* ============== Column Hidding Functions ============== */
 
   const initialVisibleColumns = [
     { field: 'name', Header: 'Nombres', visible: true },
@@ -167,101 +64,6 @@ const Table = () => {
     { field: 'actions', Header: 'Acciones', visible: true },
   ];
 
-  useEffect(() => {
-    if (!mediaQ1024) {
-      handleColumnHide(false, {
-        field: 'email',
-        Header: 'Correo Electrónico',
-        visible: false,
-      });
-    }
-    if (!mediaQ768) {
-      handleColumnHide(false, {
-        field: 'date',
-        Header: 'Fecha de Nacimiento',
-        visible: false,
-      });
-      handleColumnHide(false, {
-        field: 'address',
-        Header: 'Dirección',
-        visible: false,
-      });
-      handleColumnHide(false, {
-        field: 'state',
-        Header: 'Estado',
-        visible: false,
-      });
-    }
-    if (!mediaQ560) {
-      handleColumnHide(false, {
-        field: 'phone',
-        Header: 'Teléfono',
-        visible: false,
-      });
-      handleColumnHide(false, {
-        field: 'nacionality',
-        Header: 'Nacionalidad',
-        visible: false,
-      });
-    }
-  }, [mediaQ1024, mediaQ768, mediaQ560]);
-
-  // Each Column Definition results in one Column.
-  const [columnDefs, setColumnDefs] = useState([
-    { field: 'id', hide: 'true' },
-    { field: 'surname', headerName: 'Apellidos' },
-    { field: 'name', headerName: 'Nombres' },
-    {
-      field: 'email',
-      headerName: 'Correo Electrónico',
-      flex: 1.5,
-      hide: 'false',
-    },
-    { field: 'phone', headerName: 'Teléfono', flex: 0.8 },
-    { field: 'date', headerName: 'Fecha de Nacimiento', flex: 0.8 },
-    { field: 'address', headerName: 'Dirección' },
-    { field: 'nacionality', headerName: 'Nacionalidad' },
-    {
-      field: 'state',
-      headerName: 'Estado',
-      flex: 0.5,
-      cellRenderer: State,
-    },
-    {
-      field: 'actions',
-      headerName: 'Acciones',
-      sortable: false,
-      flex: 1.2,
-      cellRenderer: Btn,
-      cellRendererParams: {
-        setOpenForm: setOpenForm,
-        setOpenModal: setOpenModal,
-        gridRef: gridRef,
-      },
-    },
-  ]);
-
-  // DefaultColDef sets props common to all Columns
-  const defaultColDef = useMemo(
-    () => ({
-      sortable: true,
-      resizable: true,
-      flex: 1,
-    }),
-    []
-  );
-
-  /* Hideable Columns */
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const [visibleColumns, setVisibleColumns] = useState(initialVisibleColumns);
 
   const handleColumnHide = (checked, column) => {
@@ -270,13 +72,106 @@ const Table = () => {
       Header: column.Header,
       visible: checked,
     };
-    let newVisibleColumns = visibleColumns.map(column =>
-      column.field === newColumn.field ? newColumn : column
+
+    let newVisibleColumns = visibleColumns.map(columnEl =>
+      columnEl.field === newColumn.field ? newColumn : columnEl
     );
+
     setVisibleColumns(newVisibleColumns);
+
     if (gridRef.current.columnApi) {
       gridRef.current.columnApi.setColumnVisible(column.field, checked);
     }
+  };
+
+  useEffect(() => {
+    if (!mediaQ1024) {
+      handleColumnsHide([
+        {
+          field: 'email',
+          Header: 'Correo Electrónico',
+          visible: false,
+        },
+      ]);
+      if (gridRef.current.columnApi) {
+        gridRef.current.columnApi.setColumnsVisible(['email'], false);
+      }
+    }
+    if (!mediaQ768) {
+      handleColumnsHide([
+        {
+          field: 'email',
+          Header: 'Correo Electrónico',
+          visible: false,
+        },
+        {
+          field: 'date',
+          Header: 'Fecha de Nacimiento',
+          visible: false,
+        },
+        {
+          field: 'state',
+          Header: 'Estado',
+          visible: false,
+        },
+        {
+          field: 'address',
+          Header: 'Dirección',
+          visible: false,
+        },
+      ]);
+      if (gridRef.current.columnApi) {
+        gridRef.current.columnApi.setColumnsVisible(
+          ['email', 'date', 'state', 'address'],
+          false
+        );
+      }
+    }
+    if (!mediaQ560) {
+      handleColumnsHide([
+        {
+          field: 'email',
+          Header: 'Correo Electrónico',
+          visible: false,
+        },
+        {
+          field: 'date',
+          Header: 'Fecha de Nacimiento',
+          visible: false,
+        },
+        {
+          field: 'state',
+          Header: 'Estado',
+          visible: false,
+        },
+        {
+          field: 'address',
+          Header: 'Dirección',
+          visible: false,
+        },
+        {
+          field: 'nacionality',
+          Header: 'Nacionalidad',
+          visible: false,
+        },
+      ]);
+      if (gridRef.current.columnApi) {
+        gridRef.current.columnApi.setColumnsVisible(
+          ['email', 'date', 'state', 'address', 'nacionality'],
+          false
+        );
+      }
+    }
+  }, [mediaQ1024, mediaQ768, mediaQ560]);
+
+  const handleColumnsHide = columns => {
+    visibleColumns.forEach(el => {
+      columns.forEach(el2 => {
+        if (el.field === el2.field) {
+          el.visible = false;
+        }
+      });
+    });
   };
 
   const handleResetColumns = () => {
@@ -297,25 +192,81 @@ const Table = () => {
     );
   };
 
-  // const onBtHide = useCallback(() => {
-  //   gridRef.current.columnApi.setColumnsVisible(
-  //     ['actions', 'email', 'phone', 'nacionality', 'state'],
-  //     true
-  //   );
-  // }, []);
+  // Each Column Definition results in one Column
 
-  // const onBtShow = useCallback(() => {
-  //   gridRef.current.columnApi.setColumnsVisible(
-  //     ['actions', 'email', 'phone', 'nacionality', 'state'],
-  //     false
-  //   );
-  // }, []);
+  const columnDefs = [
+    { field: 'id', hide: 'true' },
+    {
+      field: 'surname',
+      headerName: 'Apellidos',
+      cellRenderer: StateNameColumn,
+    },
+    { field: 'name', headerName: 'Nombres' },
+    {
+      field: 'email',
+      headerName: 'Correo Electrónico',
+      flex: 1.2,
+      initialHide: !mediaQ1024,
+    },
+    {
+      field: 'phone',
+      headerName: 'Teléfono',
+      flex: 0.8,
+    },
+    {
+      field: 'date',
+      headerName: 'Fecha de Nacimiento',
+      flex: 0.8,
+      initialHide: !mediaQ768,
+    },
+    { field: 'address', headerName: 'Dirección', initialHide: !mediaQ768 },
+    {
+      field: 'nacionality',
+      headerName: 'Nacionalidad',
+      initialHide: !mediaQ560,
+      flex: 0.8,
+    },
+    {
+      field: 'state',
+      headerName: 'Estado',
+      maxWidth: 80,
+      minWidth: 1,
+      cellRenderer: StateColumn,
 
-  /* PAGINATION */
+      initialHide: !mediaQ768,
+    },
+    {
+      field: 'actions',
+      headerName: 'Acciones',
+      maxWidth: !mediaQ560 ? 90 : 140,
+      minWidth: !mediaQ560 ? 50 : 140,
+      sortable: false,
+      cellRenderer: ActionsColumn,
+      cellRendererParams: {
+        setOpenForm: setOpenForm,
+        setOpenModal: setOpenModal,
+        gridRef: gridRef,
+      },
+    },
+  ];
 
+  // DefaultColDef sets props common to all Columns
+
+  const defaultColDef = useMemo(
+    () => ({
+      sortable: true,
+      resizable: true,
+      flex: 1,
+    }),
+    []
+  );
+
+  /* ============== Pagination Functions ============== */
+
+  const totalRows = rowData && rowData.length;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(25); // Initial pageSize
 
   const onPaginationChanged = useCallback(() => {
     if (gridRef.current.api) {
@@ -343,7 +294,7 @@ const Table = () => {
     setPageSize(evt.target.value);
   }, []);
 
-  /* Busqueda */
+  /* ============== Search Function ============== */
 
   const onFilterTextBoxChanged = useCallback(() => {
     gridRef.current.api.setQuickFilter(
@@ -353,12 +304,6 @@ const Table = () => {
 
   return (
     <>
-      {/* <div className='test-button-group'>
-        <button onClick={onBtHide}>Hide Cols</button>
-        <br />
-        <button onClick={onBtShow}>Show Cols</button>
-      </div> */}
-
       <Box className='crud-form-search' bgcolor='background.paper'>
         <Typography
           variant='overline'
@@ -368,6 +313,9 @@ const Table = () => {
         >
           Gestión clientes
         </Typography>
+
+        {/* ============== Form Search ============== */}
+
         <Box className='crud-form-search__container'>
           <Box className='crud-form-search__tools'>
             <TextField
@@ -395,63 +343,11 @@ const Table = () => {
               sx={{ userSelect: 'none', color: 'text.primary' }}
             />
 
-            <Fab
-              color='primary'
-              size='small'
-              aria-label='view-columns'
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup='true'
-              aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
-            >
-              <ViewColumnIcon />
-            </Fab>
-
-            <Menu
-              id='basic-menu'
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-              sx={{ width: '50%' }}
-            >
-              <Typography variant='h6' sx={{ textAlign: 'center' }}>
-                Columnas visibles
-              </Typography>
-              <MenuList dense>
-                {visibleColumns.map(column => (
-                  <MenuItem key={column.field}>
-                    <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            type='checkbox'
-                            checked={column.visible}
-                            onChange={evt =>
-                              handleColumnHide(evt.target.checked, column)
-                            }
-                            size='small'
-                          />
-                        }
-                        label={column.Header}
-                      />
-                    </FormGroup>
-                  </MenuItem>
-                ))}
-                <MenuItem>
-                  <Button
-                    variant='contained'
-                    size='small'
-                    sx={{ width: '100%' }}
-                    onClick={handleResetColumns}
-                  >
-                    Reiniciar
-                  </Button>
-                </MenuItem>
-              </MenuList>
-            </Menu>
+            <ColumnHidding
+              visibleColumns={visibleColumns}
+              handleColumnHide={handleColumnHide}
+              handleResetColumns={handleResetColumns}
+            />
           </Box>
 
           <Fab
@@ -464,38 +360,45 @@ const Table = () => {
             Agregar cliente
             <AddCircleIcon sx={{ ml: 1 }} />
           </Fab>
+
           <CrudForm openForm={openForm} setOpenForm={setOpenForm} />
+
           {dataToDelete && (
-            <CrudModal open={openModal} setOpen={setOpenModal} />
+            <DialogDelete open={openModal} setOpen={setOpenModal} />
           )}
         </Box>
       </Box>
 
+      {/* ============== Table ============== */}
+
       <Box
-        className={darkMode ? 'ag-theme-alpine-dark' : 'ag-theme-alpine'}
-        style={{ width: '100%', height: 'calc(100vh - 17rem)' }}
+        className={`${
+          darkMode ? 'ag-theme-alpine-dark' : 'ag-theme-alpine'
+        } mytable-container`}
       >
         <AgGridReact
-          ref={gridRef} // Ref for accessing Grid's API
-          rowData={rowData} // Row Data for Rows
-          columnDefs={columnDefs} // Column Defs for Columns
-          defaultColDef={defaultColDef} // Default Column Properties
-          animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-          rowSelection='multiple' // Options - allows click selection of rows
+          ref={gridRef}
+          rowData={rowData}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          animateRows={true}
+          rowSelection='multiple'
           pagination={true}
           paginationPageSize={25}
           paginationNumberFormatter={paginationNumberFormatter}
           suppressPaginationPanel={true}
           suppressScrollOnNewData={true}
           onPaginationChanged={onPaginationChanged}
-          // onCellClicked={cellClickedListener} // Optional - registering for Grid Event
         />
       </Box>
+
+      {/* ============== Pagination ============== */}
 
       <Box className='pagination' bgcolor='background.paper'>
         <Box className='pagination__container'>
           <FormControl className='pagination__rows' size='small'>
             <InputLabel id='row-select'>Entradas</InputLabel>
+
             <Select
               labelId='row-select'
               id='row-select'
@@ -518,6 +421,7 @@ const Table = () => {
             } de ${totalRows}`}
           </Box>
         </Box>
+
         <Stack spacing={2}>
           <Pagination
             count={totalPages}

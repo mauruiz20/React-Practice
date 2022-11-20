@@ -2,36 +2,14 @@
   "clientes": [
     {
       "id": 1,
-      "surname": "Dixon Ross",
+      "surname": "Sophia",
       "name": "Delilah Erich",
       "email": "dixonross5374@gmail.com",
       "phone": 3813814446,
       "date": "2006-12-08",
       "address": "757-7929 Duis St.",
       "nacionality": "Costa Rica",
-      "state": "B"
-    },
-    {
-      "id": 2,
-      "surname": "Becker Cantu",
-      "name": "Shelley Whilemina",
-      "email": "beckercantu8542@hotmail.com",
-      "phone": 3865645563,
-      "date": "2011-04-06",
-      "address": "Ap #378-3925 Duis Rd.",
-      "nacionality": "Tonga",
       "state": "A"
-    },
-    {
-      "id": 4,
-      "surname": "Mcmahon Dean",
-      "name": "Wing Lael",
-      "email": "mcmahondean2785@gmail.com",
-      "phone": 3865864377,
-      "date": "1989-11-02",
-      "address": "5087 Sagittis Ave",
-      "nacionality": "Guam",
-      "state": "B"
     },
     {
       "id": 5,
@@ -53,18 +31,7 @@
       "date": "1994-04-23",
       "address": "Ap #938-5698 Gravida. Rd.",
       "nacionality": "Tongaa",
-      "state": "B"
-    },
-    {
-      "id": 8,
-      "surname": "Morrow Marsh",
-      "name": "Willa Brielle",
-      "email": "morrowmarsh9019@hotmail.com",
-      "phone": 3865272842,
-      "date": "1989-01-13",
-      "address": "Ap #718-2018 Nibh Avenue",
-      "nacionality": "Curaçao",
-      "state": "B"
+      "state": "A"
     },
     {
       "id": 10,
@@ -97,7 +64,7 @@
       "date": "1997-09-06",
       "address": "Ap #399-7855 Sagittis St.",
       "nacionality": "Uzbekistan",
-      "state": "A"
+      "state": "B"
     },
     {
       "id": 14,
@@ -108,7 +75,7 @@
       "date": "1992-01-20",
       "address": "804-6429 Purus Avenue",
       "nacionality": "Papua New Guinea",
-      "state": "B"
+      "state": "A"
     },
     {
       "id": 15,
@@ -152,7 +119,7 @@
       "date": "1995-12-13",
       "address": "1919 Tempor St.",
       "nacionality": "Denmark",
-      "state": "A"
+      "state": "B"
     },
     {
       "id": 19,
@@ -163,7 +130,7 @@
       "date": "2015-06-30",
       "address": "347-561 Ligula. Street",
       "nacionality": "Rwanda",
-      "state": "B"
+      "state": "A"
     },
     {
       "id": 20,
@@ -1120,7 +1087,7 @@
       "date": "1993-04-04",
       "address": "757-8921 Eros Avenue",
       "nacionality": "Poland",
-      "state": "A"
+      "state": "B"
     },
     {
       "id": 107,
@@ -5433,6 +5400,28 @@
       "address": "Buenos Aires 597",
       "nacionality": "Argentino",
       "state": "B"
+    },
+    {
+      "id": 499,
+      "surname": "Ruiz",
+      "name": "Francisco Mauricio",
+      "email": "maumarruiz@hotmail.com",
+      "phone": "+543863542848",
+      "date": "2022-11-12",
+      "address": "Buenos Aires 597",
+      "nacionality": "asd",
+      "state": "B"
+    },
+    {
+      "id": 500,
+      "surname": "Ruiz",
+      "name": "Francisco Mauricio",
+      "email": "maumarruiz@hotmail.com",
+      "phone": "+543863542848",
+      "date": "2022-11-10",
+      "address": "Buenos Aires 597",
+      "nacionality": "a",
+      "state": "A"
     }
   ]
 }
