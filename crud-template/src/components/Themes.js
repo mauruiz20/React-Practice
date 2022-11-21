@@ -18,6 +18,7 @@ export const lightTheme = createTheme({
     },
     success: {
       main: '#4caf50',
+      contrastText: '#fff',
     },
     warning: {
       main: '#ff9800',
@@ -68,6 +69,7 @@ export const darkTheme = createTheme({
     },
     success: {
       main: '#4caf50',
+      contrastText: '#fff',
     },
     warning: {
       main: '#ff9800',

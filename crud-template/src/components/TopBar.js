@@ -8,8 +8,18 @@ import NightlightRoundIcon from '@mui/icons-material/NightlightRound';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import StyleContext from '../context/StyleContext';
 
-export default function BasicAppBar() {
+const TopBar = () => {
   const { darkMode, setDarkMode } = useContext(StyleContext);
+
+  const handleDarkMode = () => {
+    if (darkMode) {
+      setDarkMode(false);
+      localStorage.setItem('theme', 'light');
+    } else {
+      setDarkMode(true);
+      localStorage.setItem('theme', 'dark');
+    }
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -18,7 +28,7 @@ export default function BasicAppBar() {
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             CRUD Template
           </Typography>
-          <IconButton sx={{}} onClick={() => setDarkMode(!darkMode)}>
+          <IconButton sx={{}} onClick={handleDarkMode}>
             {!darkMode ? (
               <NightlightRoundIcon sx={{ color: '#fff' }} />
             ) : (
@@ -29,4 +39,6 @@ export default function BasicAppBar() {
       </AppBar>
     </Box>
   );
-}
+};
+
+export default TopBar;

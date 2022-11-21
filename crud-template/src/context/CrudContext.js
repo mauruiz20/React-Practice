@@ -6,6 +6,17 @@ import axios from 'axios';
 
 const CrudContext = createContext();
 
+const initialVisibleColumns = [
+  { field: 'surname', Header: 'Apellidos', visible: true },
+  { field: 'name', Header: 'Nombres', visible: true },
+  { field: 'email', Header: 'Correo Electrónico', visible: true },
+  { field: 'phone', Header: 'Teléfono', visible: true },
+  { field: 'state', Header: 'Estado', visible: true },
+  { field: 'date', Header: 'Fecha de Nacimiento', visible: false },
+  { field: 'address', Header: 'Dirección', visible: false },
+  { field: 'nacionality', Header: 'Nacionalidad', visible: false },
+];
+
 const CrudProvider = ({ children }) => {
   /* Table updates states */
   const [db, setDb] = useState(null);
@@ -13,6 +24,8 @@ const CrudProvider = ({ children }) => {
   const [rows, setRows] = useState(25);
   const [inactives, setInactives] = useState(true);
   const [page, setPage] = useState(1);
+  const [visibleColumns, setVisibleColumns] = useState(initialVisibleColumns);
+  const [openForm, setOpenForm] = useState(false);
 
   /* Messages updates states */
   const [modalData, setModalData] = useState({});
@@ -29,6 +42,7 @@ const CrudProvider = ({ children }) => {
     } else {
       closeSnackbar(errId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, closeSnackbar]);
 
   let url = 'http://localhost:5000/clientes';
@@ -51,6 +65,7 @@ const CrudProvider = ({ children }) => {
 
   /* API POST request */
   const createData = data => {
+    data.active = true;
     axios
       .post(url, data)
       .then(response => {
@@ -146,6 +161,26 @@ const CrudProvider = ({ children }) => {
     });
   };
 
+  /* Visible columns functions */
+
+  const handleColumnHide = (checked, column) => {
+    let newColumn = {
+      field: column.field,
+      Header: column.Header,
+      visible: checked,
+    };
+
+    let newVisibleColumns = visibleColumns.map(columnEl =>
+      columnEl.field === newColumn.field ? newColumn : columnEl
+    );
+
+    setVisibleColumns(newVisibleColumns);
+  };
+
+  const handleResetColumns = () => {
+    setVisibleColumns(initialVisibleColumns);
+  };
+
   const data = {
     db,
     error,
@@ -153,6 +188,8 @@ const CrudProvider = ({ children }) => {
     dataToEdit,
     setDataToEdit,
     rows,
+    visibleColumns,
+    setVisibleColumns,
     setRows,
     inactives,
     setInactives,
@@ -163,6 +200,10 @@ const CrudProvider = ({ children }) => {
     createData,
     updateData,
     deleteData,
+    handleColumnHide,
+    handleResetColumns,
+    openForm,
+    setOpenForm,
   };
 
   return <CrudContext.Provider value={data}>{children}</CrudContext.Provider>;

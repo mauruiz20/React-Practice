@@ -1,5 +1,5 @@
 import { SnackbarProvider } from 'notistack';
-import BasicAppBar from './components/BasicAppBar';
+import TopBar from './components/TopBar';
 import Crud from './components/Crud';
 import { CrudProvider } from './context/CrudContext';
 import { StyleProvider } from './context/StyleContext';
@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
       <StyleProvider>
-        <BasicAppBar />
+        <TopBar />
         <SnackbarProvider maxSnack={3}>
           <CrudProvider>
             <Crud />

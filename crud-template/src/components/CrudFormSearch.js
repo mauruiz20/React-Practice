@@ -1,6 +1,5 @@
 import React, { useCallback, useContext } from 'react';
 import CrudContext from '../context/CrudContext';
-import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import SearchIcon from '@mui/icons-material/Search';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -12,9 +11,12 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import ColumnHidding from './ColumnHidding';
+import CrudForm from './CrudForm';
 
 const CrudFormSearch = ({ setSearch }) => {
-  const { inactives, setInactives, setPage } = useContext(CrudContext);
+  const { inactives, setInactives, setPage, setOpenForm } =
+    useContext(CrudContext);
   const { register, handleSubmit } = useForm({});
 
   const onSubmit = useCallback(
@@ -69,6 +71,9 @@ const CrudFormSearch = ({ setSearch }) => {
             label='Incluir bajas'
             sx={{ userSelect: 'none' }}
           />
+
+          <ColumnHidding />
+
           <Tooltip
             title='Buscar'
             arrow
@@ -77,6 +82,7 @@ const CrudFormSearch = ({ setSearch }) => {
             enterNextDelay={2000}
             leaveDelay={10}
             type='submit'
+            sx={{ margin: '0 .5rem' }}
           >
             <Fab color='primary'>
               <SearchIcon sx={{ fontSize: '35px' }} />
@@ -84,13 +90,18 @@ const CrudFormSearch = ({ setSearch }) => {
           </Tooltip>
         </div>
 
-        <Link to='/crear-modificar'>
-          <Fab variant='extended' size='medium' color='primary'>
-            Agregar cliente
-            <AddCircleIcon sx={{ ml: 1 }} />
-          </Fab>
-        </Link>
+        <Fab
+          variant='extended'
+          size='medium'
+          color='primary'
+          onClick={() => setOpenForm(true)}
+        >
+          Agregar cliente
+          <AddCircleIcon sx={{ ml: 1 }} />
+        </Fab>
       </form>
+
+      <CrudForm />
     </div>
   );
 };

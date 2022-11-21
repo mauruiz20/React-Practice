@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import CrudContext from '../context/CrudContext';
-import CrudModal from './CrudModal';
 
 import { Box, IconButton } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import CrudTableRow from './CrudTableRow';
 import StyleContext from '../context/StyleContext';
+import DialogDelete from './DialogDelete';
 
 const CrudTable = ({ search }) => {
-  const { db, rows, inactives, page } = useContext(CrudContext);
+  const { db, rows, inactives, page, visibleColumns } = useContext(CrudContext);
   const { mediaQ1024, mediaQ768, mediaQ560 } = useContext(StyleContext);
   const [order, setOrder] = useState('surname asc');
   const [modal, setModal] = useState(false);
@@ -67,11 +67,6 @@ const CrudTable = ({ search }) => {
     );
   };
 
-  const orderStyles = {
-    position: 'absolute',
-    transform: !mediaQ560 ? 'translate(2.75rem)' : 'translate(3.5rem)',
-  };
-
   const cellStyle = {
     borderRight: '1px',
     borderRightStyle: 'solid',
@@ -80,7 +75,7 @@ const CrudTable = ({ search }) => {
 
   return (
     <Box className='mytable'>
-      <CrudModal open={modal} setOpen={setModal} />
+      <DialogDelete open={modal} setOpen={setModal} />
 
       <Box className='mytable__head'>
         <Box
@@ -91,92 +86,133 @@ const CrudTable = ({ search }) => {
               'linear-gradient(rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11))',
           }}
         >
-          <Box className='mytable__head-cell' sx={cellStyle}>
-            Apellidos
-            <IconButton
-              size='small'
-              sx={orderStyles}
-              onClick={() => {
-                let alt = window.pageYOffset;
-                order === 'surname asc'
-                  ? setOrder('surname desc')
-                  : setOrder('surname asc');
-                setTimeout(() => {
-                  window.scrollTo({
-                    top: alt,
-                    behavior: 'auto',
-                  });
-                }, 100);
-              }}
-              color={
-                order === 'surname asc' || order === 'surname desc'
-                  ? 'tertiary'
-                  : 'default'
-              }
-              disableRipple={true}
-            >
-              <ArrowUpwardIcon
-                fontSize='small'
-                sx={{
-                  transform:
-                    order === 'surname desc'
-                      ? 'rotate(180deg)'
-                      : 'rotate(0deg)',
-                  transition: 'transform 0.25s ease-out',
-                }}
-              />
-            </IconButton>
-          </Box>
-          <Box className='mytable__head-cell' sx={cellStyle}>
-            Nombres
-            <IconButton
-              size='small'
-              sx={orderStyles}
-              onClick={() => {
-                let alt = window.pageYOffset;
-                order === 'name asc'
-                  ? setOrder('name desc')
-                  : setOrder('name asc');
-                setTimeout(() => {
-                  window.scrollTo({
-                    top: alt,
-                    behavior: 'auto',
-                  });
-                }, 100);
-              }}
-              color={
-                order === 'name asc' || order === 'name desc'
-                  ? 'tertiary'
-                  : 'default'
-              }
-              disableRipple={true}
-            >
-              <ArrowUpwardIcon
-                fontSize='small'
-                sx={{
-                  transform:
-                    order === 'name desc' ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.25s ease-out',
-                }}
-              />
-            </IconButton>
-          </Box>
-          {mediaQ1024 && (
+          {visibleColumns[0].visible && (
             <Box className='mytable__head-cell' sx={cellStyle}>
+              <IconButton
+                size='small'
+                sx={{
+                  width: '100%',
+                  fontSize: 'inherit',
+                  fontFamily: 'inherit',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => {
+                  let alt = window.pageYOffset;
+                  order === 'surname asc'
+                    ? setOrder('surname desc')
+                    : setOrder('surname asc');
+                  setTimeout(() => {
+                    window.scrollTo({
+                      top: alt,
+                      behavior: 'auto',
+                    });
+                  }, 100);
+                }}
+                disableRipple={true}
+              >
+                Apellidos
+                <ArrowUpwardIcon
+                  fontSize='small'
+                  sx={{
+                    color: order.includes('surname')
+                      ? 'tertiary.main'
+                      : 'transparent',
+                    margin: '0 .5rem',
+                    transform:
+                      order === 'surname desc'
+                        ? 'rotate(180deg)'
+                        : 'rotate(0deg)',
+                    transition: 'transform 0.25s ease-out, color 0.25s',
+                    '&:hover': {
+                      color: 'tertiary.main',
+                    },
+                  }}
+                />
+              </IconButton>
+            </Box>
+          )}
+
+          {visibleColumns[1].visible && (
+            <Box className='mytable__head-cell' sx={cellStyle}>
+              <IconButton
+                size='small'
+                sx={{
+                  width: '100%',
+                  fontSize: 'inherit',
+                  fontFamily: 'inherit',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => {
+                  let alt = window.pageYOffset;
+                  order === 'name asc'
+                    ? setOrder('name desc')
+                    : setOrder('name asc');
+                  setTimeout(() => {
+                    window.scrollTo({
+                      top: alt,
+                      behavior: 'auto',
+                    });
+                  }, 100);
+                }}
+                disableRipple={true}
+              >
+                Nombres
+                <ArrowUpwardIcon
+                  fontSize='small'
+                  sx={{
+                    color: order.startsWith('name')
+                      ? 'tertiary.main'
+                      : 'transparent',
+                    margin: '0 .5rem',
+                    transform:
+                      order === 'name desc' ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.25s ease-out, color 0.25s',
+                    '&:hover': {
+                      color: 'tertiary.main',
+                    },
+                  }}
+                />
+              </IconButton>
+            </Box>
+          )}
+
+          {visibleColumns[2].visible && mediaQ1024 && (
+            <Box className='mytable__head-cell mytable__email' sx={cellStyle}>
               Correo Electrónico
             </Box>
           )}
-          {mediaQ768 && (
+
+          {visibleColumns[3].visible && mediaQ768 && (
             <Box className='mytable__head-cell' sx={cellStyle}>
               Teléfono
             </Box>
           )}
-          {mediaQ560 && (
+
+          {visibleColumns[4].visible && mediaQ560 && (
             <Box className='mytable__head-cell mytable__state' sx={cellStyle}>
               Estado
             </Box>
           )}
-          <Box className='mytable__head-cell'>Acciones</Box>
+
+          {visibleColumns[5].visible && (
+            <Box className='mytable__head-cell' sx={cellStyle}>
+              Nacimiento
+            </Box>
+          )}
+
+          {visibleColumns[6].visible && (
+            <Box className='mytable__head-cell' sx={cellStyle}>
+              Dirección
+            </Box>
+          )}
+
+          {visibleColumns[7].visible && (
+            <Box className='mytable__head-cell' sx={cellStyle}>
+              Nacionalidad
+            </Box>
+          )}
+
+          <Box className='mytable__head-cell mytable__actions'>Acciones</Box>
         </Box>
       </Box>
       <Box className='mytable__body'>{data()}</Box>

@@ -1,13 +1,29 @@
-import React, { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useContext, useState } from 'react';
 import CrudContext from '../context/CrudContext';
 import { useForm } from 'react-hook-form';
-import { Button, InputLabel, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  InputLabel,
+  Switch,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import { Box } from '@mui/system';
 
 const CrudForm = () => {
-  const { createData, updateData, dataToEdit, setDataToEdit } =
-    useContext(CrudContext);
+  const {
+    createData,
+    updateData,
+    dataToEdit,
+    setDataToEdit,
+    openForm,
+    setOpenForm,
+  } = useContext(CrudContext);
+  const [addMultiple, setAddMultiple] = useState(false);
 
   /* useForm is a custom hook for managing forms with ease */
 
@@ -29,8 +45,11 @@ const CrudForm = () => {
       date: '',
       address: '',
       nacionality: '',
+      active: true,
     },
   });
+
+  /* Fields control */
 
   const messages = {
     required: 'Campo obligatorio',
@@ -62,22 +81,14 @@ const CrudForm = () => {
 
   const onSubmit = data => {
     if (getValues().id === null) {
+      // ID == null => create data
       createData(data);
       handleReset();
+      setOpenForm(addMultiple);
     } else {
+      // ID != null => update data
       updateData(data);
     }
-  };
-
-  /* useNavigate hook returns a function that lets navigate programmatically */
-
-  const navigate = useNavigate();
-
-  /* Return to the main page and reset form */
-
-  const handleReturn = () => {
-    handleReset();
-    navigate('/');
   };
 
   /* Reset form */
@@ -94,237 +105,250 @@ const CrudForm = () => {
     setDataToEdit(null);
   };
 
+  /* Close form */
+
+  const handleClose = () => {
+    setOpenForm(false);
+    handleReset();
+    setAddMultiple(false);
+  };
+
   return (
-    <div className='crud-form'>
-      <Typography
-        variant='overline'
-        display='block'
-        sx={{
-          fontSize: '2rem',
-          textAlign: 'center',
-          lineHeight: '4rem',
-        }}
+    <>
+      <Dialog
+        open={openForm}
+        onClose={handleClose}
+        aria-labelledby='form-dialog-title'
+        fullWidth={true}
+        maxWidth={'sm'}
       >
-        {dataToEdit ? 'Editar Cliente' : 'Agregar Cliente'}
-      </Typography>
-
-      <hr className='crud-form__hr' />
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className='crud-form__container'
-        id='crud-form'
-      >
-        <Box className='crud-form__item'>
-          <InputLabel
-            htmlFor='surname'
-            className='crud-form__label'
-            error={errors.surname ? true : false}
-          >
-            Apellidos:
-          </InputLabel>
-          <TextField
-            {...register('surname', {
-              required: messages.required,
-              pattern: {
-                value: patterns.onlyAlphabetic,
-                message: messages.onlyAlphabetic,
-              },
-            })}
-            className='crud-form__input'
-            variant='outlined'
-            type='text'
-            name='surname'
-            size='small'
-            color='info'
-            autoComplete='off'
-            InputLabelProps={{ shrink: true }}
-            error={errors.surname ? true : false}
-            helperText={errors.surname ? errors.surname.message : ' '}
-          />
-        </Box>
-
-        <Box className='crud-form__item'>
-          <InputLabel
-            htmlFor='name'
-            className='crud-form__label'
-            error={errors.name ? true : false}
-          >
-            Nombres:
-          </InputLabel>
-          <TextField
-            {...register('name', {
-              required: messages.required,
-              pattern: {
-                value: patterns.onlyAlphabetic,
-                message: messages.onlyAlphabetic,
-              },
-            })}
-            className='crud-form__input'
-            variant='outlined'
-            type='text'
-            name='name'
-            size='small'
-            color='info'
-            autoComplete='off'
-            InputLabelProps={{ shrink: true }}
-            error={errors.name ? true : false}
-            helperText={errors.name ? errors.name.message : ' '}
-          />
-        </Box>
-
-        <Box className='crud-form__item'>
-          <InputLabel
-            htmlFor='email'
-            className='crud-form__label'
-            error={errors.email ? true : false}
-          >
-            Correo electrónico:
-          </InputLabel>
-          <TextField
-            {...register('email', {
-              required: messages.required,
-              pattern: {
-                value: patterns.email,
-                message: messages.email,
-              },
-            })}
-            className='crud-form__input'
-            variant='outlined'
-            type='email'
-            name='email'
-            size='small'
-            color='info'
-            autoComplete='off'
-            InputLabelProps={{ shrink: true }}
-            error={errors.email ? true : false}
-            helperText={errors.email ? errors.email.message : ' '}
-          />
-        </Box>
-
-        <Box className='crud-form__item'>
-          <InputLabel
-            htmlFor='phone'
-            className='crud-form__label'
-            error={errors.phone ? true : false}
-          >
-            Teléfono:
-          </InputLabel>
-          <TextField
-            {...register('phone', {
-              required: true,
-            })}
-            className='crud-form__input'
-            variant='outlined'
-            type='text'
-            name='phone'
-            size='small'
-            color='info'
-            autoComplete='off'
-            InputLabelProps={{ shrink: true }}
-            error={errors.phone ? true : false}
-            helperText={errors.phone ? errors.phone.message : ' '}
-          />
-        </Box>
-
-        <Box className='crud-form__item'>
-          <InputLabel
-            htmlFor='address'
-            className='crud-form__label'
-            error={errors.address ? true : false}
-          >
-            Dirección:
-          </InputLabel>
-          <TextField
-            {...register('address', {
-              required: messages.required,
-            })}
-            className='crud-form__input'
-            variant='outlined'
-            type='text'
-            name='address'
-            size='small'
-            color='info'
-            autoComplete='off'
-            InputLabelProps={{ shrink: true }}
-            error={errors.address ? true : false}
-            helperText={errors.address ? errors.address.message : ' '}
-          />
-        </Box>
-
-        <Box className='crud-form__item'>
-          <InputLabel
-            htmlFor='date'
-            className='crud-form__label'
-            error={errors.date ? true : false}
-          >
-            Fecha de nacimiento:
-          </InputLabel>
-          <TextField
-            {...register('date', {
-              required: messages.required,
-            })}
-            className='crud-form__input-date'
-            type='date'
-            size='small'
-            color='info'
-            autoComplete='off'
-            InputLabelProps={{ shrink: true }}
-            error={errors.date ? true : false}
-            helperText={errors.date ? errors.date.message : ' '}
-          />
-        </Box>
-        <Box className='crud-form__item'>
-          <InputLabel
-            htmlFor='nacionality'
-            className='crud-form__label'
-            error={errors.nacionality ? true : false}
-          >
-            Nacionalidad
-          </InputLabel>
-          <TextField
-            {...register('nacionality', {
-              required: messages.required,
-              pattern: {
-                value: patterns.onlyAlphabetic,
-                message: messages.onlyAlphabetic,
-              },
-            })}
-            className='crud-form__input'
-            variant='outlined'
-            type='text'
-            name='nacionality'
-            size='small'
-            color='info'
-            autoComplete='off'
-            InputLabelProps={{ shrink: true }}
-            error={errors.nacionality ? true : false}
-            helperText={errors.nacionality ? errors.nacionality.message : ' '}
-          />
-        </Box>
-      </form>
-      <hr className='crud-form__hr' />
-      <div className='crud-form__btn-container'>
-        <Button
-          className='crud-form__btn'
-          variant='contained'
-          color='neutral'
-          onClick={handleReturn}
+        <DialogTitle
+          id='form-dialog-title'
+          variant='overline'
+          display='block'
+          color='text.primary'
+          className='crud-form__dialog-title'
         >
-          Volver
-        </Button>
+          {dataToEdit ? 'Editar Cliente' : 'Agregar Cliente'}
+        </DialogTitle>
 
-        <Button
-          className='crud-form__btn'
-          variant='contained'
-          color='primary'
-          type='submit'
-          form='crud-form'
-        >
-          Enviar
-        </Button>
-      </div>
-    </div>
+        <DialogContent dividers>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className='crud-form__container'
+            id='crud-form'
+          >
+            <Box>
+              <InputLabel
+                htmlFor='surname'
+                error={errors.surname ? true : false}
+              >
+                Apellidos:
+              </InputLabel>
+              <TextField
+                {...register('surname', {
+                  required: messages.required,
+                  pattern: {
+                    value: patterns.onlyAlphabetic,
+                    message: messages.onlyAlphabetic,
+                  },
+                })}
+                variant='standard'
+                type='text'
+                autoFocus
+                fullWidth
+                name='surname'
+                size='small'
+                color='info'
+                autoComplete='off'
+                InputLabelProps={{ shrink: true }}
+                error={errors.surname ? true : false}
+                helperText={errors.surname ? errors.surname.message : ' '}
+              />
+            </Box>
+
+            <Box>
+              <InputLabel htmlFor='name' error={errors.name ? true : false}>
+                Nombres:
+              </InputLabel>
+              <TextField
+                {...register('name', {
+                  required: messages.required,
+                  pattern: {
+                    value: patterns.onlyAlphabetic,
+                    message: messages.onlyAlphabetic,
+                  },
+                })}
+                variant='standard'
+                type='text'
+                fullWidth
+                name='name'
+                size='small'
+                color='info'
+                autoComplete='off'
+                InputLabelProps={{ shrink: true }}
+                error={errors.name ? true : false}
+                helperText={errors.name ? errors.name.message : ' '}
+              />
+            </Box>
+
+            <Box>
+              <InputLabel htmlFor='email' error={errors.email ? true : false}>
+                Correo electrónico:
+              </InputLabel>
+              <TextField
+                {...register('email', {
+                  required: messages.required,
+                  pattern: {
+                    value: patterns.email,
+                    message: messages.email,
+                  },
+                })}
+                variant='standard'
+                type='email'
+                fullWidth
+                name='email'
+                size='small'
+                color='info'
+                autoComplete='off'
+                InputLabelProps={{ shrink: true }}
+                error={errors.email ? true : false}
+                helperText={errors.email ? errors.email.message : ' '}
+              />
+            </Box>
+
+            <Box>
+              <InputLabel htmlFor='phone' error={errors.phone ? true : false}>
+                Teléfono:
+              </InputLabel>
+              <TextField
+                {...register('phone', {
+                  required: true,
+                })}
+                variant='standard'
+                type='text'
+                fullWidth
+                name='phone'
+                size='small'
+                color='info'
+                autoComplete='off'
+                InputLabelProps={{ shrink: true }}
+                error={errors.phone ? true : false}
+                helperText={errors.phone ? errors.phone.message : ' '}
+              />
+            </Box>
+
+            <Box>
+              <InputLabel
+                htmlFor='address'
+                error={errors.address ? true : false}
+              >
+                Dirección:
+              </InputLabel>
+              <TextField
+                {...register('address', {
+                  required: messages.required,
+                })}
+                variant='standard'
+                type='text'
+                fullWidth
+                name='address'
+                size='small'
+                color='info'
+                autoComplete='off'
+                InputLabelProps={{ shrink: true }}
+                error={errors.address ? true : false}
+                helperText={errors.address ? errors.address.message : ' '}
+              />
+            </Box>
+
+            <Box>
+              <InputLabel htmlFor='date' error={errors.date ? true : false}>
+                Fecha de nacimiento:
+              </InputLabel>
+              <TextField
+                {...register('date', {
+                  required: messages.required,
+                })}
+                type='date'
+                variant='standard'
+                fullWidth
+                size='small'
+                color='info'
+                autoComplete='off'
+                InputLabelProps={{ shrink: true }}
+                error={errors.date ? true : false}
+                helperText={errors.date ? errors.date.message : ' '}
+              />
+            </Box>
+
+            <Box>
+              <InputLabel
+                htmlFor='nacionality'
+                error={errors.nacionality ? true : false}
+              >
+                Nacionalidad
+              </InputLabel>
+              <TextField
+                {...register('nacionality', {
+                  required: messages.required,
+                  pattern: {
+                    value: patterns.onlyAlphabetic,
+                    message: messages.onlyAlphabetic,
+                  },
+                })}
+                variant='standard'
+                type='text'
+                fullWidth
+                name='nacionality'
+                size='small'
+                color='info'
+                autoComplete='off'
+                InputLabelProps={{ shrink: true }}
+                error={errors.nacionality ? true : false}
+                helperText={
+                  errors.nacionality ? errors.nacionality.message : ' '
+                }
+              />
+            </Box>
+          </form>
+        </DialogContent>
+
+        <DialogActions className='crud-form__dialog-actions'>
+          <Button
+            className='crud-form__btn'
+            onClick={handleClose}
+            variant='contained'
+            color='neutral'
+          >
+            Cancelar
+          </Button>
+
+          <Box>
+            {!dataToEdit && (
+              <Tooltip title='Agregar múltiples clientes' placement='left'>
+                <Switch
+                  checked={addMultiple}
+                  onChange={evt => setAddMultiple(evt.target.checked)}
+                  value='addMultiple'
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              </Tooltip>
+            )}
+
+            <Button
+              className='crud-form__btn'
+              type='submit'
+              form='crud-form'
+              variant='contained'
+              color='primary'
+            >
+              {dataToEdit ? 'Editar' : 'Agregar'}
+            </Button>
+          </Box>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 

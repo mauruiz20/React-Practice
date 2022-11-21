@@ -60,6 +60,7 @@ a {
 
 body {
   font-family: var(--body-font);
+  font-size: 14px;
 }
 
 body.light-theme {
@@ -77,51 +78,16 @@ body.dark-theme {
 
 /* ============== CRUD Form ============== */
 
-.crud-form {
-  padding: 1rem 2rem;
+.crud-form__dialog-title {
+  font-size: 1.4rem !important;
+  line-height: 1.4rem;
+  padding-top: 1.5rem;
+  text-align: center;
 }
 
-.crud-form__container {
-  margin: 2rem 0 0.5rem 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem 2rem;
-  justify-items: center;
-}
-
-.crud-form__item {
-  display: flex;
-  width: 100%;
-}
-
-.crud-form__label {
-  display: block;
-  padding: 0.5rem !important;
-  text-align: right;
-  min-width: 11rem;
-}
-
-.crud-form__input {
-  flex-grow: 1;
-  max-width: 25rem;
-}
-
-.crud-form__input-date {
-  flex-grow: 0.25;
-}
-
-.crud-form__hr {
-  margin: 0 1rem;
-}
-
-.crud-form__btn-container {
-  grid-column: 1 / 3;
-  margin: 2rem 0;
-  padding: 0 6rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+.crud-form__dialog-actions {
+  justify-content: space-between !important;
+  padding: 1.25rem !important;
 }
 
 .crud-form__btn {
@@ -163,15 +129,11 @@ body.dark-theme {
 
 .mytable__head-row,
 .mytable__body-row {
-  display: grid;
-  grid-template-columns:
-    minmax(8rem, 1fr) minmax(8rem, 1fr) minmax(17rem, 1.5fr)
-    minmax(9rem, 0.5fr) 5rem minmax(5rem, 0.9fr);
+  display: flex;
 }
 
 .mytable__head {
   z-index: 1;
-  position: sticky;
   top: 0;
 }
 
@@ -181,14 +143,14 @@ body.dark-theme {
 
 .mytable__head-cell {
   border-block-end: 3px solid #000;
-  position: relative;
-  padding: 0.5rem 0 !important;
+  font-size: 15px;
 }
 
 .mytable__head-cell,
 .mytable__body-cell,
 .mytable__body-cell--center {
-  padding: 0.2rem 0;
+  width: 300%;
+  padding: 0.2rem 0.75rem;
   /* border-right: 1px solid #dde2eb; */
   display: flex;
   justify-content: space-evenly;
@@ -204,7 +166,6 @@ body.dark-theme {
 
 .mytable__body-cell {
   justify-content: start;
-  padding: 0 1rem;
 }
 
 .mytable__body-cell:first-child,
@@ -218,10 +179,23 @@ body.dark-theme {
   border-right: 0;
 }
 
+.mytable__email {
+  width: 500%;
+}
+
+.mytable__state {
+  width: 100%;
+}
+
+.mytable__actions {
+  width: 200%;
+}
+
 /* ============== MyTable Collapse ============== */
 
 .mytable-collapse {
-  grid-column: 1 / 10;
+  flex-basis: 100%;
+  cursor: pointer;
 }
 
 .mytable-collapse__container {
@@ -280,62 +254,30 @@ body.dark-theme {
   justify-content: center !important;
 }
 
-/* ============== CRUD Modal ============== */
+/* ============== Dialog Delete ============== */
 
-.crud-modal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40%;
-  min-width: 10rem;
-  background: var(--white);
-  border-radius: 1rem;
-  padding: 1.5rem;
+.dialog-delete__title {
+  text-align: center;
+  font-size: 1.2rem !important;
 }
 
-.crud-modal__btn-container {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+.dialog-delete__content {
+  text-align: center;
+  padding: 2rem 0;
 }
 
-.crud-modal__btn {
+.dialog-delete__actions {
+  justify-content: space-between !important;
+  padding: 1.25rem !important;
+}
+
+.dialog-delete__btn {
   width: 7rem;
-}
-
-.crud-modal__hr {
-  margin: 1.5rem 0;
 }
 
 /* ============== Tamaño tablet horizontal (1024-768) ============== */
 
 @media screen and (max-width: 1024px) {
-  /* ============== CRUD Form ============== */
-
-  .crud-form__container {
-    gap: 0 3rem;
-  }
-
-  .crud-form__item {
-    flex-direction: column;
-  }
-
-  .crud-form__label {
-    text-align: left;
-    padding: 0 0.25rem !important;
-  }
-
-  .crud-form__input-date {
-    width: 50%;
-  }
-
-  .crud-form__hr {
-    margin: 0;
-  }
-
   /* ============== CRUD Form Search ============== */
 
   .crud-form-search {
@@ -352,15 +294,6 @@ body.dark-theme {
 
   /* ============== MyTable ============== */
 
-  .mytable__head-row,
-  .mytable__body-row {
-    display: grid;
-    grid-template-columns:
-      minmax(7rem, 1fr) minmax(7rem, 1fr) minmax(8rem, 0.5fr)
-      4rem minmax(11rem, 1fr);
-    text-align: center;
-  }
-
   .mytable__body-cell {
     padding: 0 0.8rem;
   }
@@ -371,16 +304,6 @@ body.dark-theme {
 @media screen and (max-width: 768px) {
   body {
     padding: 0;
-  }
-
-  /* ============== CRUD Form ============== */
-
-  .crud-form__input-date {
-    width: 70%;
-  }
-
-  .crud-form__btn-container {
-    padding: 0 1rem;
   }
 
   /* ============== CRUD Form Search ============== */
@@ -394,24 +317,8 @@ body.dark-theme {
 
   /* ============== MyTable ============== */
 
-  .mytable__head-row,
-  .mytable__body-row {
-    display: grid;
-    grid-template-columns:
-      minmax(6rem, 1fr) minmax(6rem, 1fr)
-      4rem minmax(9rem, 1fr);
-    text-align: center;
-  }
-
   .mytable__actions {
     display: flex;
-  }
-
-  /* ============== CRUD Modal ============== */
-
-  .crud-modal {
-    width: 90%;
-    min-width: 10rem;
   }
 
   /* ============== CRUD Pagination ============== */
@@ -452,52 +359,9 @@ body.dark-theme {
   }
 }
 
-/* ============== Tamaño (560 - 480) ============== */
-
-@media screen and (max-width: 560px) {
-  /* ============== MyTable ============== */
-  .mytable__head-row,
-  .mytable__body-row {
-    grid-template-columns:
-      minmax(6rem, 1fr) minmax(6rem, 1fr)
-      minmax(9rem, 1fr);
-  }
-}
-
 /* ============== Tamaño teléfonos (480-menos ) ============== */
 
 @media screen and (max-width: 480px) {
-  /* ============== CRUD Form ============== */
-
-  .crud-form {
-    padding: 0.25rem 0;
-  }
-
-  .crud-form__container {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 1rem;
-  }
-
-  .crud-form__input {
-    width: 100%;
-    max-width: none;
-  }
-
-  .crud-form__input-date {
-    width: 75%;
-    max-width: none;
-  }
-
-  .crud-form__hr {
-    margin: 0;
-  }
-
-  .crud-form__btn-container {
-    margin: 1rem 0;
-    gap: 1rem;
-  }
-
   /* ============== CRUD Form Search ============== */
 
   .crud-form-search__form {
@@ -521,12 +385,5 @@ body.dark-theme {
 
   .pagination {
     padding: 1rem 0.5rem;
-  }
-
-  /* ============== CRUD Modal ============== */
-
-  .crud-modal__btn-container {
-    justify-content: center;
-    gap: 1rem;
   }
 }

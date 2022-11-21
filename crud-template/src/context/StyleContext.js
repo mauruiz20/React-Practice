@@ -10,7 +10,16 @@ const StyleProvider = ({ children }) => {
   const mediaQ1024 = useMediaQuery('(min-width: 1025px)');
   const mediaQ768 = useMediaQuery('(min-width: 769px)');
   const mediaQ560 = useMediaQuery('(min-width: 561px)');
-  const [darkMode, setDarkMode] = useState(false);
+
+  let initialDarkMode = true;
+  if (localStorage.getItem('theme') === null) {
+    localStorage.setItem('theme', 'light');
+  }
+  if (localStorage.getItem('theme') === 'light') {
+    initialDarkMode = false;
+  }
+
+  const [darkMode, setDarkMode] = useState(initialDarkMode);
 
   if (darkMode) {
     document.querySelector('body').classList.remove('light-theme');

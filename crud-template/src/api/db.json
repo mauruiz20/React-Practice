@@ -544,7 +544,7 @@
       "date": "1996-11-03",
       "address": "185-3362 Magna. Avenue",
       "nacionality": "Northern Mariana Islands",
-      "active": false
+      "active": true
     },
     {
       "id": 58,
@@ -697,7 +697,7 @@
       "date": "2011-10-26",
       "address": "P.O. Box 441, 1636 Elit. Av.",
       "nacionality": "Denmark",
-      "active": false
+      "active": true
     },
     {
       "id": 75,
@@ -718,7 +718,8 @@
       "phone": "+543863542848",
       "date": "2022-11-24",
       "address": "Buenos Aires 597",
-      "nacionality": "Argentino"
+      "nacionality": "Argentino",
+      "active": true
     },
     {
       "id": 1668316149433,
@@ -770,39 +771,7 @@
       "phone": "dasdawdawd",
       "date": "2022-11-14",
       "address": "dasdawsd",
-      "nacionality": "dasdawda",
-      "active": true
-    },
-    {
-      "id": 1668360961071,
-      "surname": "Ruiz",
-      "name": "Francisco Mauricio",
-      "email": "maumarruiz@hotmail.com",
-      "phone": "+543863542848",
-      "date": "2022-11-02",
-      "address": "Buenos Aires 597",
-      "nacionality": "asd"
-    },
-    {
-      "id": 1668360961072,
-      "surname": "asd",
-      "name": "asd",
-      "email": "asd@asd.asd",
-      "phone": "1234a",
-      "date": "2022-11-14",
-      "address": "123123eads",
-      "nacionality": "asddawdadwd",
-      "active": false
-    },
-    {
-      "id": 1668360961073,
-      "surname": "Ruiz",
-      "name": "Francisco Mauricio",
-      "email": "maumarruiz@hotmail.com",
-      "phone": "+543863542848",
-      "date": "2022-11-15",
-      "address": "Buenos Aires 597",
-      "nacionality": "asdawd"
+      "nacionality": "dasdawda"
     }
   ]
 }
