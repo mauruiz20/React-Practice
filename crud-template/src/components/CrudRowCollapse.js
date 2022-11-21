@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 import moment from 'moment';
-import StyleContext from '../context/StyleContext';
+// import StyleContext from '../context/StyleContext';
 import { Box, Collapse, Typography } from '@mui/material';
 import CrudContext from '../context/CrudContext';
 
 const CrudRowCollapse = ({ open, data }) => {
   const { visibleColumns } = useContext(CrudContext);
-  const { mediaQ1024, mediaQ768, mediaQ560 } = useContext(StyleContext);
 
   const formattedDate = moment(data.date).format('D/MM/YYYY');
 
@@ -32,34 +31,17 @@ const CrudRowCollapse = ({ open, data }) => {
           </Box>
         )}
 
-        {!visibleColumns[2].visible && !mediaQ1024 && (
+        {!visibleColumns[2].visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Correo Electrónico</Box>
             <Box className='mytable-collapse__data'>{data.email}</Box>
           </Box>
         )}
 
-        {!visibleColumns[3].visible && !mediaQ768 && (
+        {!visibleColumns[3].visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Teléfono</Box>
             <Box className='mytable-collapse__data'>{data.phone}</Box>
-          </Box>
-        )}
-
-        {!visibleColumns[4].visible && !mediaQ560 && (
-          <Box className='mytable-collapse__item'>
-            <Box className='mytable-collapse__title'>Estado</Box>
-            <Box className='mytable-collapse__data'>
-              <Typography
-                sx={{
-                  color: data.active ? 'success.light' : 'error.light',
-                  fontWeight: 'bold',
-                  lineHeight: '1',
-                }}
-              >
-                {data.active ? 'Dado de alta' : 'Dado de baja'}
-              </Typography>
-            </Box>
           </Box>
         )}
 
@@ -81,6 +63,23 @@ const CrudRowCollapse = ({ open, data }) => {
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Nacionalidad</Box>
             <Box className='mytable-collapse__data'>{data.nacionality}</Box>
+          </Box>
+        )}
+
+        {!visibleColumns[4].visible && (
+          <Box className='mytable-collapse__item'>
+            <Box className='mytable-collapse__title'>Estado</Box>
+            <Box className='mytable-collapse__data'>
+              <Typography
+                sx={{
+                  color: data.state === 'A' ? 'success.light' : 'error.light',
+                  fontWeight: 'bold',
+                  lineHeight: '1',
+                }}
+              >
+                {data.state === 'A' ? 'Dado de alta' : 'Dado de baja'}
+              </Typography>
+            </Box>
           </Box>
         )}
       </Box>

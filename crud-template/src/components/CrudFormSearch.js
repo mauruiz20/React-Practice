@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import SearchIcon from '@mui/icons-material/Search';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {
+  Box,
   Checkbox,
   Fab,
   FormControlLabel,
@@ -47,7 +48,7 @@ const CrudFormSearch = ({ setSearch }) => {
         className='crud-form-search__form'
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className='crud-form-search__container'>
+        <Box className='crud-form-search__container'>
           <TextField
             className='crud-form-search__input'
             label='Búsqueda'
@@ -69,11 +70,13 @@ const CrudFormSearch = ({ setSearch }) => {
               />
             }
             label='Incluir bajas'
-            sx={{ userSelect: 'none' }}
+            sx={{ userSelect: 'none', minWidth: '150px' }}
           />
 
           <ColumnHidding />
+        </Box>
 
+        <Box className='crud-form-search__actions'>
           <Tooltip
             title='Buscar'
             arrow
@@ -82,23 +85,21 @@ const CrudFormSearch = ({ setSearch }) => {
             enterNextDelay={2000}
             leaveDelay={10}
             type='submit'
-            sx={{ margin: '0 .5rem' }}
           >
-            <Fab color='primary'>
+            <Fab color='primary' sx={{ minWidth: '56px', margin: '0 1rem' }}>
               <SearchIcon sx={{ fontSize: '35px' }} />
             </Fab>
           </Tooltip>
-        </div>
-
-        <Fab
-          variant='extended'
-          size='medium'
-          color='primary'
-          onClick={() => setOpenForm(true)}
-        >
-          Agregar cliente
-          <AddCircleIcon sx={{ ml: 1 }} />
-        </Fab>
+          <Fab
+            variant='extended'
+            size='medium'
+            color='primary'
+            onClick={() => setOpenForm(true)}
+          >
+            Agregar cliente
+            <AddCircleIcon sx={{ ml: 1 }} />
+          </Fab>
+        </Box>
       </form>
 
       <CrudForm />

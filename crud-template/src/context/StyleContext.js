@@ -8,7 +8,6 @@ const StyleContext = createContext();
 const StyleProvider = ({ children }) => {
   /* Media Querys states */
   const mediaQ1024 = useMediaQuery('(min-width: 1025px)');
-  const mediaQ768 = useMediaQuery('(min-width: 769px)');
   const mediaQ560 = useMediaQuery('(min-width: 561px)');
 
   let initialDarkMode = true;
@@ -31,7 +30,6 @@ const StyleProvider = ({ children }) => {
 
   const data = {
     mediaQ1024,
-    mediaQ768,
     mediaQ560,
     darkMode,
     setDarkMode,

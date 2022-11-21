@@ -76,6 +76,10 @@ body.dark-theme {
   background-size: cover;
 }
 
+.css-3vu7kk-MuiFormHelperText-root.Mui-error {
+  text-align: right;
+}
+
 /* ============== CRUD Form ============== */
 
 .crud-form__dialog-title {
@@ -97,7 +101,7 @@ body.dark-theme {
 /* ============== CRUD Form Search ============== */
 
 .crud-form-search {
-  padding: 1rem 2rem;
+  padding: 1rem 2rem 0 2rem;
 }
 
 .crud-form-search__form {
@@ -112,6 +116,13 @@ body.dark-theme {
   align-items: center;
 }
 
+.crud-form-search__actions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .crud-form-search__input {
   width: 20rem;
 }
@@ -123,7 +134,6 @@ body.dark-theme {
 /* ============== MyTable ============== */
 
 .mytable {
-  padding: 1rem 0 0 0;
   position: relative;
 }
 
@@ -185,9 +195,11 @@ body.dark-theme {
 
 .mytable__state {
   width: 100%;
+  min-width: 75px;
 }
 
 .mytable__actions {
+  min-width: 132px;
   width: 200%;
 }
 
@@ -216,6 +228,7 @@ body.dark-theme {
 }
 
 .mytable-collapse__title {
+  font-size: 15px;
   font-weight: bold;
   padding: 0.35rem 0;
   border-bottom: 2px solid #dde2eb;
@@ -315,6 +328,11 @@ body.dark-theme {
     gap: 1rem;
   }
 
+  .crud-form-search__actions {
+    justify-content: center;
+    gap: 2rem;
+  }
+
   /* ============== MyTable ============== */
 
   .mytable__actions {
@@ -332,6 +350,17 @@ body.dark-theme {
 /* ============== Tamaño (640 - 560) ============== */
 
 @media screen and (max-width: 639px) {
+  /* ============== CRUD Form Search ============== */
+  .crud-form-search__form {
+    margin: 1rem 0rem;
+  }
+
+  /* ============== MyTable ============== */
+
+  .mytable__head-cell {
+    padding: 0.2rem 0;
+  }
+
   /* ============== MyTable Collapse ============== */
 
   .mytable-collapse__container {
@@ -363,10 +392,6 @@ body.dark-theme {
 
 @media screen and (max-width: 480px) {
   /* ============== CRUD Form Search ============== */
-
-  .crud-form-search__form {
-    margin: 1rem 0.5rem;
-  }
 
   .crud-form-search {
     padding: 0.25rem 0;

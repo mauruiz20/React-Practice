@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
 import CrudContext from '../context/CrudContext';
+import moment from 'moment';
 
 import { Box, Chip, IconButton, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import StyleContext from '../context/StyleContext';
 import CrudRowCollapse from './CrudRowCollapse';
 
 const CrudTableRow = ({ data, setModal }) => {
@@ -17,13 +17,12 @@ const CrudTableRow = ({ data, setModal }) => {
     visibleColumns,
     setOpenForm,
   } = useContext(CrudContext);
-  const { mediaQ1024, mediaQ768, mediaQ560 } = useContext(StyleContext);
 
   /* Active / Inactive clients */
 
-  const handleActive = (e, value) => {
-    e.stopPropagation();
-    data.active = value;
+  const handleActive = evt => {
+    evt.stopPropagation();
+    data.state = data.state === 'A' ? 'B' : 'A';
     updateData(data);
   };
 
@@ -82,35 +81,21 @@ const CrudTableRow = ({ data, setModal }) => {
           </Box>
         )}
 
-        {visibleColumns[2].visible && mediaQ1024 && (
+        {visibleColumns[2].visible && (
           <Box className='mytable__body-cell mytable__email' sx={cellStyle}>
             {data.email}
           </Box>
         )}
 
-        {visibleColumns[3].visible && mediaQ768 && (
+        {visibleColumns[3].visible && (
           <Box className='mytable__body-cell' sx={cellStyle}>
             {data.phone}
           </Box>
         )}
 
-        {visibleColumns[4].visible && mediaQ560 && (
-          <Box
-            className='mytable__body-cell--center mytable__state'
-            sx={cellStyle}
-          >
-            <Chip
-              label={data.active ? 'A' : 'B'}
-              color={data.active ? 'success' : 'error'}
-              size='small'
-              sx={{ minWidth: '30px', cursor: 'pointer' }}
-            />
-          </Box>
-        )}
-
         {visibleColumns[5].visible && (
           <Box className='mytable__body-cell' sx={cellStyle}>
-            {data.date}
+            {moment(data.date).format('D/MM/YYYY')}
           </Box>
         )}
 
@@ -126,22 +111,21 @@ const CrudTableRow = ({ data, setModal }) => {
           </Box>
         )}
 
-        <Box className='mytable__body-cell--center mytable__actions'>
-          {/* <Tooltip
-          title='Expandir'
-          arrow
-          placement='top'
-          disableInteractive
-          enterDelay={2000}
-          enterNextDelay={2000}
-          leaveDelay={10}
-          size='small'
-        >
-          <IconButton color='primary' onClick={() => setOpen(!open)}>
-            {open ? <VisibilityOffIcon /> : <VisibilityIcon />}
-          </IconButton>
-        </Tooltip> */}
+        {visibleColumns[4].visible && (
+          <Box
+            className='mytable__body-cell--center mytable__state'
+            sx={cellStyle}
+          >
+            <Chip
+              label={data.state === 'A' ? 'A' : 'B'}
+              color={data.state === 'A' ? 'success' : 'error'}
+              size='small'
+              sx={{ minWidth: '30px', cursor: 'pointer' }}
+            />
+          </Box>
+        )}
 
+        <Box className='mytable__body-cell--center mytable__actions'>
           <Tooltip
             title='Editar'
             arrow
@@ -160,7 +144,7 @@ const CrudTableRow = ({ data, setModal }) => {
           </Tooltip>
 
           <Tooltip
-            title={!data.active ? 'Dar de Alta' : 'Dar de Baja'}
+            title={data.state === 'B' ? 'Dar de Alta' : 'Dar de Baja'}
             arrow
             placement='top'
             disableInteractive
@@ -169,13 +153,16 @@ const CrudTableRow = ({ data, setModal }) => {
             leaveDelay={10}
           >
             <IconButton
-              sx={{ color: !data.active ? 'success.light' : 'error.light' }}
-              onClick={e => handleActive(e, !data.active)}
+              sx={{
+                color: data.state === 'B' ? 'success.light' : 'error.light',
+              }}
+              onClick={e => handleActive(e, data.state)}
             >
               <ArrowUpwardIcon
                 fontSize='small'
                 sx={{
-                  transform: data.active ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transform:
+                    data.state === 'A' ? 'rotate(180deg)' : 'rotate(0deg)',
                   transition: 'transform 0.25s ease-out',
                 }}
               />

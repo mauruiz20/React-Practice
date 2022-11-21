@@ -1,21 +1,11 @@
 import { IconButton } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
+import StyleContext from '../context/StyleContext';
 
 const CrudContext = createContext();
-
-const initialVisibleColumns = [
-  { field: 'surname', Header: 'Apellidos', visible: true },
-  { field: 'name', Header: 'Nombres', visible: true },
-  { field: 'email', Header: 'Correo Electrónico', visible: true },
-  { field: 'phone', Header: 'Teléfono', visible: true },
-  { field: 'state', Header: 'Estado', visible: true },
-  { field: 'date', Header: 'Fecha de Nacimiento', visible: false },
-  { field: 'address', Header: 'Dirección', visible: false },
-  { field: 'nacionality', Header: 'Nacionalidad', visible: false },
-];
 
 const CrudProvider = ({ children }) => {
   /* Table updates states */
@@ -24,7 +14,7 @@ const CrudProvider = ({ children }) => {
   const [rows, setRows] = useState(25);
   const [inactives, setInactives] = useState(true);
   const [page, setPage] = useState(1);
-  const [visibleColumns, setVisibleColumns] = useState(initialVisibleColumns);
+
   const [openForm, setOpenForm] = useState(false);
 
   /* Messages updates states */
@@ -34,6 +24,19 @@ const CrudProvider = ({ children }) => {
   /* HTTP Request states */
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const { mediaQ1024, mediaQ560 } = useContext(StyleContext);
+
+  const initialVisibleColumns = [
+    { field: 'surname', Header: 'Apellidos', visible: true },
+    { field: 'name', Header: 'Nombres', visible: true },
+    { field: 'email', Header: 'Correo Electrónico', visible: mediaQ1024 },
+    { field: 'phone', Header: 'Teléfono', visible: true },
+    { field: 'state', Header: 'Estado', visible: mediaQ560 },
+    { field: 'date', Header: 'Fecha de Nacimiento', visible: false },
+    { field: 'address', Header: 'Dirección', visible: false },
+    { field: 'nacionality', Header: 'Nacionalidad', visible: false },
+  ];
 
   useEffect(() => {
     let errId;
@@ -65,7 +68,7 @@ const CrudProvider = ({ children }) => {
 
   /* API POST request */
   const createData = data => {
-    data.active = true;
+    data.state = 'A';
     axios
       .post(url, data)
       .then(response => {
@@ -162,6 +165,13 @@ const CrudProvider = ({ children }) => {
   };
 
   /* Visible columns functions */
+
+  const [visibleColumns, setVisibleColumns] = useState(initialVisibleColumns);
+
+  useEffect(() => {
+    handleResetColumns();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mediaQ1024, mediaQ560]);
 
   const handleColumnHide = (checked, column) => {
     let newColumn = {

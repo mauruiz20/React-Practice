@@ -45,7 +45,7 @@ const CrudForm = () => {
       date: '',
       address: '',
       nacionality: '',
-      active: true,
+      state: 'A',
     },
   });
 
@@ -223,7 +223,7 @@ const CrudForm = () => {
               </InputLabel>
               <TextField
                 {...register('phone', {
-                  required: true,
+                  required: messages.required,
                 })}
                 variant='standard'
                 type='text'

@@ -9,7 +9,7 @@ import DialogDelete from './DialogDelete';
 
 const CrudTable = ({ search }) => {
   const { db, rows, inactives, page, visibleColumns } = useContext(CrudContext);
-  const { mediaQ1024, mediaQ768, mediaQ560 } = useContext(StyleContext);
+  const { mediaQ560 } = useContext(StyleContext);
   const [order, setOrder] = useState('surname asc');
   const [modal, setModal] = useState(false);
 
@@ -50,12 +50,18 @@ const CrudTable = ({ search }) => {
     }
 
     if (!inactives) {
-      array = array.filter(data => data.active === true);
+      array = array.filter(data => data.state === 'A');
     }
 
     if (str !== '') {
       str = search.search.toString().toLowerCase();
-      array = array.filter(data => data.name.toLowerCase().includes(str));
+      array = array.filter(
+        data =>
+          data.name.toLowerCase().includes(str) ||
+          data.surname.toLowerCase().includes(str) ||
+          data.email.toLowerCase().includes(str) ||
+          data.phone.toString().includes(str)
+      );
     }
 
     return array.map(
@@ -111,23 +117,25 @@ const CrudTable = ({ search }) => {
                 disableRipple={true}
               >
                 Apellidos
-                <ArrowUpwardIcon
-                  fontSize='small'
-                  sx={{
-                    color: order.includes('surname')
-                      ? 'tertiary.main'
-                      : 'transparent',
-                    margin: '0 .5rem',
-                    transform:
-                      order === 'surname desc'
-                        ? 'rotate(180deg)'
-                        : 'rotate(0deg)',
-                    transition: 'transform 0.25s ease-out, color 0.25s',
-                    '&:hover': {
-                      color: 'tertiary.main',
-                    },
-                  }}
-                />
+                {mediaQ560 && (
+                  <ArrowUpwardIcon
+                    fontSize='small'
+                    sx={{
+                      color: order.includes('surname')
+                        ? 'tertiary.main'
+                        : 'transparent',
+                      margin: '0 .5rem',
+                      transform:
+                        order === 'surname desc'
+                          ? 'rotate(180deg)'
+                          : 'rotate(0deg)',
+                      transition: 'transform 0.25s ease-out, color 0.25s',
+                      '&:hover': {
+                        color: 'tertiary.main',
+                      },
+                    }}
+                  />
+                )}
               </IconButton>
             </Box>
           )}
@@ -157,46 +165,44 @@ const CrudTable = ({ search }) => {
                 disableRipple={true}
               >
                 Nombres
-                <ArrowUpwardIcon
-                  fontSize='small'
-                  sx={{
-                    color: order.startsWith('name')
-                      ? 'tertiary.main'
-                      : 'transparent',
-                    margin: '0 .5rem',
-                    transform:
-                      order === 'name desc' ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.25s ease-out, color 0.25s',
-                    '&:hover': {
-                      color: 'tertiary.main',
-                    },
-                  }}
-                />
+                {mediaQ560 && (
+                  <ArrowUpwardIcon
+                    fontSize='small'
+                    sx={{
+                      color: order.startsWith('name')
+                        ? 'tertiary.main'
+                        : 'transparent',
+                      margin: '0 .5rem',
+                      transform:
+                        order === 'name desc'
+                          ? 'rotate(180deg)'
+                          : 'rotate(0deg)',
+                      transition: 'transform 0.25s ease-out, color 0.25s',
+                      '&:hover': {
+                        color: 'tertiary.main',
+                      },
+                    }}
+                  />
+                )}
               </IconButton>
             </Box>
           )}
 
-          {visibleColumns[2].visible && mediaQ1024 && (
+          {visibleColumns[2].visible && (
             <Box className='mytable__head-cell mytable__email' sx={cellStyle}>
               Correo Electrónico
             </Box>
           )}
 
-          {visibleColumns[3].visible && mediaQ768 && (
+          {visibleColumns[3].visible && (
             <Box className='mytable__head-cell' sx={cellStyle}>
               Teléfono
             </Box>
           )}
 
-          {visibleColumns[4].visible && mediaQ560 && (
-            <Box className='mytable__head-cell mytable__state' sx={cellStyle}>
-              Estado
-            </Box>
-          )}
-
           {visibleColumns[5].visible && (
             <Box className='mytable__head-cell' sx={cellStyle}>
-              Nacimiento
+              Fecha de Nacimiento
             </Box>
           )}
 
@@ -209,6 +215,12 @@ const CrudTable = ({ search }) => {
           {visibleColumns[7].visible && (
             <Box className='mytable__head-cell' sx={cellStyle}>
               Nacionalidad
+            </Box>
+          )}
+
+          {visibleColumns[4].visible && (
+            <Box className='mytable__head-cell mytable__state' sx={cellStyle}>
+              Estado
             </Box>
           )}
 
