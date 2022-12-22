@@ -20,7 +20,7 @@ const DialogDelete = ({ open, setOpen }) => {
 
   const handleDelete = () => {
     setOpen(false);
-    deleteData(data.id);
+    deleteData(data.idCliente);
   };
 
   return (
@@ -42,7 +42,7 @@ const DialogDelete = ({ open, setOpen }) => {
         <DialogContent className='dialog-delete__content' dividers>
           <Typography>
             ¿Estás seguro que quieres borrar al usuario{' '}
-            <b>{`${data.surname}, ${data.name}`}</b>?
+            <b>{`${data.apellidos}, ${data.nombres}`}</b>?
           </Typography>
         </DialogContent>
 

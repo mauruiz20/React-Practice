@@ -13,29 +13,28 @@ const CrudTableRow = ({ data, setModal }) => {
   const {
     setModalData,
     setDataToEdit,
-    updateData,
+    handleStateData,
     visibleColumns,
     setOpenForm,
   } = useContext(CrudContext);
 
   /* Active / Inactive clients */
 
-  const handleActive = evt => {
+  const handleState = evt => {
     evt.stopPropagation();
-    data.state = data.state === 'A' ? 'B' : 'A';
-    updateData(data);
+    handleStateData(data);
   };
 
   /* Open modal to confirm delete */
 
-  const handleDelete = e => {
-    e.stopPropagation();
+  const handleDelete = evt => {
+    evt.stopPropagation();
     setModalData(data);
     setModal(true);
   };
 
-  const handleEdit = e => {
-    e.stopPropagation();
+  const handleEdit = evt => {
+    evt.stopPropagation();
     setDataToEdit(data);
     setOpenForm(true);
   };
@@ -68,57 +67,57 @@ const CrudTableRow = ({ data, setModal }) => {
         },
       ]}
     >
-      <Box id={data.id} className='mytable__body-row'>
-        {visibleColumns[0].visible && (
+      <Box id={data.idCliente} className='mytable__body-row'>
+        {visibleColumns.find(col => col.field === 'apellidos').visible && (
           <Box className='mytable__body-cell' sx={cellStyle}>
-            {data.surname}
+            {data.apellidos}
           </Box>
         )}
 
-        {visibleColumns[1].visible && (
+        {visibleColumns.find(col => col.field === 'nombres').visible && (
           <Box className='mytable__body-cell' sx={cellStyle}>
-            {data.name}
+            {data.nombres}
           </Box>
         )}
 
-        {visibleColumns[2].visible && (
+        {visibleColumns.find(col => col.field === 'email').visible && (
           <Box className='mytable__body-cell mytable__email' sx={cellStyle}>
             {data.email}
           </Box>
         )}
 
-        {visibleColumns[3].visible && (
-          <Box className='mytable__body-cell' sx={cellStyle}>
-            {data.phone}
+        {visibleColumns.find(col => col.field === 'telefono').visible && (
+          <Box className='mytable__body-cell mytable__phone' sx={cellStyle}>
+            {data.telefono}
           </Box>
         )}
 
-        {visibleColumns[5].visible && (
-          <Box className='mytable__body-cell' sx={cellStyle}>
-            {moment(data.date).format('D/MM/YYYY')}
+        {visibleColumns.find(col => col.field === 'nacimiento').visible && (
+          <Box className='mytable__body-cell mytable__date' sx={cellStyle}>
+            {moment(data.nacimiento).format('D/MM/YYYY')}
           </Box>
         )}
 
-        {visibleColumns[6].visible && (
+        {visibleColumns.find(col => col.field === 'direccion').visible && (
           <Box className='mytable__body-cell' sx={cellStyle}>
-            {data.address}
+            {data.direccion}
           </Box>
         )}
 
-        {visibleColumns[7].visible && (
+        {visibleColumns.find(col => col.field === 'nacionalidad').visible && (
           <Box className='mytable__body-cell' sx={cellStyle}>
-            {data.nacionality}
+            {data.nacionalidad}
           </Box>
         )}
 
-        {visibleColumns[4].visible && (
+        {visibleColumns.find(col => col.field === 'estadoCliente').visible && (
           <Box
             className='mytable__body-cell--center mytable__state'
             sx={cellStyle}
           >
             <Chip
-              label={data.state === 'A' ? 'A' : 'B'}
-              color={data.state === 'A' ? 'success' : 'error'}
+              label={data.estadoCliente === 'A' ? 'A' : 'B'}
+              color={data.estadoCliente === 'A' ? 'success' : 'error'}
               size='small'
               sx={{ minWidth: '30px', cursor: 'pointer' }}
             />
@@ -137,14 +136,14 @@ const CrudTableRow = ({ data, setModal }) => {
           >
             <IconButton
               sx={{ color: 'primary.main' }}
-              onClick={e => handleEdit(e)}
+              onClick={evt => handleEdit(evt)}
             >
               <EditIcon fontSize='small' />
             </IconButton>
           </Tooltip>
 
           <Tooltip
-            title={data.state === 'B' ? 'Dar de Alta' : 'Dar de Baja'}
+            title={data.estadoCliente === 'B' ? 'Dar de Alta' : 'Dar de Baja'}
             arrow
             placement='top'
             disableInteractive
@@ -154,15 +153,18 @@ const CrudTableRow = ({ data, setModal }) => {
           >
             <IconButton
               sx={{
-                color: data.state === 'B' ? 'success.light' : 'error.light',
+                color:
+                  data.estadoCliente === 'B' ? 'success.light' : 'error.light',
               }}
-              onClick={e => handleActive(e, data.state)}
+              onClick={evt => handleState(evt, data.estadoCliente)}
             >
               <ArrowUpwardIcon
                 fontSize='small'
                 sx={{
                   transform:
-                    data.state === 'A' ? 'rotate(180deg)' : 'rotate(0deg)',
+                    data.estadoCliente === 'A'
+                      ? 'rotate(180deg)'
+                      : 'rotate(0deg)',
                   transition: 'transform 0.25s ease-out',
                 }}
               />

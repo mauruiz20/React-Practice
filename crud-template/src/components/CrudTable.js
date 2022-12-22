@@ -1,47 +1,45 @@
 import React, { useContext, useState } from 'react';
 import CrudContext from '../context/CrudContext';
 
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import CrudTableRow from './CrudTableRow';
 import StyleContext from '../context/StyleContext';
 import DialogDelete from './DialogDelete';
 
-const CrudTable = ({ search }) => {
-  const { db, rows, inactives, page, visibleColumns } = useContext(CrudContext);
+const CrudTable = () => {
+  const { db, rowCount, page, visibleColumns } = useContext(CrudContext);
   const { mediaQ560 } = useContext(StyleContext);
-  const [order, setOrder] = useState('surname asc');
+  const [order, setOrder] = useState('apellidos asc');
   const [modal, setModal] = useState(false);
 
   /* Client side rendering (prototype) */
-
-  let str = search.search;
 
   const data = () => {
     let array = {};
 
     switch (order) {
-      case 'surname asc':
+      case 'apellidos asc':
         array = db.sort((a, b) =>
-          a.surname.toLowerCase() < b.surname.toLowerCase() ? -1 : 1
+          a.apellidos.toLowerCase() < b.apellidos.toLowerCase() ? -1 : 1
         );
         break;
 
-      case 'surname desc':
+      case 'apellidos desc':
         array = db.sort((a, b) =>
-          a.surname.toLowerCase() > b.surname.toLowerCase() ? -1 : 1
+          a.apellidos.toLowerCase() > b.apellidos.toLowerCase() ? -1 : 1
         );
         break;
 
-      case 'name asc':
+      case 'nombres asc':
         array = db.sort((a, b) =>
-          a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
+          a.nombres.toLowerCase() < b.nombres.toLowerCase() ? -1 : 1
         );
         break;
 
-      case 'name desc':
+      case 'nombres desc':
         array = db.sort((a, b) =>
-          a.name.toLowerCase() > b.name.toLowerCase() ? -1 : 1
+          a.nombres.toLowerCase() > b.nombres.toLowerCase() ? -1 : 1
         );
         break;
 
@@ -49,26 +47,11 @@ const CrudTable = ({ search }) => {
         break;
     }
 
-    if (!inactives) {
-      array = array.filter(data => data.state === 'A');
-    }
-
-    if (str !== '') {
-      str = search.search.toString().toLowerCase();
-      array = array.filter(
-        data =>
-          data.name.toLowerCase().includes(str) ||
-          data.surname.toLowerCase().includes(str) ||
-          data.email.toLowerCase().includes(str) ||
-          data.phone.toString().includes(str)
-      );
-    }
-
     return array.map(
       (data, index) =>
-        index < rows * page &&
-        index >= (page - 1) * rows && (
-          <CrudTableRow key={data.id} data={data} setModal={setModal} />
+        index < rowCount * page &&
+        index >= (page - 1) * rowCount && (
+          <CrudTableRow key={data.idCliente} data={data} setModal={setModal} />
         )
     );
   };
@@ -92,21 +75,16 @@ const CrudTable = ({ search }) => {
               'linear-gradient(rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.11))',
           }}
         >
-          {visibleColumns[0].visible && (
+          {visibleColumns.find(col => col.field === 'apellidos').visible && (
             <Box className='mytable__head-cell' sx={cellStyle}>
               <IconButton
+                className='mytable__btn'
                 size='small'
-                sx={{
-                  width: '100%',
-                  fontSize: 'inherit',
-                  fontFamily: 'inherit',
-                  fontWeight: 'bold',
-                }}
                 onClick={() => {
                   let alt = window.pageYOffset;
-                  order === 'surname asc'
-                    ? setOrder('surname desc')
-                    : setOrder('surname asc');
+                  order === 'apellidos asc'
+                    ? setOrder('apellidos desc')
+                    : setOrder('apellidos asc');
                   setTimeout(() => {
                     window.scrollTo({
                       top: alt,
@@ -115,18 +93,19 @@ const CrudTable = ({ search }) => {
                   }, 100);
                 }}
                 disableRipple={true}
+                sx={{ color: 'inherit' }}
               >
                 Apellidos
                 {mediaQ560 && (
                   <ArrowUpwardIcon
                     fontSize='small'
                     sx={{
-                      color: order.includes('surname')
+                      color: order.includes('apellidos')
                         ? 'tertiary.main'
                         : 'transparent',
                       margin: '0 .5rem',
                       transform:
-                        order === 'surname desc'
+                        order === 'apellidos desc'
                           ? 'rotate(180deg)'
                           : 'rotate(0deg)',
                       transition: 'transform 0.25s ease-out, color 0.25s',
@@ -140,21 +119,16 @@ const CrudTable = ({ search }) => {
             </Box>
           )}
 
-          {visibleColumns[1].visible && (
+          {visibleColumns.find(col => col.field === 'nombres').visible && (
             <Box className='mytable__head-cell' sx={cellStyle}>
               <IconButton
+                className='mytable__btn'
                 size='small'
-                sx={{
-                  width: '100%',
-                  fontSize: 'inherit',
-                  fontFamily: 'inherit',
-                  fontWeight: 'bold',
-                }}
                 onClick={() => {
                   let alt = window.pageYOffset;
-                  order === 'name asc'
-                    ? setOrder('name desc')
-                    : setOrder('name asc');
+                  order === 'nombres asc'
+                    ? setOrder('nombres desc')
+                    : setOrder('nombres asc');
                   setTimeout(() => {
                     window.scrollTo({
                       top: alt,
@@ -163,18 +137,19 @@ const CrudTable = ({ search }) => {
                   }, 100);
                 }}
                 disableRipple={true}
+                sx={{ color: 'inherit' }}
               >
                 Nombres
                 {mediaQ560 && (
                   <ArrowUpwardIcon
                     fontSize='small'
                     sx={{
-                      color: order.startsWith('name')
+                      color: order.startsWith('nombres')
                         ? 'tertiary.main'
                         : 'transparent',
                       margin: '0 .5rem',
                       transform:
-                        order === 'name desc'
+                        order === 'nombres desc'
                           ? 'rotate(180deg)'
                           : 'rotate(0deg)',
                       transition: 'transform 0.25s ease-out, color 0.25s',
@@ -188,37 +163,38 @@ const CrudTable = ({ search }) => {
             </Box>
           )}
 
-          {visibleColumns[2].visible && (
+          {visibleColumns.find(col => col.field === 'email').visible && (
             <Box className='mytable__head-cell mytable__email' sx={cellStyle}>
               Correo Electrónico
             </Box>
           )}
 
-          {visibleColumns[3].visible && (
-            <Box className='mytable__head-cell' sx={cellStyle}>
+          {visibleColumns.find(col => col.field === 'telefono').visible && (
+            <Box className='mytable__head-cell mytable__phone' sx={cellStyle}>
               Teléfono
             </Box>
           )}
 
-          {visibleColumns[5].visible && (
-            <Box className='mytable__head-cell' sx={cellStyle}>
+          {visibleColumns.find(col => col.field === 'nacimiento').visible && (
+            <Box className='mytable__head-cell mytable__date' sx={cellStyle}>
               Fecha de Nacimiento
             </Box>
           )}
 
-          {visibleColumns[6].visible && (
+          {visibleColumns.find(col => col.field === 'direccion').visible && (
             <Box className='mytable__head-cell' sx={cellStyle}>
               Dirección
             </Box>
           )}
 
-          {visibleColumns[7].visible && (
+          {visibleColumns.find(col => col.field === 'nacionalidad').visible && (
             <Box className='mytable__head-cell' sx={cellStyle}>
               Nacionalidad
             </Box>
           )}
 
-          {visibleColumns[4].visible && (
+          {visibleColumns.find(col => col.field === 'estadoCliente')
+            .visible && (
             <Box className='mytable__head-cell mytable__state' sx={cellStyle}>
               Estado
             </Box>

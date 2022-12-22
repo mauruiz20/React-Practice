@@ -11,8 +11,8 @@ import {
   Switch,
   TextField,
   Tooltip,
+  Box,
 } from '@mui/material';
-import { Box } from '@mui/system';
 
 const CrudForm = () => {
   const {
@@ -37,15 +37,14 @@ const CrudForm = () => {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      id: null,
-      surname: '',
-      name: '',
+      idCliente: null,
+      apellidos: '',
+      nombres: '',
       email: '',
-      phone: '',
-      date: '',
-      address: '',
-      nacionality: '',
-      state: 'A',
+      telefono: '',
+      nacimiento: '',
+      direccion: '',
+      nacionalidad: '',
     },
   });
 
@@ -66,21 +65,23 @@ const CrudForm = () => {
 
   useEffect(() => {
     if (dataToEdit) {
-      setValue('id', dataToEdit.id);
-      setValue('surname', dataToEdit.surname, { shouldValidate: true });
-      setValue('name', dataToEdit.name, { shouldValidate: true });
+      setValue('idCliente', dataToEdit.idCliente);
+      setValue('apellidos', dataToEdit.apellidos, { shouldValidate: true });
+      setValue('nombres', dataToEdit.nombres, { shouldValidate: true });
       setValue('email', dataToEdit.email, { shouldValidate: true });
-      setValue('phone', dataToEdit.phone, { shouldValidate: true });
-      setValue('address', dataToEdit.address, { shouldValidate: true });
-      setValue('date', dataToEdit.date, { shouldValidate: true });
-      setValue('nacionality', dataToEdit.nacionality, { shouldValidate: true });
+      setValue('telefono', dataToEdit.telefono, { shouldValidate: true });
+      setValue('direccion', dataToEdit.direccion, { shouldValidate: true });
+      setValue('nacimiento', dataToEdit.nacimiento, { shouldValidate: true });
+      setValue('nacionalidad', dataToEdit.nacionalidad, {
+        shouldValidate: true,
+      });
     }
   }, [dataToEdit, setValue]);
 
   /* Validation will trigger on the submit event and invalid inputs will attach onChange event listeners to re-validate them */
 
   const onSubmit = data => {
-    if (getValues().id === null) {
+    if (getValues().idCliente === null) {
       // ID == null => create data
       createData(data);
       handleReset();
@@ -94,14 +95,14 @@ const CrudForm = () => {
   /* Reset form */
 
   const handleReset = () => {
-    setValue('id', null);
-    resetField('surname', { keepErrors: false });
-    resetField('name', { keepErrors: false });
+    setValue('idCliente', null);
+    resetField('apellidos', { keepErrors: false });
+    resetField('nombres', { keepErrors: false });
     resetField('email', { keepErrors: false });
-    resetField('phone', { keepErrors: false });
-    resetField('address', { keepErrors: false });
-    resetField('date', { keepErrors: false });
-    resetField('nacionality', { keepErrors: false });
+    resetField('telefono', { keepErrors: false });
+    resetField('direccion', { keepErrors: false });
+    resetField('nacimiento', { keepErrors: false });
+    resetField('nacionalidad', { keepErrors: false });
     setDataToEdit(null);
   };
 
@@ -124,29 +125,29 @@ const CrudForm = () => {
       >
         <DialogTitle
           id='form-dialog-title'
+          className='crud-form__dialog-title'
           variant='overline'
           display='block'
           color='text.primary'
-          className='crud-form__dialog-title'
         >
           {dataToEdit ? 'Editar Cliente' : 'Agregar Cliente'}
         </DialogTitle>
 
         <DialogContent dividers>
           <form
-            onSubmit={handleSubmit(onSubmit)}
             className='crud-form__container'
+            onSubmit={handleSubmit(onSubmit)}
             id='crud-form'
           >
             <Box>
               <InputLabel
-                htmlFor='surname'
-                error={errors.surname ? true : false}
+                htmlFor='apellidos'
+                error={errors.apellidos ? true : false}
               >
                 Apellidos:
               </InputLabel>
               <TextField
-                {...register('surname', {
+                {...register('apellidos', {
                   required: messages.required,
                   pattern: {
                     value: patterns.onlyAlphabetic,
@@ -157,22 +158,25 @@ const CrudForm = () => {
                 type='text'
                 autoFocus
                 fullWidth
-                name='surname'
+                name='apellidos'
                 size='small'
                 color='info'
                 autoComplete='off'
                 InputLabelProps={{ shrink: true }}
-                error={errors.surname ? true : false}
-                helperText={errors.surname ? errors.surname.message : ' '}
+                error={errors.apellidos ? true : false}
+                helperText={errors.apellidos ? errors.apellidos.message : ' '}
               />
             </Box>
 
             <Box>
-              <InputLabel htmlFor='name' error={errors.name ? true : false}>
+              <InputLabel
+                htmlFor='nombres'
+                error={errors.nombres ? true : false}
+              >
                 Nombres:
               </InputLabel>
               <TextField
-                {...register('name', {
+                {...register('nombres', {
                   required: messages.required,
                   pattern: {
                     value: patterns.onlyAlphabetic,
@@ -182,13 +186,13 @@ const CrudForm = () => {
                 variant='standard'
                 type='text'
                 fullWidth
-                name='name'
+                name='nombres'
                 size='small'
                 color='info'
                 autoComplete='off'
                 InputLabelProps={{ shrink: true }}
-                error={errors.name ? true : false}
-                helperText={errors.name ? errors.name.message : ' '}
+                error={errors.nombres ? true : false}
+                helperText={errors.nombres ? errors.nombres.message : ' '}
               />
             </Box>
 
@@ -218,56 +222,62 @@ const CrudForm = () => {
             </Box>
 
             <Box>
-              <InputLabel htmlFor='phone' error={errors.phone ? true : false}>
+              <InputLabel
+                htmlFor='telefono'
+                error={errors.telefono ? true : false}
+              >
                 Teléfono:
               </InputLabel>
               <TextField
-                {...register('phone', {
+                {...register('telefono', {
                   required: messages.required,
                 })}
                 variant='standard'
                 type='text'
                 fullWidth
-                name='phone'
+                name='telefono'
                 size='small'
                 color='info'
                 autoComplete='off'
                 InputLabelProps={{ shrink: true }}
-                error={errors.phone ? true : false}
-                helperText={errors.phone ? errors.phone.message : ' '}
+                error={errors.telefono ? true : false}
+                helperText={errors.telefono ? errors.telefono.message : ' '}
               />
             </Box>
 
             <Box>
               <InputLabel
-                htmlFor='address'
-                error={errors.address ? true : false}
+                htmlFor='direccion'
+                error={errors.direccion ? true : false}
               >
                 Dirección:
               </InputLabel>
               <TextField
-                {...register('address', {
+                {...register('direccion', {
                   required: messages.required,
                 })}
                 variant='standard'
                 type='text'
                 fullWidth
-                name='address'
+                name='direccion'
                 size='small'
                 color='info'
                 autoComplete='off'
                 InputLabelProps={{ shrink: true }}
-                error={errors.address ? true : false}
-                helperText={errors.address ? errors.address.message : ' '}
+                error={errors.direccion ? true : false}
+                helperText={errors.direccion ? errors.direccion.message : ' '}
               />
             </Box>
 
             <Box>
-              <InputLabel htmlFor='date' error={errors.date ? true : false}>
+              <InputLabel
+                htmlFor='date'
+                error={errors.nacimiento ? true : false}
+              >
                 Fecha de nacimiento:
               </InputLabel>
               <TextField
-                {...register('date', {
+                {...register('nacimiento', {
                   required: messages.required,
                 })}
                 type='date'
@@ -277,20 +287,20 @@ const CrudForm = () => {
                 color='info'
                 autoComplete='off'
                 InputLabelProps={{ shrink: true }}
-                error={errors.date ? true : false}
-                helperText={errors.date ? errors.date.message : ' '}
+                error={errors.nacimiento ? true : false}
+                helperText={errors.nacimiento ? errors.nacimiento.message : ' '}
               />
             </Box>
 
             <Box>
               <InputLabel
-                htmlFor='nacionality'
-                error={errors.nacionality ? true : false}
+                htmlFor='nacionalidad'
+                error={errors.nacionalidad ? true : false}
               >
                 Nacionalidad
               </InputLabel>
               <TextField
-                {...register('nacionality', {
+                {...register('nacionalidad', {
                   required: messages.required,
                   pattern: {
                     value: patterns.onlyAlphabetic,
@@ -300,14 +310,14 @@ const CrudForm = () => {
                 variant='standard'
                 type='text'
                 fullWidth
-                name='nacionality'
+                name='nacionalidad'
                 size='small'
                 color='info'
                 autoComplete='off'
                 InputLabelProps={{ shrink: true }}
-                error={errors.nacionality ? true : false}
+                error={errors.nacionalidad ? true : false}
                 helperText={
-                  errors.nacionality ? errors.nacionality.message : ' '
+                  errors.nacionalidad ? errors.nacionalidad.message : ' '
                 }
               />
             </Box>

@@ -7,7 +7,7 @@ import CrudContext from '../context/CrudContext';
 const CrudRowCollapse = ({ open, data }) => {
   const { visibleColumns } = useContext(CrudContext);
 
-  const formattedDate = moment(data.date).format('D/MM/YYYY');
+  const formattedDate = moment(data.nacimiento).format('D/MM/YYYY');
 
   return (
     <Collapse
@@ -17,67 +17,70 @@ const CrudRowCollapse = ({ open, data }) => {
       className='mytable-collapse'
     >
       <Box className='mytable-collapse__container'>
-        {!visibleColumns[0].visible && (
+        {!visibleColumns.find(col => col.field === 'apellidos').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Apellidos</Box>
-            <Box className='mytable-collapse__data'>{data.surname}</Box>
+            <Box className='mytable-collapse__data'>{data.apellidos}</Box>
           </Box>
         )}
 
-        {!visibleColumns[1].visible && (
+        {!visibleColumns.find(col => col.field === 'nombres').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Nombres</Box>
-            <Box className='mytable-collapse__data'>{data.name}</Box>
+            <Box className='mytable-collapse__data'>{data.nombres}</Box>
           </Box>
         )}
 
-        {!visibleColumns[2].visible && (
+        {!visibleColumns.find(col => col.field === 'email').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Correo Electrónico</Box>
             <Box className='mytable-collapse__data'>{data.email}</Box>
           </Box>
         )}
 
-        {!visibleColumns[3].visible && (
+        {!visibleColumns.find(col => col.field === 'telefono').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Teléfono</Box>
-            <Box className='mytable-collapse__data'>{data.phone}</Box>
+            <Box className='mytable-collapse__data'>{data.telefono}</Box>
           </Box>
         )}
 
-        {!visibleColumns[5].visible && (
+        {!visibleColumns.find(col => col.field === 'nacimiento').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Nacimiento</Box>
             <Box className='mytable-collapse__data'>{formattedDate}</Box>
           </Box>
         )}
 
-        {!visibleColumns[6].visible && (
+        {!visibleColumns.find(col => col.field === 'direccion').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Dirección</Box>
-            <Box className='mytable-collapse__data'>{data.address}</Box>
+            <Box className='mytable-collapse__data'>{data.direccion}</Box>
           </Box>
         )}
 
-        {!visibleColumns[7].visible && (
+        {!visibleColumns.find(col => col.field === 'nacionalidad').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Nacionalidad</Box>
-            <Box className='mytable-collapse__data'>{data.nacionality}</Box>
+            <Box className='mytable-collapse__data'>{data.nacionalidad}</Box>
           </Box>
         )}
 
-        {!visibleColumns[4].visible && (
+        {!visibleColumns.find(col => col.field === 'estadoCliente').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Estado</Box>
             <Box className='mytable-collapse__data'>
               <Typography
                 sx={{
-                  color: data.state === 'A' ? 'success.light' : 'error.light',
+                  color:
+                    data.estadoCliente === 'A'
+                      ? 'success.light'
+                      : 'error.light',
                   fontWeight: 'bold',
                   lineHeight: '1',
                 }}
               >
-                {data.state === 'A' ? 'Dado de alta' : 'Dado de baja'}
+                {data.estadoCliente === 'A' ? 'Dado de alta' : 'Dado de baja'}
               </Typography>
             </Box>
           </Box>

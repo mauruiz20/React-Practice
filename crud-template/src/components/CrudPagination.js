@@ -1,24 +1,26 @@
 import React, { useContext } from 'react';
 import CrudContext from '../context/CrudContext';
 import StyleContext from '../context/StyleContext';
-import { Pagination } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import {
+  Pagination,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+} from '@mui/material';
 
 const CrudPagination = () => {
-  const { db, rows, setRows, page, setPage } = useContext(CrudContext);
+  const { db, rowCount, setRowCount, page, setPage } = useContext(CrudContext);
   const { mediaQ768 } = useContext(StyleContext);
 
   const totalRows = db.length;
 
-  const handleChange = e => {
-    setRows(e.target.value);
+  const handleChange = evt => {
+    setRowCount(evt.target.value);
     setPage(1);
   };
 
-  const handlePage = (e, value) => {
+  const handlePage = (evt, value) => {
     setPage(value);
     setTimeout(() => {
       window.scrollTo({ top: document.documentElement.scrollHeight });
@@ -32,7 +34,7 @@ const CrudPagination = () => {
           <InputLabel id='rows-select'>Entradas</InputLabel>
           <Select
             labelId='rows-select'
-            value={rows}
+            value={rowCount}
             label='Entradas'
             onChange={handleChange}
           >
@@ -43,16 +45,16 @@ const CrudPagination = () => {
           </Select>
         </FormControl>
         <div className='pagination__msg'>
-          {`Mostrando ${page * rows - rows + 1} - ${
-            page * rows < totalRows ? page * rows : totalRows
+          {`Mostrando ${page * rowCount - rowCount + 1} - ${
+            page * rowCount < totalRows ? page * rowCount : totalRows
           } de ${totalRows}`}
         </div>
       </div>
 
-      {totalRows > rows && (
+      {totalRows > rowCount && (
         <Pagination
           className='pagination__nav'
-          count={parseInt(Math.ceil(totalRows / rows))}
+          count={parseInt(Math.ceil(totalRows / rowCount))}
           color='primary'
           size={!mediaQ768 ? 'medium' : 'large'}
           page={page}

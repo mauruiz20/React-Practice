@@ -11,8 +11,10 @@ const CrudProvider = ({ children }) => {
   /* Table updates states */
   const [db, setDb] = useState(null);
   const [dataToEdit, setDataToEdit] = useState(null);
-  const [rows, setRows] = useState(25);
-  const [inactives, setInactives] = useState(true);
+  const [numRows, setNumRows] = useState(0);
+  const [rowCount, setRowCount] = useState(25);
+  const [cadena, setCadena] = useState('');
+  const [incluyeBajas, setIncluyeBajas] = useState(true);
   const [page, setPage] = useState(1);
 
   const [openForm, setOpenForm] = useState(false);
@@ -28,14 +30,14 @@ const CrudProvider = ({ children }) => {
   const { mediaQ1024, mediaQ560 } = useContext(StyleContext);
 
   const initialVisibleColumns = [
-    { field: 'surname', Header: 'Apellidos', visible: true },
-    { field: 'name', Header: 'Nombres', visible: true },
+    { field: 'apellidos', Header: 'Apellidos', visible: true },
+    { field: 'nombres', Header: 'Nombres', visible: true },
     { field: 'email', Header: 'Correo Electrónico', visible: mediaQ1024 },
-    { field: 'phone', Header: 'Teléfono', visible: true },
-    { field: 'state', Header: 'Estado', visible: mediaQ560 },
-    { field: 'date', Header: 'Fecha de Nacimiento', visible: false },
-    { field: 'address', Header: 'Dirección', visible: false },
-    { field: 'nacionality', Header: 'Nacionalidad', visible: false },
+    { field: 'telefono', Header: 'Teléfono', visible: true },
+    { field: 'estadoCliente', Header: 'Estado', visible: mediaQ560 },
+    { field: 'nacimiento', Header: 'Fecha de Nacimiento', visible: false },
+    { field: 'direccion', Header: 'Dirección', visible: false },
+    { field: 'nacionalidad', Header: 'Nacionalidad', visible: false },
   ];
 
   useEffect(() => {
@@ -48,13 +50,17 @@ const CrudProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, closeSnackbar]);
 
-  let url = 'http://localhost:5000/clientes';
+  let url = 'http://localhost:8080/clientes';
 
   /* Initial API GET request */
-  useEffect(() => {
+  const getData = (offSet = '0', rowCount = '1000') => {
+    let endpoint = `${url}?cadena=${cadena}&incluyeBajas=${
+      incluyeBajas ? 'S' : 'N'
+    }&offSet=${offSet}&rowCount=${rowCount}`;
+
     setLoading(true);
     axios
-      .get(url)
+      .get(endpoint)
       .then(response => {
         setDb(response.data);
         setError(null);
@@ -64,53 +70,103 @@ const CrudProvider = ({ children }) => {
         setError(error.message);
       })
       .finally(() => setLoading(false));
-  }, [url]);
+  };
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cadena, incluyeBajas]);
 
   /* API POST request */
   const createData = data => {
-    data.state = 'A';
+    data.idCliente = undefined;
+
+    setLoading(true);
     axios
       .post(url, data)
       .then(response => {
-        setDb([...db, response.data]);
-        showMsgAlert('Entrada agregada con éxito', 'success');
+        getData();
+        showMsgAlert(
+          response.data,
+          response.data.includes('Cliente') ? 'success' : 'warning'
+        );
       })
       .catch(error => {
         setError(error.message);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   /* API PUT request */
   const updateData = data => {
-    let endpoint = `${url}/${data.id}`;
+    let endpoint = `${url}/${data.idCliente}`;
 
+    setLoading(true);
     axios
       .put(endpoint, data)
-      .then(() => {
-        let newData = db.map(el => (el.id === data.id ? data : el));
+      .then(response => {
+        let newData = db.map(el =>
+          el.idCliente === data.idCliente ? data : el
+        );
         setDb(newData);
-        showMsgAlert('Entrada modificada con éxito', 'success');
+        showMsgAlert(
+          response.data,
+          response.data.includes('Cliente') ? 'success' : 'warning'
+        );
       })
       .catch(error => {
         setError(error.message);
-      });
+      })
+      .finally(() => setLoading(false));
+  };
+
+  /* API Patch request */
+  const handleStateData = data => {
+    let endpoint = `${url}/${data.idCliente}/alta`;
+    if (data.estadoCliente === 'A') {
+      endpoint = `${url}/${data.idCliente}/baja`;
+    }
+
+    setLoading(true);
+    axios
+      .patch(endpoint)
+      .then(response => {
+        data.estadoCliente = data.estadoCliente === 'A' ? 'B' : 'A';
+        let newData = db.map(el =>
+          el.idCliente === data.idCliente ? data : el
+        );
+        setDb(newData);
+        showMsgAlert(
+          response.data,
+          response.data.includes('Cliente') ? 'success' : 'warning'
+        );
+      })
+      .catch(error => {
+        setError(error.message);
+      })
+      .finally(() => setLoading(false));
   };
 
   /* API DELETE request */
-  const deleteData = id => {
-    let endpoint = `${url}/${id}`;
+  const deleteData = idCliente => {
+    let endpoint = `${url}/${idCliente}`;
 
+    setLoading(true);
     axios
       .delete(endpoint)
-      .then(() => {
-        let newData = db.filter(el => el.id !== id);
+      .then(response => {
+        let newData = db.filter(el => el.idCliente !== idCliente);
         setDb(newData);
         setModalData({});
-        showMsgAlert('Entrada borrada con éxito', 'warning');
+        showMsgAlert(
+          response.data,
+          response.data.includes('Cliente') ? 'success' : 'warning'
+        );
       })
       .catch(error => {
         setError(error.message);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   /* Snackbar functions */
@@ -197,18 +253,22 @@ const CrudProvider = ({ children }) => {
     loading,
     dataToEdit,
     setDataToEdit,
-    rows,
+    cadena,
+    setCadena,
+    numRows,
+    rowCount,
+    setRowCount,
     visibleColumns,
     setVisibleColumns,
-    setRows,
-    inactives,
-    setInactives,
+    incluyeBajas,
+    setIncluyeBajas,
     page,
     setPage,
     modalData,
     setModalData,
     createData,
     updateData,
+    handleStateData,
     deleteData,
     handleColumnHide,
     handleResetColumns,
