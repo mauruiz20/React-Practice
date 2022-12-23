@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import CrudContext from '../context/CrudContext';
 
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import CrudTableRow from './CrudTableRow';
 import StyleContext from '../context/StyleContext';
 import DialogDelete from './DialogDelete';
 
 const CrudTable = () => {
-  const { db, rowCount, page, visibleColumns } = useContext(CrudContext);
+  const { db, visibleColumns } = useContext(CrudContext);
   const { mediaQ560 } = useContext(StyleContext);
   const [order, setOrder] = useState('apellidos asc');
   const [modal, setModal] = useState(false);
@@ -47,13 +47,9 @@ const CrudTable = () => {
         break;
     }
 
-    return array.map(
-      (data, index) =>
-        index < rowCount * page &&
-        index >= (page - 1) * rowCount && (
-          <CrudTableRow key={data.idCliente} data={data} setModal={setModal} />
-        )
-    );
+    return array.map(data => (
+      <CrudTableRow key={data.idCliente} data={data} setModal={setModal} />
+    ));
   };
 
   const cellStyle = {

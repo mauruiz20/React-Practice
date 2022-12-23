@@ -53,7 +53,7 @@ const CrudFormSearch = () => {
             className='crud-form-search__input'
             label='Búsqueda'
             variant='outlined'
-            type='cadena'
+            type='search'
             size='small'
             autoComplete='off'
             {...register('cadena')}

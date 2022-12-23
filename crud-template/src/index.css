@@ -259,30 +259,25 @@ body.dark-theme {
 .mytable-collapse__container {
   margin: 1rem 0;
   padding: 0 1rem;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
 }
 
 .mytable-collapse__item {
-  min-width: 17rem;
-  flex-grow: 1;
-  flex-basis: 10rem;
-  text-align: center;
+  display: flex;
+  text-align: left;
 }
 
 .mytable-collapse__title {
+  min-width: 15rem;
   font-size: 15px;
   font-weight: bold;
   padding: 0.35rem 0;
-  border-bottom: 2px solid #dde2eb;
+  border-bottom: 1px solid #dde2eb;
 }
 
 .mytable-collapse__data {
   padding: 0.35rem 0;
   border-bottom: 1px solid #dde2eb;
+  width: 100%;
 }
 
 /* ============== CRUD Pagination ============== */

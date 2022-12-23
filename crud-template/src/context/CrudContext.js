@@ -12,10 +12,10 @@ const CrudProvider = ({ children }) => {
   const [db, setDb] = useState(null);
   const [dataToEdit, setDataToEdit] = useState(null);
   const [numRows, setNumRows] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowCount, setRowCount] = useState(25);
   const [cadena, setCadena] = useState('');
   const [incluyeBajas, setIncluyeBajas] = useState(true);
-  const [page, setPage] = useState(1);
 
   const [openForm, setOpenForm] = useState(false);
 
@@ -53,7 +53,9 @@ const CrudProvider = ({ children }) => {
   let url = 'http://localhost:8080/clientes';
 
   /* Initial API GET request */
-  const getData = (offSet = '0', rowCount = '1000') => {
+  const getData = () => {
+    let offSet = (page - 1) * rowCount;
+
     let endpoint = `${url}?cadena=${cadena}&incluyeBajas=${
       incluyeBajas ? 'S' : 'N'
     }&offSet=${offSet}&rowCount=${rowCount}`;
@@ -62,7 +64,8 @@ const CrudProvider = ({ children }) => {
     axios
       .get(endpoint)
       .then(response => {
-        setDb(response.data);
+        setDb(response.data.results);
+        setNumRows(response.data.numRows);
         setError(null);
       })
       .catch(error => {
@@ -75,7 +78,7 @@ const CrudProvider = ({ children }) => {
   useEffect(() => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cadena, incluyeBajas]);
+  }, [cadena, incluyeBajas, page, rowCount]);
 
   /* API POST request */
   const createData = data => {
@@ -157,6 +160,7 @@ const CrudProvider = ({ children }) => {
       .then(response => {
         let newData = db.filter(el => el.idCliente !== idCliente);
         setDb(newData);
+        setNumRows(numRows - 1);
         setModalData({});
         showMsgAlert(
           response.data,

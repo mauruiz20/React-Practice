@@ -10,10 +10,9 @@ import {
 } from '@mui/material';
 
 const CrudPagination = () => {
-  const { db, rowCount, setRowCount, page, setPage } = useContext(CrudContext);
+  const { numRows, rowCount, setRowCount, page, setPage } =
+    useContext(CrudContext);
   const { mediaQ768 } = useContext(StyleContext);
-
-  const totalRows = db.length;
 
   const handleChange = evt => {
     setRowCount(evt.target.value);
@@ -46,15 +45,15 @@ const CrudPagination = () => {
         </FormControl>
         <div className='pagination__msg'>
           {`Mostrando ${page * rowCount - rowCount + 1} - ${
-            page * rowCount < totalRows ? page * rowCount : totalRows
-          } de ${totalRows}`}
+            page * rowCount < numRows ? page * rowCount : numRows
+          } de ${numRows}`}
         </div>
       </div>
 
-      {totalRows > rowCount && (
+      {numRows > rowCount && (
         <Pagination
           className='pagination__nav'
-          count={parseInt(Math.ceil(totalRows / rowCount))}
+          count={parseInt(Math.ceil(numRows / rowCount))}
           color='primary'
           size={!mediaQ768 ? 'medium' : 'large'}
           page={page}
