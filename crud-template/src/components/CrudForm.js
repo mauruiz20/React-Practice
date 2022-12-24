@@ -12,7 +12,11 @@ import {
   TextField,
   Tooltip,
   Box,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const CrudForm = () => {
   const {
@@ -24,6 +28,7 @@ const CrudForm = () => {
     setOpenForm,
   } = useContext(CrudContext);
   const [addMultiple, setAddMultiple] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   /* useForm is a custom hook for managing forms with ease */
 
@@ -45,6 +50,7 @@ const CrudForm = () => {
       nacimiento: '',
       direccion: '',
       nacionalidad: '',
+      clave: '',
     },
   });
 
@@ -54,6 +60,7 @@ const CrudForm = () => {
     required: 'Campo obligatorio',
     onlyAlphabetic: 'Solo se acepta letras y espacios en blanco',
     email: 'Correo incorrecto',
+    passwordLength: 'Mínimo 6 caracteres',
   };
 
   const patterns = {
@@ -103,6 +110,7 @@ const CrudForm = () => {
     resetField('direccion', { keepErrors: false });
     resetField('nacimiento', { keepErrors: false });
     resetField('nacionalidad', { keepErrors: false });
+    resetField('clave', { keepErrors: false });
     setDataToEdit(null);
   };
 
@@ -112,6 +120,14 @@ const CrudForm = () => {
     setOpenForm(false);
     handleReset();
     setAddMultiple(false);
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = evt => {
+    evt.preventDefault();
   };
 
   return (
@@ -319,6 +335,43 @@ const CrudForm = () => {
                 helperText={
                   errors.nacionalidad ? errors.nacionalidad.message : ' '
                 }
+              />
+            </Box>
+
+            <Box>
+              <InputLabel htmlFor='clave' error={errors.clave ? true : false}>
+                Clave:
+              </InputLabel>
+              <TextField
+                {...register('clave', {
+                  required: !dataToEdit && messages.required,
+                  minLength: {
+                    value: 6,
+                    message: messages.passwordLength,
+                  },
+                })}
+                variant='standard'
+                type={showPassword ? 'text' : 'password'}
+                fullWidth
+                name='clave'
+                size='small'
+                color='info'
+                autoComplete='off'
+                error={errors.clave ? true : false}
+                helperText={errors.clave ? errors.clave.message : ' '}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        aria-label='toggle password visibility'
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Box>
           </form>

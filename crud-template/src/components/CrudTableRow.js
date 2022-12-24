@@ -18,31 +18,32 @@ const CrudTableRow = ({ data, setModal }) => {
     setOpenForm,
   } = useContext(CrudContext);
 
-  /* Active / Inactive clients */
-
+  /* Llamada al manejador para dar de alta o baja el cliente */
   const handleState = evt => {
     evt.stopPropagation();
     handleStateData(data);
   };
 
-  /* Open modal to confirm delete */
-
+  /* Ventana modal para confirmar el borrado */
   const handleDelete = evt => {
     evt.stopPropagation();
     setModalData(data);
     setModal(true);
   };
 
+  /* Ventana modal para editar el cliente */
   const handleEdit = evt => {
     evt.stopPropagation();
     setDataToEdit(data);
     setOpenForm(true);
   };
 
+  /* Manejador de la fila collapse */
   const handleAccordion = () => {
     setOpen(!open);
   };
 
+  // Estilos para los bordes de las celdas
   const cellStyle = {
     borderRight: '1px',
     borderRightStyle: 'solid',

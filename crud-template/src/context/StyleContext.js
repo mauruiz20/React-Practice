@@ -6,10 +6,11 @@ import { darkTheme, lightTheme } from '../components/Themes';
 const StyleContext = createContext();
 
 const StyleProvider = ({ children }) => {
-  /* Media Querys states */
+  /* Estados que controlan las Medias Queries */
   const mediaQ1024 = useMediaQuery('(min-width: 1025px)');
   const mediaQ560 = useMediaQuery('(min-width: 561px)');
 
+  /* Modo oscuro (Cacheo en localStorage)*/
   let initialDarkMode = true;
   if (localStorage.getItem('theme') === null) {
     localStorage.setItem('theme', 'light');

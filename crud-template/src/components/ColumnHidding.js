@@ -12,7 +12,6 @@ import {
   Typography,
 } from '@mui/material';
 import CrudContext from '../context/CrudContext';
-import StyleContext from '../context/StyleContext';
 
 const ColumnHidding = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,10 +20,8 @@ const ColumnHidding = () => {
   const { visibleColumns, handleColumnHide, handleResetColumns } =
     useContext(CrudContext);
 
-  const { mediaQ1024, mediaQ768, mediaQ560 } = useContext(StyleContext);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = evt => {
+    setAnchorEl(evt.currentTarget);
   };
 
   const handleClose = () => {
@@ -32,7 +29,7 @@ const ColumnHidding = () => {
   };
 
   return (
-    <div>
+    <>
       <Fab
         color='primary'
         size='small'
@@ -68,11 +65,6 @@ const ColumnHidding = () => {
                   control={
                     <Checkbox
                       type='checkbox'
-                      // disabled={
-                      //   (column.field === 'email' && !mediaQ1024) ||
-                      //   (column.field === 'phone' && !mediaQ768) ||
-                      //   (column.field === 'state' && !mediaQ560)
-                      // }
                       checked={column.visible}
                       onChange={evt =>
                         handleColumnHide(evt.target.checked, column)
@@ -97,7 +89,7 @@ const ColumnHidding = () => {
           </MenuItem>
         </MenuList>
       </Menu>
-    </div>
+    </>
   );
 };
 

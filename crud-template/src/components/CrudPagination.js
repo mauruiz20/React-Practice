@@ -14,11 +14,13 @@ const CrudPagination = () => {
     useContext(CrudContext);
   const { mediaQ768 } = useContext(StyleContext);
 
+  /* Función que controla el cambio de cantidad de filas */
   const handleChange = evt => {
     setRowCount(evt.target.value);
     setPage(1);
   };
 
+  /* Función que controla el cambio de paginas */
   const handlePage = (evt, value) => {
     setPage(value);
     setTimeout(() => {

@@ -8,6 +8,7 @@
   --error: #d32f2f;
   --success: #2e7d32;
   --primary: #1976d2;
+  --secondary: #b093e1;
   --white: #ffffff;
 
   /* ============== Font and typography ============== */
@@ -183,9 +184,8 @@ body.dark-theme {
   flex-wrap: wrap;
 }
 
-.mytable__head,
-.mytable__head .mytable__btn {
-  font-weight: bold;
+.mytable__head {
+  font-weight: 700;
 }
 
 .mytable__head-cell {
@@ -205,13 +205,35 @@ body.dark-theme {
   overflow: hidden;
 }
 
-.mytable__body-row {
-  /* border-bottom: 1px solid #dde2eb; */
-  cursor: pointer;
+.mytable__head-cell {
+  padding: 0.5rem 0.75rem;
+}
+
+.mytable__head-btn {
+  width: 100%;
+  font-size: inherit !important;
+  font-family: inherit;
+  font-weight: bold;
+  color: inherit !important;
+  padding: 0 !important;
 }
 
 .mytable__body-cell {
   justify-content: start;
+}
+
+.mytable__head-btn:hover .mytable__head-btn-arrow {
+  color: var(--secondary);
+}
+
+.mytable__head-btn-arrow {
+  margin: 0 0.25rem;
+  transition: color 0.25s !important;
+}
+
+.mytable__body-row {
+  /* border-bottom: 1px solid #dde2eb; */
+  cursor: pointer;
 }
 
 .mytable__body-cell:first-child,
@@ -223,6 +245,11 @@ body.dark-theme {
 .mytable__head-cell:last-child,
 .mytable__actions {
   border-right: 0;
+}
+
+.mytable__empty {
+  display: block;
+  padding: 1rem;
 }
 
 .mytable__email {
@@ -399,7 +426,7 @@ body.dark-theme {
   /* ============== MyTable ============== */
 
   .mytable__head-cell {
-    padding: 0.2rem 0;
+    padding: 0.5rem 0;
   }
 
   /* ============== MyTable Collapse ============== */

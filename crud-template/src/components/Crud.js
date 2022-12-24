@@ -6,7 +6,7 @@ import CrudContext from '../context/CrudContext';
 import { CircularProgress, Paper } from '@mui/material';
 
 const Crud = () => {
-  const { db, loading } = useContext(CrudContext);
+  const { db, numRows, loading } = useContext(CrudContext);
 
   return (
     <Paper>
@@ -21,7 +21,7 @@ const Crud = () => {
         />
       )}
       {db && <CrudTable />}
-      {db && <CrudPagination />}
+      {db && numRows > 0 && <CrudPagination />}
     </Paper>
   );
 };

@@ -8,27 +8,30 @@ import StyleContext from '../context/StyleContext';
 const CrudContext = createContext();
 
 const CrudProvider = ({ children }) => {
-  /* Table updates states */
+  /* Estados que manejan los datos que se muestran en la tabla */
   const [db, setDb] = useState(null);
-  const [dataToEdit, setDataToEdit] = useState(null);
   const [numRows, setNumRows] = useState(0);
   const [page, setPage] = useState(1);
   const [rowCount, setRowCount] = useState(25);
   const [cadena, setCadena] = useState('');
+  const [orden, setOrden] = useState('A');
   const [incluyeBajas, setIncluyeBajas] = useState(true);
 
+  /* Estados para modificar datos */
+  const [dataToEdit, setDataToEdit] = useState(null);
   const [openForm, setOpenForm] = useState(false);
-
-  /* Messages updates states */
   const [modalData, setModalData] = useState({});
+
+  /* Estados que muestran actualizaciones de la tabla */
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  /* HTTP Request states */
+  /* Estados para manipular el consumo de API's */
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const { mediaQ1024, mediaQ560 } = useContext(StyleContext);
 
+  /* Columnas que se mostrarán al cargar la página (Renderizado lado del cliente) */
   const initialVisibleColumns = [
     { field: 'apellidos', Header: 'Apellidos', visible: true },
     { field: 'nombres', Header: 'Nombres', visible: true },
@@ -40,6 +43,7 @@ const CrudProvider = ({ children }) => {
     { field: 'nacionalidad', Header: 'Nacionalidad', visible: false },
   ];
 
+  /* Efecto que muestra un mensaje en pantalla en caso de ocurrir una Exception */
   useEffect(() => {
     let errId;
     if (error) {
@@ -50,133 +54,161 @@ const CrudProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error, closeSnackbar]);
 
-  let url = 'http://localhost:8080/clientes';
+  /* Endpoint API Rest */
+  let url = 'http://localhost:8080/api/clientes';
+  let token =
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW50ZWNoYW5kbGVyNTEzQGdtYWlsLmNvbSIsImV4cCI6MTY3NDUwODQzNywibm9tYnJlIjoiRGFudGUgQ2hhbmRsZXIifQ.6M2A6EdFXDZ0Ei_nld5CfmLCOmgUhzEjeNrmcTzD6DQ';
 
-  /* Initial API GET request */
+  let headers = {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + token,
+  };
+
+  /* HTTP GET request */
   const getData = () => {
     let offSet = (page - 1) * rowCount;
 
     let endpoint = `${url}?cadena=${cadena}&incluyeBajas=${
       incluyeBajas ? 'S' : 'N'
-    }&offSet=${offSet}&rowCount=${rowCount}`;
+    }&orden=${orden}&offSet=${offSet}&rowCount=${rowCount}`;
 
-    setLoading(true);
+    setLoading(true); // Muestra loader
     axios
-      .get(endpoint)
+      .get(endpoint, {
+        headers: headers,
+      })
       .then(response => {
-        setDb(response.data.results);
-        setNumRows(response.data.numRows);
-        setError(null);
+        setDb(response.data.results); // Actualiza los datos
+        setNumRows(response.data.numRows); // Actualiza número total de datos
+        setError(null); // Sin errores
       })
       .catch(error => {
-        setDb(null);
-        setError(error.message);
+        setDb(null); // Limpia los datos
+        setError(error.message); // Muestra error
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false)); // Quita el loader
   };
 
+  /* Efecto que realiza el GET Request en caso de actualizar los estados indicados */
   useEffect(() => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cadena, incluyeBajas, page, rowCount]);
+  }, [cadena, incluyeBajas, page, rowCount, orden]);
 
-  /* API POST request */
+  /* HTTP POST request */
   const createData = data => {
-    data.idCliente = undefined;
-
-    setLoading(true);
+    data.idCliente = undefined; // No se manda el id en el body
+    setLoading(true); // Muestra loader
     axios
-      .post(url, data)
+      .post(url, data, {
+        headers: headers,
+      })
       .then(response => {
-        getData();
+        getData(); // Actualiza los datos
         showMsgAlert(
+          // Muestra mensaje de éxito o de advertencia
           response.data,
           response.data.includes('Cliente') ? 'success' : 'warning'
         );
       })
       .catch(error => {
-        setError(error.message);
+        setError(error.message); // Muestra error
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false)); // Quita el loader
   };
 
-  /* API PUT request */
+  /* HTTP PUT request (Modificar) */
   const updateData = data => {
     let endpoint = `${url}/${data.idCliente}`;
-
-    setLoading(true);
+    setLoading(true); // Muestra loader
     axios
-      .put(endpoint, data)
+      .put(endpoint, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      })
       .then(response => {
+        // Actualiza los datos (Renderizado lado del cliente)
         let newData = db.map(el =>
           el.idCliente === data.idCliente ? data : el
         );
         setDb(newData);
         showMsgAlert(
+          // Muestra mensaje de éxito o de advertencia
           response.data,
           response.data.includes('Cliente') ? 'success' : 'warning'
         );
       })
       .catch(error => {
-        setError(error.message);
+        setError(error.message); // Muestra error
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false)); // Quita el loader
   };
 
-  /* API Patch request */
+  /* HTTP PATCH request (Dar alta o baja) */
   const handleStateData = data => {
     let endpoint = `${url}/${data.idCliente}/alta`;
     if (data.estadoCliente === 'A') {
       endpoint = `${url}/${data.idCliente}/baja`;
     }
 
-    setLoading(true);
+    setLoading(true); // Muestra loader
     axios
-      .patch(endpoint)
+      .patch(endpoint, null, {
+        headers: headers,
+      })
       .then(response => {
+        // Actualiza los datos (Renderizado lado del cliente)
         data.estadoCliente = data.estadoCliente === 'A' ? 'B' : 'A';
         let newData = db.map(el =>
           el.idCliente === data.idCliente ? data : el
         );
         setDb(newData);
         showMsgAlert(
+          // Muestra mensaje de éxito o de advertencia
           response.data,
           response.data.includes('Cliente') ? 'success' : 'warning'
         );
       })
       .catch(error => {
-        setError(error.message);
+        setError(error.message); // Muestra error
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false)); // Quita el loader
   };
 
-  /* API DELETE request */
+  /* HTTP DELETE request */
   const deleteData = idCliente => {
     let endpoint = `${url}/${idCliente}`;
 
-    setLoading(true);
+    setLoading(true); // Muestra loader
     axios
-      .delete(endpoint)
+      .delete(endpoint, {
+        headers: headers,
+      })
       .then(response => {
+        // Actualiza los datos (Renderizado lado del cliente)
         let newData = db.filter(el => el.idCliente !== idCliente);
         setDb(newData);
         setNumRows(numRows - 1);
         setModalData({});
         showMsgAlert(
+          // Muestra mensaje de éxito o de advertencia
           response.data,
           response.data.includes('Cliente') ? 'success' : 'warning'
         );
       })
       .catch(error => {
-        setError(error.message);
+        setError(error.message); // Muestra error
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(false)); // Quita el loader
   };
 
-  /* Snackbar functions */
+  /* Funcionalidades de la dependencia Snackbar */
 
   let offlineId;
 
+  /* Mensaje de recuperación de conexión */
   const handleOnline = () => {
     closeSnackbar(offlineId);
     enqueueSnackbar('Conexión recuperada!', {
@@ -185,6 +217,7 @@ const CrudProvider = ({ children }) => {
     });
   };
 
+  /* Mensaje de perdida de conexión */
   const handleOffline = () =>
     (offlineId = enqueueSnackbar('Sin conexión!', {
       variant: 'error',
@@ -208,6 +241,7 @@ const CrudProvider = ({ children }) => {
     </>
   );
 
+  /* Plantilla para mostrar mensajes */
   const showMsgAlert = (
     msg,
     variant,
@@ -224,15 +258,17 @@ const CrudProvider = ({ children }) => {
     });
   };
 
-  /* Visible columns functions */
+  /* Funcionalidades para manipular las columnas (Renderizado lado del cliente) */
 
   const [visibleColumns, setVisibleColumns] = useState(initialVisibleColumns);
 
+  /* Efecto que muestra/oculta columnas en función de Media Queries */
   useEffect(() => {
     handleResetColumns();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mediaQ1024, mediaQ560]);
 
+  /* Función que oculta columnas */
   const handleColumnHide = (checked, column) => {
     let newColumn = {
       field: column.field,
@@ -247,6 +283,7 @@ const CrudProvider = ({ children }) => {
     setVisibleColumns(newVisibleColumns);
   };
 
+  /* Función que reinicia la visibilidad de las columnas */
   const handleResetColumns = () => {
     setVisibleColumns(initialVisibleColumns);
   };
@@ -268,6 +305,8 @@ const CrudProvider = ({ children }) => {
     setIncluyeBajas,
     page,
     setPage,
+    orden,
+    setOrden,
     modalData,
     setModalData,
     createData,
