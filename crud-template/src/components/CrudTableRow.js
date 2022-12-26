@@ -113,7 +113,7 @@ const CrudTableRow = ({ data, setModal }) => {
           </Box>
         )}
 
-        {visibleColumns.find(col => col.field === 'idRol').visible && (
+        {visibleColumns.find(col => col.field === 'rol').visible && (
           <Box className='mytable__body-cell mytable__rol' sx={cellStyle}>
             {data.rol.rol}
           </Box>

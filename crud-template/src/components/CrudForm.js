@@ -76,8 +76,8 @@ const CrudForm = () => {
   useEffect(() => {
     if (dataToEdit) {
       setValue('idUsuario', dataToEdit.idUsuario);
-      setValue('idRol', dataToEdit.idRol);
-      setIdRol(dataToEdit.idRol);
+      setValue('idRol', dataToEdit.rol.idRol);
+      setIdRol(dataToEdit.rol.idRol);
       setValue('apellidos', dataToEdit.apellidos, { shouldValidate: true });
       setValue('nombres', dataToEdit.nombres, { shouldValidate: true });
       setValue('email', dataToEdit.email, { shouldValidate: true });
@@ -131,8 +131,8 @@ const CrudForm = () => {
     evt.preventDefault();
   };
 
-  const handleRol = event => {
-    setIdRol(event.target.value);
+  const handleRol = evt => {
+    setIdRol(evt.target.value);
   };
 
   return (
@@ -320,7 +320,7 @@ const CrudForm = () => {
               </InputLabel>
               <TextField
                 {...register('clave', {
-                  required: !dataToEdit && messages.required,
+                  required: messages.required,
                   minLength: {
                     value: 6,
                     message: messages.passwordLength,

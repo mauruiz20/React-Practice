@@ -39,7 +39,7 @@ const CrudProvider = ({ children }) => {
     { field: 'estadoUsuario', Header: 'Estado', visible: mediaQ560 },
     { field: 'nacimiento', Header: 'Fecha de Nacimiento', visible: false },
     { field: 'direccion', Header: 'Dirección', visible: false },
-    { field: 'idRol', Header: 'Rol', visible: true },
+    { field: 'rol', Header: 'Rol', visible: true },
   ];
 
   /* Efecto que muestra un mensaje en pantalla en caso de ocurrir una Exception */
@@ -96,7 +96,12 @@ const CrudProvider = ({ children }) => {
 
   /* HTTP POST request */
   const createData = data => {
+    data.rol = {
+      idRol: data.idRol,
+    };
     data.idUsuario = undefined; // No se manda el id en el body
+    data.idRol = undefined;
+    //console.log(data);
     setLoading(true); // Muestra loader
     axios
       .post(url, data, {
@@ -120,6 +125,12 @@ const CrudProvider = ({ children }) => {
   const updateData = data => {
     let endpoint = `${url}/${data.idUsuario}`;
     setLoading(true); // Muestra loader
+
+    data.rol = {
+      idRol: data.idRol,
+    };
+    data.idRol = undefined;
+    //console.log(data);
     axios
       .put(endpoint, data, {
         headers: {
@@ -129,10 +140,11 @@ const CrudProvider = ({ children }) => {
       })
       .then(response => {
         // Actualiza los datos (Renderizado lado del usuario)
-        let newData = db.map(el =>
-          el.idUsuario === data.idUsuario ? data : el
-        );
-        setDb(newData);
+        // let newData = db.map(el =>
+        //   el.idUsuario === data.idUsuario ? data : el
+        // );
+        // setDb(newData);
+        getData(); // Actualiza los datos
         showMsgAlert(
           // Muestra mensaje de éxito o de advertencia
           response.data,
