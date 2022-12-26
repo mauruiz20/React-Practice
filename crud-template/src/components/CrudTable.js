@@ -17,7 +17,7 @@ const CrudTable = () => {
   const data = () => {
     if (numRows > 0) {
       return db.map(data => (
-        <CrudTableRow key={data.idCliente} data={data} setModal={setModal} />
+        <CrudTableRow key={data.idUsuario} data={data} setModal={setModal} />
       ));
     } else {
       return (
@@ -155,41 +155,6 @@ const CrudTable = () => {
             </Box>
           )}
 
-          {visibleColumns.find(col => col.field === 'telefono').visible && (
-            <Box className='mytable__head-cell mytable__phone' sx={cellStyle}>
-              <IconButton
-                className='mytable__head-btn'
-                size='small'
-                disableRipple={true}
-                onClick={() => {
-                  let alt = window.pageYOffset;
-                  orden === 'T' ? setOrden('TD') : setOrden('T');
-                  setTimeout(() => {
-                    window.scrollTo({
-                      top: alt,
-                      behavior: 'auto',
-                    });
-                  }, 100);
-                }}
-              >
-                Teléfono
-                {mediaQ560 && (
-                  <ArrowUpwardIcon
-                    className='mytable__head-btn-arrow'
-                    fontSize='small'
-                    sx={{
-                      color: orden.includes('T')
-                        ? 'secondary.main'
-                        : 'transparent',
-                      transform:
-                        orden === 'TD' ? 'rotate(180deg)' : 'rotate(0deg)',
-                    }}
-                  />
-                )}
-              </IconButton>
-            </Box>
-          )}
-
           {visibleColumns.find(col => col.field === 'nacimiento').visible && (
             <Box className='mytable__head-cell mytable__date' sx={cellStyle}>
               Fecha de Nacimiento
@@ -202,16 +167,16 @@ const CrudTable = () => {
             </Box>
           )}
 
-          {visibleColumns.find(col => col.field === 'nacionalidad').visible && (
-            <Box className='mytable__head-cell' sx={cellStyle}>
-              Nacionalidad
-            </Box>
-          )}
-
-          {visibleColumns.find(col => col.field === 'estadoCliente')
+          {visibleColumns.find(col => col.field === 'estadoUsuario')
             .visible && (
             <Box className='mytable__head-cell mytable__state' sx={cellStyle}>
               Estado
+            </Box>
+          )}
+
+          {visibleColumns.find(col => col.field === 'idRol').visible && (
+            <Box className='mytable__head-cell mytable__rol' sx={cellStyle}>
+              Rol
             </Box>
           )}
 

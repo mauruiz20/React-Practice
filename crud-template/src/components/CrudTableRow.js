@@ -18,7 +18,7 @@ const CrudTableRow = ({ data, setModal }) => {
     setOpenForm,
   } = useContext(CrudContext);
 
-  /* Llamada al manejador para dar de alta o baja el cliente */
+  /* Llamada al manejador para dar de alta o baja el usuario */
   const handleState = evt => {
     evt.stopPropagation();
     handleStateData(data);
@@ -31,7 +31,7 @@ const CrudTableRow = ({ data, setModal }) => {
     setModal(true);
   };
 
-  /* Ventana modal para editar el cliente */
+  /* Ventana modal para editar el usuario */
   const handleEdit = evt => {
     evt.stopPropagation();
     setDataToEdit(data);
@@ -68,7 +68,7 @@ const CrudTableRow = ({ data, setModal }) => {
         },
       ]}
     >
-      <Box id={data.idCliente} className='mytable__body-row'>
+      <Box id={data.idUsuario} className='mytable__body-row'>
         {visibleColumns.find(col => col.field === 'apellidos').visible && (
           <Box className='mytable__body-cell' sx={cellStyle}>
             {data.apellidos}
@@ -87,12 +87,6 @@ const CrudTableRow = ({ data, setModal }) => {
           </Box>
         )}
 
-        {visibleColumns.find(col => col.field === 'telefono').visible && (
-          <Box className='mytable__body-cell mytable__phone' sx={cellStyle}>
-            {data.telefono}
-          </Box>
-        )}
-
         {visibleColumns.find(col => col.field === 'nacimiento').visible && (
           <Box className='mytable__body-cell mytable__date' sx={cellStyle}>
             {moment(data.nacimiento).format('D/MM/YYYY')}
@@ -105,23 +99,23 @@ const CrudTableRow = ({ data, setModal }) => {
           </Box>
         )}
 
-        {visibleColumns.find(col => col.field === 'nacionalidad').visible && (
-          <Box className='mytable__body-cell' sx={cellStyle}>
-            {data.nacionalidad}
-          </Box>
-        )}
-
-        {visibleColumns.find(col => col.field === 'estadoCliente').visible && (
+        {visibleColumns.find(col => col.field === 'estadoUsuario').visible && (
           <Box
             className='mytable__body-cell--center mytable__state'
             sx={cellStyle}
           >
             <Chip
-              label={data.estadoCliente === 'A' ? 'A' : 'B'}
-              color={data.estadoCliente === 'A' ? 'success' : 'error'}
+              label={data.estadoUsuario === 'A' ? 'A' : 'B'}
+              color={data.estadoUsuario === 'A' ? 'success' : 'error'}
               size='small'
               sx={{ minWidth: '30px', cursor: 'pointer' }}
             />
+          </Box>
+        )}
+
+        {visibleColumns.find(col => col.field === 'idRol').visible && (
+          <Box className='mytable__body-cell mytable__rol' sx={cellStyle}>
+            {data.rol.rol}
           </Box>
         )}
 
@@ -144,7 +138,7 @@ const CrudTableRow = ({ data, setModal }) => {
           </Tooltip>
 
           <Tooltip
-            title={data.estadoCliente === 'B' ? 'Dar de Alta' : 'Dar de Baja'}
+            title={data.estadoUsuario === 'B' ? 'Dar de Alta' : 'Dar de Baja'}
             arrow
             placement='top'
             disableInteractive
@@ -155,15 +149,15 @@ const CrudTableRow = ({ data, setModal }) => {
             <IconButton
               sx={{
                 color:
-                  data.estadoCliente === 'B' ? 'success.light' : 'error.light',
+                  data.estadoUsuario === 'B' ? 'success.light' : 'error.light',
               }}
-              onClick={evt => handleState(evt, data.estadoCliente)}
+              onClick={evt => handleState(evt, data.estadoUsuario)}
             >
               <ArrowUpwardIcon
                 fontSize='small'
                 sx={{
                   transform:
-                    data.estadoCliente === 'A'
+                    data.estadoUsuario === 'A'
                       ? 'rotate(180deg)'
                       : 'rotate(0deg)',
                   transition: 'transform 0.25s ease-out',

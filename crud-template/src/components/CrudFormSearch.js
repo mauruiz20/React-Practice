@@ -39,7 +39,7 @@ const CrudFormSearch = () => {
         variant='overline'
         display='block'
       >
-        Gestión clientes
+        Gestión usuarios
       </Typography>
 
       <hr className='crud-form-search__hr' />
@@ -96,7 +96,7 @@ const CrudFormSearch = () => {
             color='primary'
             onClick={() => setOpenForm(true)}
           >
-            Agregar cliente
+            Agregar usuario
             <AddCircleIcon sx={{ ml: 1 }} />
           </Fab>
         </Box>

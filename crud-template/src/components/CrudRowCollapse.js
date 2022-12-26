@@ -38,13 +38,6 @@ const CrudRowCollapse = ({ open, data }) => {
           </Box>
         )}
 
-        {!visibleColumns.find(col => col.field === 'telefono').visible && (
-          <Box className='mytable-collapse__item'>
-            <Box className='mytable-collapse__title'>Teléfono</Box>
-            <Box className='mytable-collapse__data'>{data.telefono}</Box>
-          </Box>
-        )}
-
         {!visibleColumns.find(col => col.field === 'nacimiento').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Nacimiento</Box>
@@ -59,28 +52,21 @@ const CrudRowCollapse = ({ open, data }) => {
           </Box>
         )}
 
-        {!visibleColumns.find(col => col.field === 'nacionalidad').visible && (
-          <Box className='mytable-collapse__item'>
-            <Box className='mytable-collapse__title'>Nacionalidad</Box>
-            <Box className='mytable-collapse__data'>{data.nacionalidad}</Box>
-          </Box>
-        )}
-
-        {!visibleColumns.find(col => col.field === 'estadoCliente').visible && (
+        {!visibleColumns.find(col => col.field === 'estadoUsuario').visible && (
           <Box className='mytable-collapse__item'>
             <Box className='mytable-collapse__title'>Estado</Box>
             <Box className='mytable-collapse__data'>
               <Typography
                 sx={{
                   color:
-                    data.estadoCliente === 'A'
+                    data.estadoUsuario === 'A'
                       ? 'success.light'
                       : 'error.light',
                   fontWeight: 'bold',
                   lineHeight: '1',
                 }}
               >
-                {data.estadoCliente === 'A' ? 'Dado de alta' : 'Dado de baja'}
+                {data.estadoUsuario === 'A' ? 'Dado de alta' : 'Dado de baja'}
               </Typography>
             </Box>
           </Box>

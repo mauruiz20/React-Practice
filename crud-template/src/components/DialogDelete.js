@@ -20,7 +20,7 @@ const DialogDelete = ({ open, setOpen }) => {
 
   const handleDelete = () => {
     setOpen(false);
-    deleteData(data.idCliente);
+    deleteData(data.idUsuario);
   };
 
   return (

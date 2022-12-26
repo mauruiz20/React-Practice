@@ -31,16 +31,15 @@ const CrudProvider = ({ children }) => {
 
   const { mediaQ1024, mediaQ560 } = useContext(StyleContext);
 
-  /* Columnas que se mostrarán al cargar la página (Renderizado lado del cliente) */
+  /* Columnas que se mostrarán al cargar la página (Renderizado lado del usuario) */
   const initialVisibleColumns = [
     { field: 'apellidos', Header: 'Apellidos', visible: true },
     { field: 'nombres', Header: 'Nombres', visible: true },
     { field: 'email', Header: 'Correo Electrónico', visible: mediaQ1024 },
-    { field: 'telefono', Header: 'Teléfono', visible: true },
-    { field: 'estadoCliente', Header: 'Estado', visible: mediaQ560 },
+    { field: 'estadoUsuario', Header: 'Estado', visible: mediaQ560 },
     { field: 'nacimiento', Header: 'Fecha de Nacimiento', visible: false },
     { field: 'direccion', Header: 'Dirección', visible: false },
-    { field: 'nacionalidad', Header: 'Nacionalidad', visible: false },
+    { field: 'idRol', Header: 'Rol', visible: true },
   ];
 
   /* Efecto que muestra un mensaje en pantalla en caso de ocurrir una Exception */
@@ -55,7 +54,7 @@ const CrudProvider = ({ children }) => {
   }, [error, closeSnackbar]);
 
   /* Endpoint API Rest */
-  let url = 'http://localhost:8080/api/clientes';
+  let url = 'http://localhost:8080/api/usuarios';
   let token =
     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW50ZWNoYW5kbGVyNTEzQGdtYWlsLmNvbSIsImV4cCI6MTY3NDUwODQzNywibm9tYnJlIjoiRGFudGUgQ2hhbmRsZXIifQ.6M2A6EdFXDZ0Ei_nld5CfmLCOmgUhzEjeNrmcTzD6DQ';
 
@@ -97,7 +96,7 @@ const CrudProvider = ({ children }) => {
 
   /* HTTP POST request */
   const createData = data => {
-    data.idCliente = undefined; // No se manda el id en el body
+    data.idUsuario = undefined; // No se manda el id en el body
     setLoading(true); // Muestra loader
     axios
       .post(url, data, {
@@ -108,7 +107,7 @@ const CrudProvider = ({ children }) => {
         showMsgAlert(
           // Muestra mensaje de éxito o de advertencia
           response.data,
-          response.data.includes('Cliente') ? 'success' : 'warning'
+          response.data.includes('Usuario') ? 'success' : 'warning'
         );
       })
       .catch(error => {
@@ -119,7 +118,7 @@ const CrudProvider = ({ children }) => {
 
   /* HTTP PUT request (Modificar) */
   const updateData = data => {
-    let endpoint = `${url}/${data.idCliente}`;
+    let endpoint = `${url}/${data.idUsuario}`;
     setLoading(true); // Muestra loader
     axios
       .put(endpoint, data, {
@@ -129,15 +128,15 @@ const CrudProvider = ({ children }) => {
         },
       })
       .then(response => {
-        // Actualiza los datos (Renderizado lado del cliente)
+        // Actualiza los datos (Renderizado lado del usuario)
         let newData = db.map(el =>
-          el.idCliente === data.idCliente ? data : el
+          el.idUsuario === data.idUsuario ? data : el
         );
         setDb(newData);
         showMsgAlert(
           // Muestra mensaje de éxito o de advertencia
           response.data,
-          response.data.includes('Cliente') ? 'success' : 'warning'
+          response.data.includes('Usuario') ? 'success' : 'warning'
         );
       })
       .catch(error => {
@@ -148,9 +147,9 @@ const CrudProvider = ({ children }) => {
 
   /* HTTP PATCH request (Dar alta o baja) */
   const handleStateData = data => {
-    let endpoint = `${url}/${data.idCliente}/alta`;
-    if (data.estadoCliente === 'A') {
-      endpoint = `${url}/${data.idCliente}/baja`;
+    let endpoint = `${url}/${data.idUsuario}/alta`;
+    if (data.estadoUsuario === 'A') {
+      endpoint = `${url}/${data.idUsuario}/baja`;
     }
 
     setLoading(true); // Muestra loader
@@ -159,16 +158,16 @@ const CrudProvider = ({ children }) => {
         headers: headers,
       })
       .then(response => {
-        // Actualiza los datos (Renderizado lado del cliente)
-        data.estadoCliente = data.estadoCliente === 'A' ? 'B' : 'A';
+        // Actualiza los datos (Renderizado lado del usuario)
+        data.estadoUsuario = data.estadoUsuario === 'A' ? 'B' : 'A';
         let newData = db.map(el =>
-          el.idCliente === data.idCliente ? data : el
+          el.idUsuario === data.idUsuario ? data : el
         );
         setDb(newData);
         showMsgAlert(
           // Muestra mensaje de éxito o de advertencia
           response.data,
-          response.data.includes('Cliente') ? 'success' : 'warning'
+          response.data.includes('Usuario') ? 'success' : 'warning'
         );
       })
       .catch(error => {
@@ -178,8 +177,8 @@ const CrudProvider = ({ children }) => {
   };
 
   /* HTTP DELETE request */
-  const deleteData = idCliente => {
-    let endpoint = `${url}/${idCliente}`;
+  const deleteData = idUsuario => {
+    let endpoint = `${url}/${idUsuario}`;
 
     setLoading(true); // Muestra loader
     axios
@@ -187,15 +186,15 @@ const CrudProvider = ({ children }) => {
         headers: headers,
       })
       .then(response => {
-        // Actualiza los datos (Renderizado lado del cliente)
-        let newData = db.filter(el => el.idCliente !== idCliente);
+        // Actualiza los datos (Renderizado lado del usuario)
+        let newData = db.filter(el => el.idUsuario !== idUsuario);
         setDb(newData);
         setNumRows(numRows - 1);
         setModalData({});
         showMsgAlert(
           // Muestra mensaje de éxito o de advertencia
           response.data,
-          response.data.includes('Cliente') ? 'success' : 'warning'
+          response.data.includes('Usuario') ? 'success' : 'warning'
         );
       })
       .catch(error => {
@@ -258,7 +257,7 @@ const CrudProvider = ({ children }) => {
     });
   };
 
-  /* Funcionalidades para manipular las columnas (Renderizado lado del cliente) */
+  /* Funcionalidades para manipular las columnas (Renderizado lado del usuario) */
 
   const [visibleColumns, setVisibleColumns] = useState(initialVisibleColumns);
 

@@ -14,6 +14,9 @@ import {
   Box,
   InputAdornment,
   IconButton,
+  FormControl,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -29,6 +32,7 @@ const CrudForm = () => {
   } = useContext(CrudContext);
   const [addMultiple, setAddMultiple] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [idRol, setIdRol] = useState(1);
 
   /* useForm is a custom hook for managing forms with ease */
 
@@ -42,14 +46,13 @@ const CrudForm = () => {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      idCliente: null,
+      idUsuario: null,
+      idRol: 1,
       apellidos: '',
       nombres: '',
       email: '',
-      telefono: '',
       nacimiento: '',
       direccion: '',
-      nacionalidad: '',
       clave: '',
     },
   });
@@ -72,23 +75,21 @@ const CrudForm = () => {
 
   useEffect(() => {
     if (dataToEdit) {
-      setValue('idCliente', dataToEdit.idCliente);
+      setValue('idUsuario', dataToEdit.idUsuario);
+      setValue('idRol', dataToEdit.idRol);
+      setIdRol(dataToEdit.idRol);
       setValue('apellidos', dataToEdit.apellidos, { shouldValidate: true });
       setValue('nombres', dataToEdit.nombres, { shouldValidate: true });
       setValue('email', dataToEdit.email, { shouldValidate: true });
-      setValue('telefono', dataToEdit.telefono, { shouldValidate: true });
       setValue('direccion', dataToEdit.direccion, { shouldValidate: true });
       setValue('nacimiento', dataToEdit.nacimiento, { shouldValidate: true });
-      setValue('nacionalidad', dataToEdit.nacionalidad, {
-        shouldValidate: true,
-      });
     }
   }, [dataToEdit, setValue]);
 
   /* Validation will trigger on the submit event and invalid inputs will attach onChange event listeners to re-validate them */
 
   const onSubmit = data => {
-    if (getValues().idCliente === null) {
+    if (getValues().idUsuario === null) {
       // ID == null => create data
       createData(data);
       handleReset();
@@ -102,14 +103,14 @@ const CrudForm = () => {
   /* Reset form */
 
   const handleReset = () => {
-    setValue('idCliente', null);
+    setValue('idUsuario', null);
+    setIdRol(1);
+    resetField('idRol', { keepErrors: false });
     resetField('apellidos', { keepErrors: false });
     resetField('nombres', { keepErrors: false });
     resetField('email', { keepErrors: false });
-    resetField('telefono', { keepErrors: false });
     resetField('direccion', { keepErrors: false });
     resetField('nacimiento', { keepErrors: false });
-    resetField('nacionalidad', { keepErrors: false });
     resetField('clave', { keepErrors: false });
     setDataToEdit(null);
   };
@@ -130,6 +131,10 @@ const CrudForm = () => {
     evt.preventDefault();
   };
 
+  const handleRol = event => {
+    setIdRol(event.target.value);
+  };
+
   return (
     <>
       <Dialog
@@ -146,7 +151,7 @@ const CrudForm = () => {
           display='block'
           color='text.primary'
         >
-          {dataToEdit ? 'Editar Cliente' : 'Agregar Cliente'}
+          {dataToEdit ? 'Editar Usuario' : 'Agregar Usuario'}
         </DialogTitle>
 
         <DialogContent dividers>
@@ -212,6 +217,31 @@ const CrudForm = () => {
               />
             </Box>
 
+            <FormControl
+              variant='standard'
+              sx={{ width: '30%', marginBottom: '20px' }}
+            >
+              <InputLabel id='select' sx={{ fontSize: '1.33rem', top: '-2px' }}>
+                Rol:
+              </InputLabel>
+              <Select
+                {...register('idRol', {
+                  required: messages.required,
+                })}
+                name='idRol'
+                labelId='select'
+                id='select'
+                value={idRol}
+                label='idRol'
+                onChange={handleRol}
+              >
+                <MenuItem value={1}>Administrador</MenuItem>
+                <MenuItem value={2}>Administrativo</MenuItem>
+                <MenuItem value={3}>Cobrador</MenuItem>
+                <MenuItem value={4}>Cliente</MenuItem>
+              </Select>
+            </FormControl>
+
             <Box>
               <InputLabel htmlFor='email' error={errors.email ? true : false}>
                 Correo electrónico:
@@ -234,30 +264,6 @@ const CrudForm = () => {
                 InputLabelProps={{ shrink: true }}
                 error={errors.email ? true : false}
                 helperText={errors.email ? errors.email.message : ' '}
-              />
-            </Box>
-
-            <Box>
-              <InputLabel
-                htmlFor='telefono'
-                error={errors.telefono ? true : false}
-              >
-                Teléfono:
-              </InputLabel>
-              <TextField
-                {...register('telefono', {
-                  required: messages.required,
-                })}
-                variant='standard'
-                type='text'
-                fullWidth
-                name='telefono'
-                size='small'
-                color='info'
-                autoComplete='off'
-                InputLabelProps={{ shrink: true }}
-                error={errors.telefono ? true : false}
-                helperText={errors.telefono ? errors.telefono.message : ' '}
               />
             </Box>
 
@@ -305,36 +311,6 @@ const CrudForm = () => {
                 InputLabelProps={{ shrink: true }}
                 error={errors.nacimiento ? true : false}
                 helperText={errors.nacimiento ? errors.nacimiento.message : ' '}
-              />
-            </Box>
-
-            <Box>
-              <InputLabel
-                htmlFor='nacionalidad'
-                error={errors.nacionalidad ? true : false}
-              >
-                Nacionalidad
-              </InputLabel>
-              <TextField
-                {...register('nacionalidad', {
-                  required: messages.required,
-                  pattern: {
-                    value: patterns.onlyAlphabetic,
-                    message: messages.onlyAlphabetic,
-                  },
-                })}
-                variant='standard'
-                type='text'
-                fullWidth
-                name='nacionalidad'
-                size='small'
-                color='info'
-                autoComplete='off'
-                InputLabelProps={{ shrink: true }}
-                error={errors.nacionalidad ? true : false}
-                helperText={
-                  errors.nacionalidad ? errors.nacionalidad.message : ' '
-                }
               />
             </Box>
 
@@ -389,7 +365,7 @@ const CrudForm = () => {
 
           <Box>
             {!dataToEdit && (
-              <Tooltip title='Agregar múltiples clientes' placement='left'>
+              <Tooltip title='Agregar múltiples usuarios' placement='left'>
                 <Switch
                   checked={addMultiple}
                   onChange={evt => setAddMultiple(evt.target.checked)}
