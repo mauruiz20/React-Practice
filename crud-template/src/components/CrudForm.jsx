@@ -14,7 +14,8 @@ import Box from '@mui/material/Box';
 import {messages, patterns} from '../utils/constants';
 
 const CrudForm = () => {
-    const {createData, updateData, dataToEdit, setDataToEdit, openForm, setOpenForm} = useCrud();
+    const {state, createData, updateData, handleSetDataToEdit, handleSetOpenForm} = useCrud();
+    const {dataToEdit, openForm} = state;
     const [addMultiple, setAddMultiple] = useState(false);
 
     /* useForm is a custom hook for managing forms with ease */
@@ -56,7 +57,7 @@ const CrudForm = () => {
             // ID == null => create data
             createData(data);
             handleReset();
-            setOpenForm(addMultiple);
+            handleSetOpenForm(addMultiple);
         } else {
             // ID != null => update data
             updateData(data);
@@ -71,13 +72,13 @@ const CrudForm = () => {
         resetField('nombres', {keepError: false});
         resetField('correo', {keepError: false});
         resetField('nacimiento', {keepError: false});
-        setDataToEdit(null);
+        handleSetDataToEdit(null);
     };
 
     /* Close form */
 
     const handleClose = () => {
-        setOpenForm(false);
+        handleSetOpenForm(false);
         handleReset();
         setAddMultiple(false);
     };

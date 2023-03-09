@@ -15,7 +15,8 @@ const Crud = () => {
 };
 
 const CrudPage = () => {
-    const {db, numRows, loading} = useCrud();
+    const {state} = useCrud();
+    const {db, loading, numRows} = state;
 
     return (
         <Paper>

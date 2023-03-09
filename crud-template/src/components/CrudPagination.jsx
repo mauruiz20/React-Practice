@@ -8,18 +8,18 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 const CrudPagination = () => {
-    const {numRows, rowCount, setRowCount, page, setPage} = useCrud();
+    const {state, handleSetRowCount, handleSetPage} = useCrud();
+    const {numRows, rowCount, page} = state;
     const {mediaQ768} = useStyle();
 
     /* Función que controla el cambio de cantidad de filas */
     const handleChange = evt => {
-        setRowCount(evt.target.value);
-        setPage(1);
+        handleSetRowCount(evt.target.value);
     };
 
     /* Función que controla el cambio de paginas */
     const handlePage = (evt, value) => {
-        setPage(value);
+        handleSetPage(value);
         setTimeout(() => {
             window.scrollTo({top: document.documentElement.scrollHeight});
         }, 100);

@@ -3,6 +3,11 @@ import moment from 'moment/moment';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import {cellStyle} from '../utils/constants';
+import ActionButton from './ActionButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import {useCrud} from '../context/CrudContext';
 
 /*
  * Componente BodyCell
@@ -11,8 +16,11 @@ import {cellStyle} from '../utils/constants';
 const BodyCell = ({data, column}) => {
     /* Función que se encarga de procesar la información que se mostrará en cada celda. */
     const renderData = field => {
+        if (field.includes('acciones')) {
+            return <Acciones data={data} />;
+        }
         // Si la columna es nula se muestra "-".
-        if (!data[field] && data[field] !== 0) {
+        else if (!data[field] && data[field] !== 0) {
             return '-';
         }
         // Si la columna es de tipo "dateTime", se formatea la fecha a "DD/MM/YYYY HH:mm" y si es nula se muestra "-".
@@ -63,6 +71,65 @@ const Estado = ({data, field}) => {
             size='small'
             sx={{minWidth: '30px', cursor: 'pointer'}}
         />
+    );
+};
+
+const Acciones = ({data}) => {
+    const {
+        handleStateData,
+        handleSetModalData,
+        handleSetDataToEdit,
+        handleSetOpenForm,
+        handlesetOpenDelete,
+    } = useCrud();
+    /* Llamada al manejador para dar de alta o baja el usuario */
+    const handleState = evt => {
+        evt.stopPropagation();
+        handleStateData(data);
+    };
+
+    /* Ventana modal para confirmar el borrado */
+    const handleDelete = evt => {
+        evt.stopPropagation();
+        handleSetModalData(data);
+        handlesetOpenDelete(true);
+    };
+
+    /* Ventana modal para editar el usuario */
+    const handleEdit = evt => {
+        evt.stopPropagation();
+        handleSetDataToEdit(data);
+        handleSetOpenForm(true);
+    };
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                flex: '1 1 0',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+            }}
+        >
+            <ActionButton
+                title='Editar'
+                Icon={EditIcon}
+                onClick={handleEdit}
+                color={'primary.main'}
+            />
+
+            <ActionButton
+                title={data.estadoUsuario === 'B' ? 'Dar de Alta' : 'Dar de Baja'}
+                Icon={ArrowUpwardIcon}
+                onClick={handleState}
+                color={data.estadoUsuario === 'B' ? 'success.light' : 'error.light'}
+                stylesIcon={{
+                    transform: data.estadoUsuario === 'A' ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.25s ease-out',
+                }}
+            />
+
+            <ActionButton title='Borrar' Icon={DeleteIcon} onClick={handleDelete} />
+        </Box>
     );
 };
 

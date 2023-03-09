@@ -16,8 +16,17 @@ const useColumn = initialColumns => {
     const handleColumnHide = (checked, column) => {
         let newColumn = {
             field: column.field,
-            Header: column.Header,
+            label: column.label,
+            shortLabel: column?.shortLabel,
+            type: column?.type,
+            null: column?.null,
+            order: column?.order,
+            right: column?.right,
+            width: column?.width,
+            minWidth: column?.minWidth,
+            maxWidth: column?.maxWidth,
             visible: checked,
+            columnVisible: column.columnVisible,
         };
 
         let newVisibleColumns = visibleColumns.map(columnEl =>

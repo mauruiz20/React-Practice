@@ -69,7 +69,7 @@ const ColumnHidding = () => {
                                             size='small'
                                         />
                                     }
-                                    label={column.Header}
+                                    label={column.label}
                                 />
                             </FormGroup>
                         </MenuItem>

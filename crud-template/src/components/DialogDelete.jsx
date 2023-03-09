@@ -8,7 +8,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 const DialogDelete = ({open, setOpen}) => {
-    const {modalData: data, deleteData} = useCrud();
+    const {state, deleteData} = useCrud();
+    const {modalData: data} = state;
 
     /* Close dialog */
 

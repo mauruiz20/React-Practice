@@ -14,19 +14,17 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 const CrudFormSearch = () => {
-    const {setCadena, incluyeBajas, setIncluyeBajas, setPage, setOpenForm} = useCrud();
+    const {state, handleSetCadena, handleSetIncluyeBajas, handleSetOpenForm} = useCrud();
+    const {incluyeBajas} = state;
 
     const {register, handleSubmit} = useForm({});
 
     const onSubmit = data => {
-        setCadena(data.cadena);
+        handleSetCadena(data.cadena);
     };
 
-    /* Handle Actives / Inactives */
-
     const handleInactives = () => {
-        setIncluyeBajas(!incluyeBajas);
-        setPage(1);
+        handleSetIncluyeBajas(!incluyeBajas);
     };
 
     return (
@@ -80,11 +78,12 @@ const CrudFormSearch = () => {
                             <SearchIcon sx={{fontSize: '35px'}} />
                         </Fab>
                     </Tooltip>
+
                     <Fab
                         variant='extended'
                         size='medium'
                         color='primary'
-                        onClick={() => setOpenForm(true)}
+                        onClick={() => handleSetOpenForm(true)}
                     >
                         Agregar usuario
                         <AddCircleIcon sx={{ml: 1}} />
