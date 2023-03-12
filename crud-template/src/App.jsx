@@ -1,7 +1,7 @@
-import {SnackbarProvider} from 'notistack';
+import { SnackbarProvider } from 'notistack';
 import TopBar from './components/TopBar';
 import Crud from './components/Crud';
-import {StyleProvider} from './context/StyleContext';
+import { StyleProvider } from './context/StyleContext';
 
 function App() {
     return (

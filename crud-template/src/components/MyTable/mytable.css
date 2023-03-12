@@ -1,0 +1,77 @@
+.table {
+    padding-top: 1rem;
+}
+
+.row {
+    display: flex;
+}
+
+.head-row {
+    user-select: none;
+    font-weight: 700;
+    border-bottom: 3px solid #000;
+}
+
+.body-row:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.body-row {
+    cursor: pointer;
+}
+
+.body-row:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.body-row:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.cell {
+    position: relative;
+    line-height: 32px;
+    height: 32px;
+    flex-basis: 0;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0.5rem 0;
+    padding: 0 0.5rem;
+    white-space: nowrap;
+}
+
+.cell:not(:first-child) {
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.collapse-item {
+    margin: 0.25rem 0;
+    padding: 0 1rem;
+    display: flex;
+}
+
+.collapse-item:first-child {
+    margin-top: 1rem;
+}
+
+.collapse-item:last-child {
+    margin-bottom: 1.5rem;
+}
+
+.collapse-item-title {
+    flex: 1 1 0;
+    min-width: 7rem;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid #dde2eb;
+}
+
+.collapse-item-data {
+    flex: 3 1 0;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid #dde2eb;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

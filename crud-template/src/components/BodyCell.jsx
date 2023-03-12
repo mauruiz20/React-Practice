@@ -80,7 +80,7 @@ const Acciones = ({data}) => {
         handleSetModalData,
         handleSetDataToEdit,
         handleSetOpenForm,
-        handlesetOpenDelete,
+        handleSetOpenDelete,
     } = useCrud();
     /* Llamada al manejador para dar de alta o baja el usuario */
     const handleState = evt => {
@@ -92,7 +92,7 @@ const Acciones = ({data}) => {
     const handleDelete = evt => {
         evt.stopPropagation();
         handleSetModalData(data);
-        handlesetOpenDelete(true);
+        handleSetOpenDelete(true);
     };
 
     /* Ventana modal para editar el usuario */

@@ -168,11 +168,14 @@ body.dark-theme {
 
 .mytable {
     position: relative;
+    width: 100%;
+    color: #fcfcfc;
 }
 
 .mytable__head-row,
 .mytable__body-row {
     display: flex;
+    width: 100%;
 }
 
 .mytable__btn {
