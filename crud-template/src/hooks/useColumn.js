@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react';
-import {useStyle} from '../context/StyleContext';
+import { useEffect, useState } from 'react';
+import { useStyle } from '../context/StyleContext';
 
-const useColumn = initialColumns => {
+const useColumn = (initialColumns) => {
     /* Funcionalidades para manipular las columnas (Renderizado lado del usuario) */
-    const {mediaQ560, mediaQ1024} = useStyle();
+    const { mediaQ560, mediaQ1024 } = useStyle();
     const [visibleColumns, setVisibleColumns] = useState(initialColumns);
 
     /* Efecto que muestra/oculta columnas en función de Media Queries */
@@ -15,21 +15,11 @@ const useColumn = initialColumns => {
     /* Función que oculta columnas */
     const handleColumnHide = (checked, column) => {
         let newColumn = {
-            field: column.field,
-            label: column.label,
-            shortLabel: column?.shortLabel,
-            type: column?.type,
-            null: column?.null,
-            order: column?.order,
-            right: column?.right,
-            width: column?.width,
-            minWidth: column?.minWidth,
-            maxWidth: column?.maxWidth,
+            ...column,
             visible: checked,
-            columnVisible: column.columnVisible,
         };
 
-        let newVisibleColumns = visibleColumns.map(columnEl =>
+        let newVisibleColumns = visibleColumns.map((columnEl) =>
             columnEl.field === newColumn.field ? newColumn : columnEl,
         );
 
@@ -41,7 +31,7 @@ const useColumn = initialColumns => {
         setVisibleColumns(initialColumns);
     };
 
-    return {visibleColumns, setVisibleColumns, handleColumnHide, handleResetColumns};
+    return { visibleColumns, handleColumnHide, handleResetColumns };
 };
 
 export default useColumn;

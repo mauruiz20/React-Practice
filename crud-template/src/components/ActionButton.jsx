@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const ActionButton = ({title, Icon, onClick, color, stylesIcon, loading}) => {
+const ActionButton = ({ title, Icon, onClick, color, stylesIcon, loading }) => {
     return (
         <Tooltip
             title={title}
@@ -14,10 +14,15 @@ const ActionButton = ({title, Icon, onClick, color, stylesIcon, loading}) => {
             enterNextDelay={2000}
             leaveDelay={10}
         >
-            <IconButton className='mytable__actions-btn' sx={{color: color}} onClick={onClick}>
+            <IconButton
+                className='mytable__actions-btn'
+                sx={{ color: color }}
+                onClick={onClick}
+                size='small'
+            >
                 <Icon fontSize='small' sx={stylesIcon} />
                 {loading && (
-                    <CircularProgress size={30} color={'warning'} sx={{position: 'absolute'}} />
+                    <CircularProgress size={30} color={'warning'} sx={{ position: 'absolute' }} />
                 )}
             </IconButton>
         </Tooltip>

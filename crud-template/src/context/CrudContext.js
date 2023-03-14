@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect, useState, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer, useState } from 'react';
 // import {useStyle} from '../context/StyleContext';
+import { helpHttp } from '../helpers/helpHttp';
 import useAlert from '../hooks/useAlert';
 import useColumn from '../hooks/useColumn';
-import { urlUsuarios } from '../utils/constants';
-import { helpHttp } from '../helpers/helpHttp';
+import { urlUsuarios } from '../utilities/constants';
 
 const CrudContext = createContext();
 
@@ -42,7 +42,7 @@ function reducer(state, action) {
         case 'SET_CADENA':
             return { ...state, cadena: action.payload };
         case 'SET_ORDEN':
-            return { ...state, orden: action.payload };
+            return { ...state, orden: action.payload.orden, page: action.payload.page };
         case 'SET_INCLUYE_BAJAS':
             return {
                 ...state,
@@ -91,11 +91,14 @@ const CrudProvider = ({ children }) => {
     }
 
     function handleSetOrden(orden) {
-        dispatch({ type: 'SET_ORDEN', payload: orden });
+        dispatch({ type: 'SET_ORDEN', payload: { orden, page: 1 } });
     }
 
-    function handleSetIncluyeBajas(incluyeBajas) {
-        dispatch({ type: 'SET_INCLUYE_BAJAS', payload: { incluyeBajas, page: 1 } });
+    function handleSetIncluyeBajas() {
+        dispatch({
+            type: 'SET_INCLUYE_BAJAS',
+            payload: { incluyeBajas: !state.incluyeBajas, page: 1 },
+        });
     }
 
     function handleSetDataToEdit(dataToEdit) {
@@ -229,8 +232,7 @@ const CrudProvider = ({ children }) => {
         }
     };
 
-    const { visibleColumns, setVisibleColumns, handleColumnHide, handleResetColumns } =
-        useColumn(initialColumns);
+    const { visibleColumns, handleColumnHide, handleResetColumns } = useColumn(initialColumns);
 
     const data = {
         state,
@@ -245,7 +247,6 @@ const CrudProvider = ({ children }) => {
         handleSetDataToEdit,
         loading,
         visibleColumns,
-        setVisibleColumns,
         createData,
         updateData,
         handleStateData,

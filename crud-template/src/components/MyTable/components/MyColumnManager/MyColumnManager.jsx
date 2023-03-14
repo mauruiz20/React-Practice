@@ -1,45 +1,65 @@
-import React, {useState} from 'react';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import Fab from '@mui/material/Fab';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Typography from '@mui/material/Typography';
-import {useCrud} from '../context/CrudContext';
+import React, { useEffect, useState } from 'react';
+import '../../mytable.css';
 
-const ColumnHidding = () => {
+/*
+ * Componente MyColumnManager (Visibilidad de columnas)
+ * Botón | Panel de selección
+ */
+const MyColumnManager = ({ visibleColumns, handleColumnHide, handleResetColumns }) => {
+    /* Ancla al botón */
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const {visibleColumns, handleColumnHide, handleResetColumns} = useCrud();
-
-    const handleClick = evt => {
+    /* Handler para abrir el panel y situarlo debajo del Botón*/
+    const handleClick = (evt) => {
         setAnchorEl(evt.currentTarget);
     };
 
+    /* Handler para cerrar el panel */
     const handleClose = () => {
         setAnchorEl(null);
     };
 
+    /* Handler para detectar el click fuera del checkbox y llamarlo */
+    const handleCheckboxChange = (evt, column) => {
+        evt.preventDefault();
+        if (list.length > 1 || !column.visible) handleColumnHide(!column.visible, column);
+    };
+
+    const [list, setList] = useState([]);
+
+    useEffect(() => {
+        const newList = visibleColumns.filter((column) => column.visible);
+        setList(newList);
+    }, [visibleColumns]);
+
     return (
-        <>
-            <Fab
+        <Box>
+            {/* Botón para abrir o cerrar el panel */}
+            <Button
+                variant='contained'
                 color='primary'
-                size='small'
                 aria-label='view-columns'
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup='true'
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
-                sx={{margin: '0 .5rem'}}
+                sx={{ minWidth: '36px', padding: '6px 0', borderRadius: 2 }}
             >
                 <ViewColumnIcon />
-            </Fab>
+            </Button>
 
+            {/* Panel de selección */}
             <Menu
                 id='basic-menu'
                 anchorEl={anchorEl}
@@ -48,25 +68,30 @@ const ColumnHidding = () => {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
-                sx={{width: '50%'}}
             >
-                <Typography variant='h6' sx={{textAlign: 'center'}}>
-                    Columnas visibles
+                {/* Título */}
+                <Typography variant='h6' sx={{ textAlign: 'center' }}>
+                    Columnas
                 </Typography>
+
                 <MenuList dense>
-                    {visibleColumns.map(column => (
-                        <MenuItem key={column.field}>
-                            <FormGroup sx={{width: '100%'}}>
+                    {visibleColumns.map((column) => (
+                        <MenuItem
+                            key={column.field}
+                            onClick={(evt) => handleCheckboxChange(evt, column)}
+                        >
+                            <FormGroup className='column-hidding__item'>
                                 <FormControlLabel
-                                    sx={{height: '30px'}}
+                                    className='column-hidding__checkbox'
                                     control={
                                         <Checkbox
                                             type='checkbox'
                                             checked={column.visible}
-                                            onChange={evt =>
+                                            onChange={(evt) =>
                                                 handleColumnHide(evt.target.checked, column)
                                             }
                                             size='small'
+                                            disabled={list.length === 1 && column.visible}
                                         />
                                     }
                                     label={column.label}
@@ -74,11 +99,13 @@ const ColumnHidding = () => {
                             </FormGroup>
                         </MenuItem>
                     ))}
+
+                    {/* Botón para reiniciar la visibilidad de las columnas */}
                     <MenuItem>
                         <Button
+                            className='column-hidding__reset-btn'
                             variant='contained'
                             size='small'
-                            sx={{width: '100%', marginTop: '.5rem'}}
                             onClick={handleResetColumns}
                         >
                             Reiniciar
@@ -86,8 +113,8 @@ const ColumnHidding = () => {
                     </MenuItem>
                 </MenuList>
             </Menu>
-        </>
+        </Box>
     );
 };
 
-export default ColumnHidding;
+export default MyColumnManager;

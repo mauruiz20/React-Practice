@@ -37,29 +37,45 @@ const MyTable = ({ rows, columns, rowId, orderState = {}, pagination = {} }) => 
                                         flexGrow: column?.flex,
                                         width: column?.width,
                                         minWidth: column?.minWidth,
+                                        textAlign: column?.align,
                                     }}
                                 >
                                     {column.label}
-                                    <IconButton
-                                        size='small'
-                                        sx={{
-                                            position: 'absolute',
-                                            right: 5,
-                                            opacity: order.includes(column.order) ? 1 : 0.3,
-                                            transform:
-                                                order === column.order + 'D'
-                                                    ? 'rotate(180deg)'
-                                                    : 'rotate(0deg)',
-                                            transition: 'opacity 0.4s, transform 0.4s',
-                                            '&:hover': {
-                                                opacity: order.includes(column.order) ? 1 : 0.7,
-                                                backgroundColor: '#3e3e46',
-                                            },
-                                        }}
-                                        onClick={() => handleOrder(column.order)}
-                                    >
-                                        <ArrowUpwardIcon fontSize='small' />
-                                    </IconButton>
+                                    {column?.order && (
+                                        <IconButton
+                                            size='small'
+                                            sx={{
+                                                position: 'absolute',
+                                                right: 5,
+                                                opacity: order.includes(column.order) ? 1 : 0.3,
+                                                backgroundColor: order.includes(column.order)
+                                                    ? '#3e3e46'
+                                                    : 'transparent',
+                                                transform:
+                                                    order === column.order + 'D'
+                                                        ? 'rotate(180deg)'
+                                                        : 'rotate(0deg)',
+                                                transition: 'opacity 0.4s, transform 0.4s',
+
+                                                '&:hover': {
+                                                    opacity: order.includes(column.order)
+                                                        ? 1
+                                                        : 0.95,
+                                                    backgroundColor: '#3e3e46',
+                                                },
+                                            }}
+                                            onClick={() => handleOrder(column.order)}
+                                        >
+                                            <ArrowUpwardIcon
+                                                fontSize='small'
+                                                color={
+                                                    order.includes(column.order)
+                                                        ? 'primary'
+                                                        : 'disabled'
+                                                }
+                                            />
+                                        </IconButton>
+                                    )}
                                 </Box>
                             ),
                     )}
